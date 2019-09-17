@@ -1,9 +1,9 @@
 #pragma once
 #include "windows.h"
 
-static class Initialize
+class Initialize
 {
 public:
-	static bool IsOnlyInstance(const char* gameTitle);
-	static void Terminate();
+	static bool IsOnlyInstance(const char* gameTitle, HANDLE* hHandle);
+	static void Terminate(HANDLE* hHandle);
 }; 

@@ -1,9 +1,8 @@
 #include "Initialize.h"
 
-bool Initialize::IsOnlyInstance(const char* gameTitle)
+bool Initialize::IsOnlyInstance(const char* gameTitle , HANDLE* hHandle)
 {
-	//const char szUniqueNamedMutex[] = gameTitle;
-	HANDLE hHandle = CreateMutex(NULL, TRUE, gameTitle);
+	*hHandle = CreateMutex(NULL, TRUE, gameTitle);
 	if (ERROR_ALREADY_EXISTS == GetLastError())
 	{
 		MessageBox(NULL, "Game Already Open", NULL, MB_OK);
@@ -12,10 +11,10 @@ bool Initialize::IsOnlyInstance(const char* gameTitle)
 	return(true);
 }
 
-static void Terminate()
+void Initialize::Terminate(HANDLE* hHandle)
 {
-	//ReleaseMutex(hHandle);
-	//CloseHandle(hHandle);
+	ReleaseMutex(*hHandle);
+	CloseHandle(*hHandle);
 }
 
  
