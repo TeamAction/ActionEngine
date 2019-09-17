@@ -1,8 +1,16 @@
 #include <iostream>
+#include "Initialize.h"
 
 int main()
 {
-	std::cout << "Hello world" << std::endl;
 
-	return 0;
+	
+	Initialize::IsOnlyInstance("MyGame");
+	while (true)
+	{
+		std::cout << "Hello World" << std::endl;
+	}
+
+	return (0);
 }
+ 
