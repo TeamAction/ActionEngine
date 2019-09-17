@@ -7,10 +7,12 @@ int main()
 	HANDLE hHandle;
 	if (!Initialize::IsOnlyInstance("MyGame",&hHandle))
 		return(0);
+	
+	if (!Initialize::CheckAvailibleMemory(300000, 300000)) // memory in kb
+		return(0);
 
 	while (true)
 	{
-		std::cout << "Hello World" << std::endl;
 	}
 
 	Initialize::Terminate(&hHandle);
