@@ -14,6 +14,7 @@ bool Initialize::IsOnlyInstance(const char* gameTitle , HANDLE* hHandle)
 bool Initialize::CheckAvailibleMemory(const DWORDLONG physicalRAMNeeded, const DWORDLONG virtualRAMNeeded)
 {
 	MEMORYSTATUSEX status;
+	status.dwLength = sizeof(status);
 	GlobalMemoryStatusEx(&status);
 	if (status.ullTotalPhys < physicalRAMNeeded) {
 		MessageBox(NULL, "Not Enough Physical Memory", NULL, MB_OK);
@@ -34,11 +35,11 @@ bool Initialize::CheckAvailibleMemory(const DWORDLONG physicalRAMNeeded, const D
 	}
 
 	std::cout << "There is ";
-	std::cout << status.ullTotalPhys << std::endl;
-	std::cout << "kb of Physical Memory " << std::endl;
+	std::cout << status.ullTotalPhys/1024/1024 << std::endl;
+	std::cout << "mb of Physical Memory " << std::endl;
 	std::cout << "There is ";
-	std::cout << status.ullAvailVirtual << std::endl;
-	std::cout << "kb of Virtual Memory " << std::endl;
+	std::cout << status.ullAvailVirtual/1024/1024 << std::endl;
+	std::cout << "mb of Virtual Memory " << std::endl;
 
 	return true;
 }
