@@ -130,10 +130,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Actors\Actor.cpp" />
+    <ClCompile Include="..\..\Actors\SpecialAbilityComponent.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Actors\Actor.h" />
+    <ClInclude Include="..\..\Actors\ComponentInterface.h" />
+    <ClInclude Include="..\..\Actors\SpecialAbilityComponent.h" />
     <ClInclude Include="Initialize.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
