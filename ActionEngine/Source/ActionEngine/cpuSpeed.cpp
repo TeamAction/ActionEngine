@@ -1,28 +1,11 @@
-#pragma once
-#include "windows.h"
+
+
 #include <iostream>
-#include <stdio.h>
-#include <tchar.h>
-#include <direct.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include <vector>
 #include <bitset>
 #include <array>
 #include <string>
 #include <intrin.h>
-
-using namespace std;
-
-class Initialize
-{
-public:
-	static bool IsOnlyInstance(const char* gameTitle, HANDLE* hHandle);
-	static bool CheckAvailibleMemory(const DWORDLONG physicalRAMNeeded, const DWORDLONG virtualRAMNeeded);
-	static void Terminate(HANDLE* hHandle);
-	static bool CheckStorage(const DWORDLONG diskSpaceNeeded);
-	static void checkSystem();
-}; 
 
 class InstructionSet
 {
@@ -145,3 +128,22 @@ private:
 		std::vector<std::array<int, 4>> extdata_;
 	};
 };
+
+// Initialize static member data
+const InstructionSet::InstructionSet_Internal InstructionSet::CPU_Rep;
+
+// Print out supported instruction set extensions
+int main()
+{
+	auto& outstream = std::cout;
+
+	auto support_message = [&outstream](std::string isa_feature, bool is_supported) {
+		outstream << isa_feature << (is_supported ? " supported" : " not supported") << std::endl;
+	};
+
+	std::cout << InstructionSet::Vendor() << std::endl;
+	std::cout << InstructionSet::Brand() << std::endl;
+
+
+	system("pause");
+}
