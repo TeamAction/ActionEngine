@@ -1,8 +1,9 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(376,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(377,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
   Initialize.cpp
-c:\users\graphic\documents\github\actionengine\actionengine\source\actionengine\actionengine\initialize.cpp(29): warning C4244: 'initializing': conversion from 'const DWORDLONG' to 'unsigned int', possible loss of data
+c:\users\101175147\documents\github\actionengine\actionengine\source\actionengine\actionengine\initialize.cpp(30): warning C4244: 'initializing': conversion from 'const DWORDLONG' to 'unsigned int', possible loss of data
+c:\users\101175147\documents\github\actionengine\actionengine\source\actionengine\actionengine\initialize.cpp(72): warning C4018: '<': signed/unsigned mismatch
   Source.cpp
   Generating Code...
-  LINK : C:\Users\graphic\Documents\GitHub\ActionEngine\ActionEngine\Source\ActionEngine\..\..\Game\Win32\ActionEngine.exe not found or not built by the last incremental link; performing full link
-  ActionEngine.vcxproj -> C:\Users\graphic\Documents\GitHub\ActionEngine\ActionEngine\Source\ActionEngine\..\..\Game\Win32\ActionEngine.exe
+  LINK : C:\Users\101175147\Documents\GitHub\ActionEngine\ActionEngine\Source\ActionEngine\..\..\Game\Win32\ActionEngine.exe not found or not built by the last incremental link; performing full link
+  ActionEngine.vcxproj -> C:\Users\101175147\Documents\GitHub\ActionEngine\ActionEngine\Source\ActionEngine\..\..\Game\Win32\ActionEngine.exe
