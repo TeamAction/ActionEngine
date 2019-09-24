@@ -8,6 +8,7 @@ bool Initialize::IsOnlyInstance(const char* gameTitle , HANDLE* hHandle)
 	if (ERROR_ALREADY_EXISTS == GetLastError())
 	{
 		MessageBox(NULL, "Game Already Open", NULL, MB_OK);
+		Initialize::Terminate(hHandle);
 		return(false);
 	}
 	return(true);
@@ -52,6 +53,8 @@ void Initialize::Terminate(HANDLE* hHandle)
 {
 	ReleaseMutex(*hHandle);
 	CloseHandle(*hHandle);
+	delete hHandle;
+	hHandle = nullptr;
 }
 
 
