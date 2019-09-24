@@ -5,8 +5,6 @@
 
 int main()
 {
-	Initialize::checkSystem();
-
 	HANDLE hHandle;
 	if (!Initialize::IsOnlyInstance("MyGame",&hHandle))
 		return(0);
@@ -16,6 +14,8 @@ int main()
 
 	if (!Initialize::CheckStorage(300)) // memory in mb
 		return (0);
+
+	Initialize::checkSystem();
 
 	while (true)
 	{
