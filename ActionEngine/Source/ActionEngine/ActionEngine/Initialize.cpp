@@ -16,7 +16,7 @@ bool Initialize::CheckAvailibleMemory(const DWORDLONG physicalRAMNeeded, const D
 	MEMORYSTATUSEX status;
 	status.dwLength = sizeof(status);
 	GlobalMemoryStatusEx(&status);
-	if (status.ullTotalPhys < physicalRAMNeeded) {
+	if (status.ullAvailPhys < physicalRAMNeeded) {
 		MessageBox(NULL, "Not Enough Physical Memory", NULL, MB_OK);
 		return false;
 	}
@@ -27,6 +27,8 @@ bool Initialize::CheckAvailibleMemory(const DWORDLONG physicalRAMNeeded, const D
 	try
 	{
 		char *buff = new char[virtualRAMNeeded];
+		delete buff;
+		buff = nullptr;
 	}
 	catch(...)
 	{
@@ -35,7 +37,7 @@ bool Initialize::CheckAvailibleMemory(const DWORDLONG physicalRAMNeeded, const D
 	}
 
 	std::cout << "There is ";
-	std::cout << status.ullTotalPhys/1024/1024 << std::endl;
+	std::cout << status.ullAvailPhys/1024/1024 << std::endl;
 	std::cout << "mb of Physical Memory " << std::endl;
 	std::cout << "There is ";
 	std::cout << status.ullAvailVirtual/1024/1024 << std::endl;
