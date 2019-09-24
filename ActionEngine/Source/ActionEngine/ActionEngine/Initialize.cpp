@@ -54,40 +54,27 @@ void Initialize::Terminate(HANDLE* hHandle)
 }
 
 
-
-
-
 bool Initialize::CheckStorage(const DWORDLONG diskSpaceNeeded)
 {
 	// Check for enough free disk space on the current disk.
-
-	//int const drive = _getdrive();
-	//struct _diskfree_t diskfree;
-	//_getdiskfree(drive, &diskfree);
-	//cout << diskfree.total_clusters;
 
 	long long cluster = 0;
 	long long b = 0;
 	long long kb = 0;
 	long long mb = 0;
 	
-int const drive = _getdrive();
-		struct _diskfree_t diskfree;
-		_getdiskfree(drive, &diskfree);
-		b = diskfree.avail_clusters *diskfree.sectors_per_cluster;
-		b = b * diskfree.bytes_per_sector;
-		kb = b / 1024;
-		mb = kb / 1024;
-		//cout << b << " This Is B.\n" << endl;
-		//cout << kb << " This Is KB.\n" << endl;
-		cout << mb << " This Is MB.\n" << endl;
+	int const drive = _getdrive();
+	struct _diskfree_t diskfree;
+	_getdiskfree(drive, &diskfree);
+	b = diskfree.avail_clusters *diskfree.sectors_per_cluster;
+	b = (b * diskfree.bytes_per_sector)/1024/1024;
 
-		if (mb < 300)
-		{
-			MessageBox(NULL, " not enough space on harddrive", NULL, MB_OK);
-			return false;
-		}
-		return true;
+	if (b < diskSpaceNeeded)
+	{
+		MessageBox(NULL, " not enough space on harddrive", NULL, MB_OK);
+		return false;
+	}
+	return true;
 	
 }
 
