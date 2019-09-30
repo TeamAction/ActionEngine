@@ -1,0 +1,17 @@
+<example_actor>
+	<transform>
+		<position>0.0,0.0,0.0</position>
+		<rotation>0.0,0.0,0.0</rotation>
+	</transform>
+	<physics_object>
+		<mass>5.0</mass>
+		<velocity>0.0,9.0,0.0</velocity>
+		<roational_velocity>1.0,4.0,6.0</roational_velocity>
+	</physics_object>
+	<hitbox>
+		<type>cube</type>
+		<offset_from_actor_origin>1.0,12.0,0.0</offset_from_actor_origin>
+		<rotation_from_actor_origin>1.0,12.0,0.0</rotation_from_actor_origin>
+		<size>10.0,10.0,10.0</size>
+	</hitbox>
+</example_actor>
