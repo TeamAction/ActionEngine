@@ -130,8 +130,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActionEngine.cpp" />
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Initialize.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="SpecialAbilityComponent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ActionEngine.h" />
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="ComponentInterface.h" />
+    <ClInclude Include="Initialize.h" />
+    <ClInclude Include="SpecialAbilityComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
