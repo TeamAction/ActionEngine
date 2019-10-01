@@ -15,16 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Initialize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Actors\SpecialAbilityComponent.cpp">
+    <ClCompile Include="Actor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Actors\Actor.cpp">
+    <ClCompile Include="SpecialAbilityComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,13 +35,16 @@
     <ClInclude Include="Initialize.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Actors\SpecialAbilityComponent.h">
+    <ClInclude Include="Actor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Actors\Actor.h">
+    <ClInclude Include="ComponentInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Actors\ComponentInterface.h">
+    <ClInclude Include="SpecialAbilityComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

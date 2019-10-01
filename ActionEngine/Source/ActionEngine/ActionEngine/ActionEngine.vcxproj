@@ -130,16 +130,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Actors\Actor.cpp" />
-    <ClCompile Include="..\..\Actors\SpecialAbilityComponent.cpp" />
+    <ClCompile Include="ActionEngine.cpp" />
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Initialize.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="SpecialAbilityComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Actors\Actor.h" />
-    <ClInclude Include="..\..\Actors\ComponentInterface.h" />
-    <ClInclude Include="..\..\Actors\SpecialAbilityComponent.h" />
+    <ClInclude Include="ActionEngine.h" />
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="ComponentInterface.h" />
     <ClInclude Include="Initialize.h" />
+    <ClInclude Include="SpecialAbilityComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
