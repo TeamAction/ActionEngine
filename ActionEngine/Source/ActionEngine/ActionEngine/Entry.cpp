@@ -2,6 +2,10 @@
 #include <iostream>
 #include "Initialize.h"
 #include "ActionEngine.h"
+#include <Box2D/Box2D.h>
+#include <glew/glew.h>
+#include <glfw/glfw3.h>
+
 
 
 int main()
