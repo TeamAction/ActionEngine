@@ -21,7 +21,7 @@ int main()
 	std::unique_ptr<ActionEngine> game(new ActionEngine());
 	while (game->active())
 	{
-
+		game->tick();
 	}
 
 	Initialize::Terminate(&hHandle);
