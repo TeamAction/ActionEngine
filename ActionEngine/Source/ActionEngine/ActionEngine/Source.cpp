@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include "Initialize.h"
+#include "ActionEngine.h"
+
 
 int main()
 {
@@ -14,11 +16,14 @@ int main()
 	if (!Initialize::CheckStorage(300)) // memory in mb
 		return (0);
 
-	while (true)
+	Initialize::checkSystem();
+
+	std::unique_ptr<ActionEngine> game(new ActionEngine());
+	while (game->active())
 	{
+
 	}
 
 	Initialize::Terminate(&hHandle);
 	return (0);
-}
- 
+} 
