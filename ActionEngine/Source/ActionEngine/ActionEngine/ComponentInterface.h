@@ -1,14 +1,14 @@
 #pragma once
 
+class Actor;
+
 enum TYPE
 {
-	TRANSFORM,
-	ACTION
+	TICK
 };
 
 class ComponentInterface
 {
 public:
-	TYPE type;
-	virtual void tick() = 0;
+	virtual void tick(Actor* current,float dt) =0;
 };
