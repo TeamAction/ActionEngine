@@ -9,12 +9,11 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Actors">
+    <Filter Include="Interface">
       <UniqueIdentifier>{2ac299b8-6f98-4b77-b6fe-4dc92d91cf88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{39becf64-0959-4c79-99ce-f4072f0678eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -28,13 +27,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Actor.cpp">
-      <Filter>Actors</Filter>
+      <Filter>Interface</Filter>
     </ClCompile>
     <ClCompile Include="tigr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Action.cpp">
-      <Filter>Actors</Filter>
+    <ClCompile Include="DrawSprite.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,16 +44,22 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
-      <Filter>Actors</Filter>
+      <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentInterface.h">
-      <Filter>Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="Action.h">
-      <Filter>Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="helper.h">
+    <ClInclude Include="drawHelper.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawSprite.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorComponent.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawInterface.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ActiveInterface.h">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

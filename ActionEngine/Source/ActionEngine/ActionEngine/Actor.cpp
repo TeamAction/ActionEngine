@@ -1,8 +1,7 @@
 #include "Actor.h"
+#include "ActiveInterface.h"
+#include "DrawInterface.h"
 
-Actor::Actor(v2 _transform, std::vector<drawObject> _spriteObjects): transform(_transform), spriteObjects(_spriteObjects)
-{
-}
 
 Actor::~Actor()
 {
@@ -15,14 +14,23 @@ Actor::~Actor()
 
 void Actor::tick(std::unordered_map<int, std::vector<drawObject>> &bmp,float dt)
 {
-	drawObjects.clear();
-	//drawObjects.push_back(spriteObjects[0]);
 	for (int i = 0; i < components.size(); i++)
 	{
-		components[i]->tick(this,dt);
+		switch (components[i]->objectType)
+		{
+		case TICK:
+			((ActiveInterface*)components[i])->tick(this, dt);
+			break;
+		case DRAW:
+			bmp[((DrawInterface*)components[i])->getLayer()].push_back(((DrawInterface*)components[i])->getObject());
+			break;
+		default:
+			break;
+		}
 	}
-	for (int i = 0; i < drawObjects.size(); i++)
-	{
-		bmp[drawlayer].push_back(drawObjects[i]);
-	}
+}
+
+void Actor::addComponent(ActorComponent * component)
+{
+	components.push_back(component);
 }

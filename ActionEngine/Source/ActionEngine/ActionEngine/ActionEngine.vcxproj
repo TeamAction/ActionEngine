@@ -141,18 +141,20 @@
   <ItemGroup>
     <ClCompile Include="ActionEngine.cpp" />
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="DrawSprite.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Entry.cpp" />
-    <ClCompile Include="Action.cpp" />
     <ClCompile Include="tigr.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionEngine.h" />
     <ClInclude Include="Actor.h" />
-    <ClInclude Include="ComponentInterface.h" />
-    <ClInclude Include="helper.h" />
+    <ClInclude Include="ActorComponent.h" />
+    <ClInclude Include="DrawInterface.h" />
+    <ClInclude Include="drawHelper.h" />
+    <ClInclude Include="DrawSprite.h" />
     <ClInclude Include="Initialize.h" />
-    <ClInclude Include="Action.h" />
+    <ClInclude Include="ActiveInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

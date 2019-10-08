@@ -8,13 +8,9 @@ ActionEngine::ActionEngine()
 {
 	engineActive = true;
 	screen = tigrWindow(320, 240, "Hello", 8);
-	loadImage("../../../Assets/gfx/cave.png");
-	generateSprite(0,v2(0,0),v2(150,150));
-
-	std::vector<drawObject> test;
-	test.push_back(drawObject{ 0,v2(0,0) });
-	activeActors.push_back(new Actor(v2(0,0),test));
+	createSampleActor();
 }
+
 
 
 ActionEngine::~ActionEngine()
@@ -52,6 +48,17 @@ void ActionEngine::generateSprite(int index, v2 position, v2 size)
 	temp = nullptr;
 }
 
+void ActionEngine::createSampleActor()
+{
+	loadImage("../../../Assets/gfx/cave.png");
+	generateSprite(0, v2(0, 0), v2(150, 150));
+
+	Actor* temp = new Actor();
+	DrawSprite* tempDraw = new DrawSprite(drawObject{ 0,v2(100,100)},0);
+	temp->addComponent(tempDraw);
+	activeActors.push_back(temp);
+}
+
 bool ActionEngine::isGameActive()
 {
 	return engineActive && !tigrClosed(screen);
@@ -76,10 +83,10 @@ void ActionEngine::draw()
 	{
 		for (int i = 0; i < it->second.size(); i++)
 		{
-			tigrBlit(screen, loadedImages[spriteData[it->second[i].spriteIndex]->index],
-				it->second[i].screenPosition.v[0], it->second[i].screenPosition.v[1],
-				spriteData[it->second[i].spriteIndex]->positionOnSheet.v[0], spriteData[it->second[i].spriteIndex]->positionOnSheet.v[1],
-				spriteData[it->second[i].spriteIndex]->sizeOnSheet.v[0], spriteData[it->second[i].spriteIndex]->sizeOnSheet.v[1]);
+			tigrBlitAlpha(screen, loadedImages[spriteData[it->second[i].spriteIndex]->index],
+				it->second[i].screenPosition.x, it->second[i].screenPosition.y,
+				spriteData[it->second[i].spriteIndex]->positionOnSheet.x, spriteData[it->second[i].spriteIndex]->positionOnSheet.y,
+				spriteData[it->second[i].spriteIndex]->sizeOnSheet.x, spriteData[it->second[i].spriteIndex]->sizeOnSheet.y,1.0f);
 		}
 		it++;
 	}
