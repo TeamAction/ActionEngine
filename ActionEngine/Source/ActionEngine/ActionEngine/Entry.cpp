@@ -2,10 +2,6 @@
 #include <iostream>
 #include "Initialize.h"
 #include "ActionEngine.h"
-#include <Box2D/Box2D.h>
-#include <glew/glew.h>
-#include <glfw/glfw3.h>
-
 
 
 int main()
@@ -22,10 +18,13 @@ int main()
 
 	Initialize::checkSystem();
 
-	std::unique_ptr<ActionEngine> game(new ActionEngine());
-	while (game->active())
+	//std::unique_ptr<ActionEngine> game(new ActionEngine());
+	ActionEngine::Instance();
+
+	while (ActionEngine::Instance()->isGameActive())
 	{
-		game->tick();
+		ActionEngine::Instance()->tick();
+		ActionEngine::Instance()->draw();
 	}
 
 	Initialize::Terminate(&hHandle);

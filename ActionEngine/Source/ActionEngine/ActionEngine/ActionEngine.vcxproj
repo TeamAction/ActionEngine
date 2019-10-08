@@ -78,8 +78,8 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(PlatformName)$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)..\..\Game\$(PlatformName)</OutDir>
-    <IntDir>$(SolutionDir)..\..\Temp\$(PlatformName)$(Configuration)</IntDir>
+    <OutDir>$(SolutionDir)..\..\Game\$(PlatformName)\</OutDir>
+    <IntDir>$(SolutionDir)..\..\Temp\$(PlatformName)$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\..\Game\$(PlatformName)</OutDir>
@@ -95,7 +95,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Box2D.lib;glew.lib;glfw.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -104,7 +104,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -140,6 +144,7 @@
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="SpecialAbilityComponent.cpp" />
+    <ClCompile Include="tigr.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionEngine.h" />

@@ -53,8 +53,6 @@ void Initialize::Terminate(HANDLE* hHandle)
 {
 	ReleaseMutex(*hHandle);
 	CloseHandle(*hHandle);
-	delete hHandle;
-	hHandle = nullptr;
 }
 
 
