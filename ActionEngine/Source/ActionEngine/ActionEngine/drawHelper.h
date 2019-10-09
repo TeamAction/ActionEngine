@@ -4,6 +4,14 @@ struct v2
 {
 	v2(float _x =0, float _y=0) : x(_x), y(_y) {}
 	float x, y;
+	v2 operator+(const v2& other)
+	{
+		return v2(x + other.x, y + other.y);
+	}
+	v2 operator*(const float& other)
+	{
+		return v2(x * other, y * other);
+	}
 };
 
 struct drawObject

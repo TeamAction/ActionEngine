@@ -5,7 +5,7 @@ class DrawSprite :public DrawInterface
 {
 public:
 	DrawSprite(drawObject _obj,int _layer);
-	virtual int getLayer();
-	virtual drawObject getObject();
+	virtual int getLayer(Actor *current, float dt);
+	virtual drawObject getObject(Actor *current, float dt);
 };
 

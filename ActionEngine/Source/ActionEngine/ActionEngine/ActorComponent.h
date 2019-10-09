@@ -1,4 +1,5 @@
 #pragma once
+#include "ComponentNameEnum.h"
 
 enum TYPE
 {
@@ -7,6 +8,7 @@ enum TYPE
 	DATA
 };
 
+class Actor;
 class ActorComponent
 {
 public:

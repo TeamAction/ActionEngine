@@ -1,13 +1,11 @@
 #pragma once
 #include "Actor.h"
-#include "DrawSprite.h"
 #include "tigr.h"
-#include "cute_c2.h"
-#include "drawHelper.h"
+//#include "cute_c2.h"
 #include <unordered_map>
 
 
-
+struct v2;
 
 class ActionEngine
 {

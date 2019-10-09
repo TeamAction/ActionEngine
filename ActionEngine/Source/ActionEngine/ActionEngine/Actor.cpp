@@ -1,36 +1,45 @@
 #include "Actor.h"
-#include "ActiveInterface.h"
-#include "DrawInterface.h"
+#include "Transform.h"
+#include "ComponentNameEnum.h"
 
+
+Actor::Actor(v2 _transform)
+{
+	addComponent(TRANSFORM,new Transform(_transform));
+}
 
 Actor::~Actor()
 {
-	for (int i = 0; i < components.size(); i++)
+	std::unordered_map<COMPONENTNAMES, ActorComponent*>::iterator it = components.begin();
+	while (it != components.end())
 	{
-		delete components[i];
-		components[i] = nullptr;
+		delete it->second;
+		it->second = nullptr;
+		it++;
 	}
 }
 
 void Actor::tick(std::unordered_map<int, std::vector<drawObject>> &bmp,float dt)
 {
-	for (int i = 0; i < components.size(); i++)
+	std::unordered_map<COMPONENTNAMES, ActorComponent*>::iterator it = components.begin();
+	while (it != components.end())
 	{
-		switch (components[i]->objectType)
+		switch (it->second->objectType)
 		{
 		case TICK:
-			((ActiveInterface*)components[i])->tick(this, dt);
+			((ActiveInterface*)it->second)->tick(this, dt);
 			break;
 		case DRAW:
-			bmp[((DrawInterface*)components[i])->getLayer()].push_back(((DrawInterface*)components[i])->getObject());
+			bmp[((DrawInterface*)it->second)->getLayer(this, dt)].push_back(((DrawInterface*)it->second)->getObject(this, dt));
 			break;
 		default:
 			break;
 		}
+		it++;
 	}
 }
 
-void Actor::addComponent(ActorComponent * component)
+void Actor::addComponent(COMPONENTNAMES name,ActorComponent * component)
 {
-	components.push_back(component);
+	components.insert({ name, component });
 }

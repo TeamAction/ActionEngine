@@ -211,6 +211,7 @@ void tigrClear(Tigr *bmp, TPixel color)
 	int n;
 	for (n=0;n<count;n++)
 		bmp->pix[n] = color;
+	//memset(bmp->pix, 0, count*sizeof(color));
 }
 
 void tigrFill(Tigr *bmp, int x, int y, int w, int h, TPixel color)

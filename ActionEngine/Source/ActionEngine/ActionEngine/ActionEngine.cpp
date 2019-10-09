@@ -1,5 +1,12 @@
+#define WIDTH 320
+#define HEIGHT 240
+
 #define PHYSAC_IMPLEMENTATION
 #include "ActionEngine.h"
+#include "DrawSprite.h"
+#include "SampleActorScript.h"
+#include "ComponentNameEnum.h"
+#include <iostream>
 
 ActionEngine* ActionEngine::s_pInstance = 0;
 
@@ -7,7 +14,7 @@ ActionEngine* ActionEngine::s_pInstance = 0;
 ActionEngine::ActionEngine()
 {
 	engineActive = true;
-	screen = tigrWindow(320, 240, "Hello", 8);
+	screen = tigrWindow(WIDTH, HEIGHT, "Hello", 8);
 	createSampleActor();
 }
 
@@ -51,12 +58,16 @@ void ActionEngine::generateSprite(int index, v2 position, v2 size)
 void ActionEngine::createSampleActor()
 {
 	loadImage("../../../Assets/gfx/cave.png");
-	generateSprite(0, v2(0, 0), v2(150, 150));
+	generateSprite(0, v2(0, 0), v2(16, 16));
+	for (int i = 0; i < 1000; i++)
+	{
 
-	Actor* temp = new Actor();
-	DrawSprite* tempDraw = new DrawSprite(drawObject{ 0,v2(100,100)},0);
-	temp->addComponent(tempDraw);
-	activeActors.push_back(temp);
+		Actor* temp = new Actor(v2(i*-20, i*-20));
+
+		temp->addComponent(IMAGE, new DrawSprite(drawObject{ 0,v2(0,0) }, 0));
+		temp->addComponent(TEST, new SampleActorScript());
+		activeActors.push_back(temp);
+	}
 }
 
 bool ActionEngine::isGameActive()
@@ -67,6 +78,7 @@ bool ActionEngine::isGameActive()
 void ActionEngine::tick()
 {
 	frameTime = tigrTime();
+	std::cout << frameTime*1000 << std::endl;
 	drawList.clear();
 	for (int i = 0; i < activeActors.size(); i++)
 	{

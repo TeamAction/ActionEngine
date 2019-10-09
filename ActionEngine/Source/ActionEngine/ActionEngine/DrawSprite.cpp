@@ -3,12 +3,12 @@
 DrawSprite::DrawSprite(drawObject _obj, int _layer) :DrawInterface(_obj, _layer)
 {}
 
-int DrawSprite::getLayer()
+int DrawSprite::getLayer(Actor *current, float dt)
 {
 	return layer;
 }
 
-drawObject DrawSprite::getObject()
+drawObject DrawSprite::getObject(Actor *current, float dt)
 {
-	return object;
+	return drawObject(object.spriteIndex,object.screenPosition + ((DataInterface<v2>*)current->components[TRANSFORM])->getData());
 }

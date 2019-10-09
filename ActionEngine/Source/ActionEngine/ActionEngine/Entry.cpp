@@ -3,7 +3,6 @@
 #include "Initialize.h"
 #include "ActionEngine.h"
 
-
 int main()
 {
 	HANDLE hHandle;
@@ -18,11 +17,11 @@ int main()
 
 	Initialize::checkSystem();
 
-	//std::unique_ptr<ActionEngine> game(new ActionEngine());
 	ActionEngine::Instance();
 
 	while (ActionEngine::Instance()->isGameActive())
 	{
+		
 		ActionEngine::Instance()->tick();
 		ActionEngine::Instance()->draw();
 	}

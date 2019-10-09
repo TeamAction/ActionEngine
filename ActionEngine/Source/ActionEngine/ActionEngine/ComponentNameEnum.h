@@ -1,0 +1,7 @@
+#pragma once
+enum COMPONENTNAMES
+{
+	TEST,
+	TRANSFORM,
+	IMAGE
+};

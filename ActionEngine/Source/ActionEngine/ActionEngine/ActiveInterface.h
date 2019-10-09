@@ -1,9 +1,10 @@
 #pragma once
 #include "ActorComponent.h" 
+#include "Actor.h"
 
-class Actor;
 class ActiveInterface : public ActorComponent
 {
 public:
+	ActiveInterface() : ActorComponent(TICK){}
 	virtual void tick(Actor *current, float dt) =0;
 };
