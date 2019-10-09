@@ -1,11 +1,12 @@
 #pragma once
-#include "Actor.h"
-#include "tigr.h"
-//#include "cute_c2.h"
 #include <unordered_map>
 
-
+//forward declared classes and structs
+struct Tigr;
+class Actor;
 struct v2;
+struct Sprite;
+struct drawObject;
 
 class ActionEngine
 {
@@ -37,7 +38,7 @@ private:
 	std::vector<Actor*> activeActors;
 	std::vector<Tigr*> loadedImages;
 	std::vector<Sprite*> spriteData;
-	std::unordered_map<int,std::vector<drawObject>> drawList;
+	std::vector<std::vector<drawObject>> drawList;
 
 	bool engineActive;
 	float frameTime;

@@ -1,16 +1,18 @@
 #include "Actor.h"
 #include "Transform.h"
-#include "ComponentNameEnum.h"
+#include "ActiveInterface.h"
+#include "DrawInterface.h"
+#include "DataInterface.h"
 
 
 Actor::Actor(v2 _transform)
 {
-	addComponent(TRANSFORM,new Transform(_transform));
+	addComponent("transform",new Transform(_transform));
 }
 
 Actor::~Actor()
 {
-	std::unordered_map<COMPONENTNAMES, ActorComponent*>::iterator it = components.begin();
+	std::unordered_map<std::string, ActorComponent*>::iterator it = components.begin();
 	while (it != components.end())
 	{
 		delete it->second;
@@ -19,9 +21,9 @@ Actor::~Actor()
 	}
 }
 
-void Actor::tick(std::unordered_map<int, std::vector<drawObject>> &bmp,float dt)
+void Actor::tick(std::vector<std::vector<drawObject>> &bmp,float dt)
 {
-	std::unordered_map<COMPONENTNAMES, ActorComponent*>::iterator it = components.begin();
+	std::unordered_map<std::string, ActorComponent*>::iterator it = components.begin();
 	while (it != components.end())
 	{
 		switch (it->second->objectType)
@@ -39,7 +41,7 @@ void Actor::tick(std::unordered_map<int, std::vector<drawObject>> &bmp,float dt)
 	}
 }
 
-void Actor::addComponent(COMPONENTNAMES name,ActorComponent * component)
+void Actor::addComponent(std::string name,ActorComponent * component)
 {
 	components.insert({ name, component });
 }

@@ -152,7 +152,6 @@
     <ClInclude Include="ActionEngine.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorComponent.h" />
-    <ClInclude Include="ComponentNameEnum.h" />
     <ClInclude Include="DataInterface.h" />
     <ClInclude Include="DrawInterface.h" />
     <ClInclude Include="drawHelper.h" />

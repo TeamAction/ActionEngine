@@ -1,5 +1,4 @@
 #pragma once
-#include "ComponentNameEnum.h"
 
 enum TYPE
 {

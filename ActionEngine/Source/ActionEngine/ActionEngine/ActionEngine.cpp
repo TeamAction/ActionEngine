@@ -1,11 +1,19 @@
 #define WIDTH 320
 #define HEIGHT 240
+#define DRAWLAYERS 5
 
 #define PHYSAC_IMPLEMENTATION
 #include "ActionEngine.h"
+#include "Actor.h"
+#include "tigr.h"
+//#include "cute_c2.h" //a library for collision detection
+
+
+//components
 #include "DrawSprite.h"
 #include "SampleActorScript.h"
-#include "ComponentNameEnum.h"
+
+//for console debug
 #include <iostream>
 
 ActionEngine* ActionEngine::s_pInstance = 0;
@@ -15,6 +23,7 @@ ActionEngine::ActionEngine()
 {
 	engineActive = true;
 	screen = tigrWindow(WIDTH, HEIGHT, "Hello", 8);
+	drawList.resize(DRAWLAYERS);
 	createSampleActor();
 }
 
@@ -64,8 +73,8 @@ void ActionEngine::createSampleActor()
 
 		Actor* temp = new Actor(v2(i*-20, i*-20));
 
-		temp->addComponent(IMAGE, new DrawSprite(drawObject{ 0,v2(0,0) }, 0));
-		temp->addComponent(TEST, new SampleActorScript());
+		temp->addComponent("testImage", new DrawSprite(drawObject{ 0,v2(0,0) }, 0));
+		temp->addComponent("testScrolling", new SampleActorScript());
 		activeActors.push_back(temp);
 	}
 }
@@ -79,7 +88,10 @@ void ActionEngine::tick()
 {
 	frameTime = tigrTime();
 	std::cout << frameTime*1000 << std::endl;
-	drawList.clear();
+	for (int i = 0; i < drawList.size(); i++)
+	{
+		drawList[i].clear();
+	}
 	for (int i = 0; i < activeActors.size(); i++)
 	{
 		activeActors[i]->tick(drawList,frameTime);
@@ -90,17 +102,15 @@ void ActionEngine::draw()
 {
 	tigrClear(screen, tigrRGB(0x80, 0x90, 0xa0));
 
-	std::unordered_map<int, std::vector<drawObject>>::iterator it = drawList.begin();
-	while (it != drawList.end())
+	for (int i =0;i<drawList.size();i++)
 	{
-		for (int i = 0; i < it->second.size(); i++)
+		for (int q = 0; q < drawList[i].size(); q++)
 		{
-			tigrBlitAlpha(screen, loadedImages[spriteData[it->second[i].spriteIndex]->index],
-				it->second[i].screenPosition.x, it->second[i].screenPosition.y,
-				spriteData[it->second[i].spriteIndex]->positionOnSheet.x, spriteData[it->second[i].spriteIndex]->positionOnSheet.y,
-				spriteData[it->second[i].spriteIndex]->sizeOnSheet.x, spriteData[it->second[i].spriteIndex]->sizeOnSheet.y,1.0f);
+			tigrBlitAlpha(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
+				drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
+				spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
+				spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y,1.0f);
 		}
-		it++;
 	}
 	tigrUpdate(screen);
 }

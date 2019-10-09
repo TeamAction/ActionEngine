@@ -10,5 +10,7 @@ int DrawSprite::getLayer(Actor *current, float dt)
 
 drawObject DrawSprite::getObject(Actor *current, float dt)
 {
-	return drawObject(object.spriteIndex,object.screenPosition + ((DataInterface<v2>*)current->components[TRANSFORM])->getData());
+	if (!actorTransform)
+		actorTransform = ((DataInterface<v2>*)current->components["transform"]);
+	return drawObject(object.spriteIndex,object.screenPosition + actorTransform->getData());
 }
