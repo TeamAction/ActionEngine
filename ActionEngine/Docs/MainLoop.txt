@@ -1,0 +1,9 @@
+Main Loop Description
+
+-The main loop is composed of 2 main parts right now
+
+-The first iterates through every actor witch in turn iterates
+though all their components
+
+-The second part draws all sprites that actors added to the draw queue
+by way of their draw components

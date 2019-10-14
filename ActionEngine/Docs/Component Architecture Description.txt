@@ -1,0 +1,17 @@
+Component Architecture Description: Ted Bissada
+
+Actor -------------------> components
+        own                   |
+                |-------------|------------|
+	        |             |            |
+               Data        Script        Draw
+     --------Interface     Interface     Interface---------------
+     |      |     |          |          |           |          |
+ transform  v2    float    scripts     sprites  animations  backgrounds
+
+
+each actor owns an array of component pointers and can have any number of each 
+type other than transform, multiple transforms on an actor is undefined 
+behaviour.
+
+Later we will add a sound component interface with sounds and background music
