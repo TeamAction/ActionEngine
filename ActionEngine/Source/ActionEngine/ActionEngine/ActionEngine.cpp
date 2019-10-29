@@ -69,15 +69,15 @@ void ActionEngine::createSampleActor()
 {
 	loadImage("../../../Assets/gfx/cave.png");
 	generateSprite(0, v2(0, 0), v2(loadedImages[0]->w, loadedImages[0]->h));
-	for (int i = 0; i < 100; i++)
-	{
-		//Actor* temp = new Actor(v2(0, 0));
-		Actor* temp = new Actor(v2(i*100, i*100));
+	//for (int i = 0; i < 100; i++)
+	//{
+		Actor* temp = new Actor(v2(0, 0));
+		//Actor* temp = new Actor(v2(i*100, i*100));
 
-		temp->addComponent("testImage", new DrawSprite(drawObject{ 0,v2(0,0),false}, 0));
+		temp->addComponent("testImage", new DrawSprite(drawObject( 0,v2(0,0),true), 0));
 		temp->addComponent("testScrolling", new SampleActorScript(temp));
 		activeActors.push_back(temp);
-	}
+	//}
 }
 
 bool ActionEngine::isGameActive()
