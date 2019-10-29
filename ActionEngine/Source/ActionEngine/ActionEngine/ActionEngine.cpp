@@ -2,7 +2,8 @@
 #define HEIGHT 240*3
 #define DRAWLAYERS 5
 
-#define PHYSAC_IMPLEMENTATION
+#define DEBUG
+
 #include "ActionEngine.h"
 #include "Actor.h"
 #include "tigr.h"
@@ -13,8 +14,10 @@
 #include "DrawSprite.h"
 #include "SampleActorScript.h"
 
-//for console debug
+#ifdef DEBUG
 #include <iostream>
+#endif  DEBUG
+
 
 ActionEngine* ActionEngine::s_pInstance = 0;
 
@@ -66,16 +69,15 @@ void ActionEngine::createSampleActor()
 {
 	loadImage("../../../Assets/gfx/cave.png");
 	generateSprite(0, v2(0, 0), v2(loadedImages[0]->w, loadedImages[0]->h));
-	//for (int i = 0; i < 10; i++)
-	//{
+	for (int i = 0; i < 100; i++)
+	{
+		//Actor* temp = new Actor(v2(0, 0));
+		Actor* temp = new Actor(v2(i*100, i*100));
 
-		//Actor* temp = new Actor(v2(i*-2000, i*-2000));
-		Actor* temp = new Actor(v2(0,0));
-
-		temp->addComponent("testImage", new DrawSprite(drawObject{ 0,v2(0,0) }, 0));
+		temp->addComponent("testImage", new DrawSprite(drawObject{ 0,v2(0,0),false}, 0));
 		temp->addComponent("testScrolling", new SampleActorScript(temp));
 		activeActors.push_back(temp);
-	//}
+	}
 }
 
 bool ActionEngine::isGameActive()
@@ -86,8 +88,7 @@ bool ActionEngine::isGameActive()
 void ActionEngine::tick()
 {
 	frameTime = tigrTime();
-	std::cout << frameTime*1000 << std::endl;
-	for (int i = 0; i < drawList.size(); i++)
+	for (int i = 0; i < DRAWLAYERS; i++)
 	{
 		drawList[i].clear();
 	}
@@ -101,16 +102,33 @@ void ActionEngine::draw()
 {
 	tigrClear(screen, tigrRGB(0x80, 0x90, 0xa0));
 
-	for (int i =0;i<drawList.size();i++)
+	for (int i =0;i< DRAWLAYERS;i++)
 	{
 		for (int q = 0; q < drawList[i].size(); q++)
 		{
-			tigrBlitAlpha(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
-				drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
-				spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
-				spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y,1.0f);
+			if (drawList[i][q].alpha)
+			{
+				tigrBlitAlpha(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
+					drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
+					spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
+					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y, 1.0f);
+			}
+			else
+			{
+				tigrBlit(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
+					drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
+					spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
+					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y);
+			}
 		}
 	}
+#ifdef DEBUG
+
+	char output[32];
+	sprintf_s(output, "FrameTime: %.2f", frameTime*1000);
+	tigrPrint(screen, tfont, WIDTH-tigrTextWidth(tfont, output)-10, 10, tigrRGB(0xff, 0xff, 0xff),output);
+
+#endif  DEBUG
 	tigrUpdate(screen);
 }
 
