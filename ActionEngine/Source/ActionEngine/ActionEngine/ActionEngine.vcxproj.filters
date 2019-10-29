@@ -38,9 +38,6 @@
     <ClCompile Include="SampleActorScript.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Initialize.h">
@@ -64,17 +61,14 @@
     <ClInclude Include="DrawInterface.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="ActiveInterface.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="SampleActorScript.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="DataInterface.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="ScriptInterface.h">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

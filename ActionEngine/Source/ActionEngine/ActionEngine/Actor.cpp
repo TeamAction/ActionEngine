@@ -1,13 +1,12 @@
 #include "Actor.h"
-#include "Transform.h"
-#include "ActiveInterface.h"
+#include "ScriptInterface.h"
 #include "DrawInterface.h"
 #include "DataInterface.h"
 
 
-Actor::Actor(v2 _transform)
+Actor::Actor(v2 transform)
 {
-	addComponent("transform",new Transform(_transform));
+	addComponent("transform",new DataInterface<v2>(transform));
 }
 
 Actor::~Actor()
@@ -29,7 +28,7 @@ void Actor::tick(std::vector<std::vector<drawObject>> &bmp,float dt)
 		switch (it->second->objectType)
 		{
 		case TICK:
-			((ActiveInterface*)it->second)->tick(this, dt);
+			((ScriptInterface*)it->second)->tick(this, dt);
 			break;
 		case DRAW:
 			bmp[((DrawInterface*)it->second)->getLayer(this, dt)].push_back(((DrawInterface*)it->second)->getObject(this, dt));

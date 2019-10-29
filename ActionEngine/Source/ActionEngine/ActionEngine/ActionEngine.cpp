@@ -1,5 +1,5 @@
-#define WIDTH 320
-#define HEIGHT 240
+#define WIDTH 320*3
+#define HEIGHT 240*3
 #define DRAWLAYERS 5
 
 #define PHYSAC_IMPLEMENTATION
@@ -22,7 +22,7 @@ ActionEngine* ActionEngine::s_pInstance = 0;
 ActionEngine::ActionEngine()
 {
 	engineActive = true;
-	screen = tigrWindow(WIDTH, HEIGHT, "Hello", 8);
+	screen = tigrWindow(WIDTH, HEIGHT, "Hello", 0);
 	drawList.resize(DRAWLAYERS);
 	createSampleActor();
 }
@@ -54,29 +54,28 @@ ActionEngine::~ActionEngine()
 
 void ActionEngine::loadImage(const char* filePath)
 {
-	loadedImages.push_back(tigrLoadImage(filePath));
+	loadedImages.push_back(Scale(tigrLoadImage(filePath),4));
 }
 
 void ActionEngine::generateSprite(int index, v2 position, v2 size)
 {
-	Sprite *temp = new Sprite{index,position,size};
-	spriteData.push_back(temp);
-	temp = nullptr;
+	spriteData.push_back(new Sprite{ index,position,size });
 }
 
 void ActionEngine::createSampleActor()
 {
 	loadImage("../../../Assets/gfx/cave.png");
-	generateSprite(0, v2(0, 0), v2(16, 16));
-	for (int i = 0; i < 1000; i++)
-	{
+	generateSprite(0, v2(0, 0), v2(loadedImages[0]->w, loadedImages[0]->h));
+	//for (int i = 0; i < 10; i++)
+	//{
 
-		Actor* temp = new Actor(v2(i*-20, i*-20));
+		//Actor* temp = new Actor(v2(i*-2000, i*-2000));
+		Actor* temp = new Actor(v2(0,0));
 
 		temp->addComponent("testImage", new DrawSprite(drawObject{ 0,v2(0,0) }, 0));
-		temp->addComponent("testScrolling", new SampleActorScript());
+		temp->addComponent("testScrolling", new SampleActorScript(temp));
 		activeActors.push_back(temp);
-	}
+	//}
 }
 
 bool ActionEngine::isGameActive()
@@ -114,3 +113,17 @@ void ActionEngine::draw()
 	}
 	tigrUpdate(screen);
 }
+
+
+Tigr* ActionEngine::Scale(Tigr* originalImage,int scale)
+{
+	Tigr* newImage = tigrBitmap((int)originalImage->w*scale, (int)originalImage->h*scale);
+	int nw = (int)originalImage->w*scale;
+	int nh = (int)originalImage->h*scale;
+	for (int i = 0; i < nh; i++)
+		for (int j = 0; j < nw; j++)
+			newImage->pix[i*nw + j] = originalImage->pix[(i / scale)*originalImage->w + (j / scale)];
+	tigrFree(originalImage);
+	return newImage;
+}
+

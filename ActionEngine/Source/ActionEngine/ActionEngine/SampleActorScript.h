@@ -1,12 +1,12 @@
 #pragma once
-#include "ActiveInterface.h"
+#include "ScriptInterface.h"
 #include "DrawInterface.h"
 #include "DataInterface.h"
 
-class SampleActorScript : public ActiveInterface
+class SampleActorScript : public ScriptInterface
 {
 public:
-	SampleActorScript();
+	SampleActorScript(Actor * current);
 	~SampleActorScript();
 	virtual void tick(Actor *current, float dt);
 private:

@@ -33,6 +33,7 @@ private:
 	void loadImage(const char* filePath);
 	void generateSprite(int index, v2 position, v2 size);
 	void createSampleActor();
+	Tigr* Scale(Tigr* originalImage, int scale);
 
 	Tigr *screen;
 	std::vector<Actor*> activeActors;

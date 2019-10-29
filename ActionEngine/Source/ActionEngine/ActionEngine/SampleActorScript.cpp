@@ -2,8 +2,9 @@
 
 
 
-SampleActorScript::SampleActorScript()
+SampleActorScript::SampleActorScript(Actor * current)
 {
+	actorTransform = ((DataInterface<v2>*)current->components["transform"]);
 }
 
 
@@ -13,7 +14,7 @@ SampleActorScript::~SampleActorScript()
 
 void SampleActorScript::tick(Actor * current, float dt)
 {
-	if(!actorTransform)
-		actorTransform = ((DataInterface<v2>*)current->components["transform"]);
-	actorTransform->setData(actorTransform->getData()+(v2(20,20)*dt));
+	actorTransform->setData(actorTransform->getData()+(v2(100,100)*dt));
+	if(actorTransform->getData().y > 240 * 3)
+		actorTransform->setData(v2(0,0));
 }

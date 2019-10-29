@@ -2,9 +2,9 @@
 #include "ActorComponent.h" 
 #include "Actor.h"
 
-class ActiveInterface : public ActorComponent
+class ScriptInterface : public ActorComponent
 {
 public:
-	ActiveInterface() : ActorComponent(TICK){}
+	ScriptInterface() : ActorComponent(TICK){}
 	virtual void tick(Actor *current, float dt) =0;
 };
