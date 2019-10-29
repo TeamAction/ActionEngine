@@ -54,7 +54,7 @@ ActionEngine::~ActionEngine()
 
 void ActionEngine::loadImage(const char* filePath)
 {
-	loadedImages.push_back(Scale(tigrLoadImage(filePath),4));
+	loadedImages.push_back(Scale(tigrLoadImage(filePath),4,4));
 }
 
 void ActionEngine::generateSprite(int index, v2 position, v2 size)
@@ -115,14 +115,18 @@ void ActionEngine::draw()
 }
 
 
-Tigr* ActionEngine::Scale(Tigr* originalImage,int scale)
+Tigr* ActionEngine::Scale(Tigr* originalImage,float xScale, float yScale)
 {
-	Tigr* newImage = tigrBitmap((int)originalImage->w*scale, (int)originalImage->h*scale);
-	int nw = (int)originalImage->w*scale;
-	int nh = (int)originalImage->h*scale;
+	Tigr* newImage = tigrBitmap(originalImage->w*xScale,originalImage->h*yScale);
+	int nw = originalImage->w*xScale;
+	int nh = originalImage->h*yScale;
 	for (int i = 0; i < nh; i++)
+	{
 		for (int j = 0; j < nw; j++)
-			newImage->pix[i*nw + j] = originalImage->pix[(i / scale)*originalImage->w + (j / scale)];
+		{
+			newImage->pix[(i*(nw))+j] = originalImage->pix[((int)(i/yScale)*(originalImage->w)) + (int)(j/xScale)];
+		}
+	}
 	tigrFree(originalImage);
 	return newImage;
 }
