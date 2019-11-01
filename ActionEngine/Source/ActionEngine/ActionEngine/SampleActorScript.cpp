@@ -15,6 +15,6 @@ SampleActorScript::~SampleActorScript()
 void SampleActorScript::tick(Actor * current, float dt)
 {
 	actorTransform->setData(actorTransform->getData()+(v2(100,100)*dt));
-	if(actorTransform->getData().y > 240 * 3)
-		actorTransform->setData(v2(0,0));
-}
+	if (actorTransform->getData().y > 720)
+		current->killActor();
+ }

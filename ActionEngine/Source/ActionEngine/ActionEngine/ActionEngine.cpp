@@ -1,5 +1,5 @@
-#define WIDTH 320*3
-#define HEIGHT 240*3
+#define WIDTH 640
+#define HEIGHT 480
 #define DRAWLAYERS 5
 
 #define DEBUG
@@ -7,7 +7,6 @@
 #include "ActionEngine.h"
 #include "Actor.h"
 #include "tigr.h"
-//#include "cute_c2.h" //a library for collision detection
 
 
 //components
@@ -71,12 +70,11 @@ void ActionEngine::createSampleActor()
 	generateSprite(0, v2(0, 0), v2(loadedImages[0]->w, loadedImages[0]->h));
 	//for (int i = 0; i < 100; i++)
 	//{
-		Actor* temp = new Actor(v2(0, 0));
-		//Actor* temp = new Actor(v2(i*100, i*100));
+		//Actor* temp = new Actor(v2(0,0));
 
-		temp->addComponent("testImage", new DrawSprite(drawObject( 0,v2(0,0),true), 0));
-		temp->addComponent("testScrolling", new SampleActorScript(temp));
-		activeActors.push_back(temp);
+		//temp->addComponent("testImage", new DrawSprite(drawObject{ 0,v2(0,0),false}, 0));
+		//temp->addComponent("testScrolling", new SampleActorScript(temp));
+		//activeActors.push_back(temp);
 	//}
 }
 
@@ -88,6 +86,24 @@ bool ActionEngine::isGameActive()
 void ActionEngine::tick()
 {
 	frameTime = tigrTime();
+
+
+
+
+	timer += frameTime;
+	if (timer >= 1.0f)
+	{
+		Actor* temp = new Actor(v2(-1000,-1000));
+
+		temp->addComponent("testImage", new DrawSprite(drawObject( 0,v2(0,0),true ), 0));
+		temp->addComponent("testScrolling", new SampleActorScript(temp));
+		activeActors.push_back(temp);
+		timer = 0;
+	}
+
+
+
+	
 	for (int i = 0; i < DRAWLAYERS; i++)
 	{
 		drawList[i].clear();
@@ -95,6 +111,11 @@ void ActionEngine::tick()
 	for (int i = 0; i < activeActors.size(); i++)
 	{
 		activeActors[i]->tick(drawList,frameTime);
+		if (activeActors[i]->actorToBeRemoved())
+		{
+			delete activeActors[i];
+			activeActors.erase(activeActors.begin() + i);
+		}
 	}
 }
 
@@ -127,6 +148,10 @@ void ActionEngine::draw()
 	char output[32];
 	sprintf_s(output, "FrameTime: %.2f", frameTime*1000);
 	tigrPrint(screen, tfont, WIDTH-tigrTextWidth(tfont, output)-10, 10, tigrRGB(0xff, 0xff, 0xff),output);
+
+	sprintf_s(output, "Number of Actors: %d", activeActors.size());
+	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, output) - 10,12 + tigrTextHeight(tfont, output), tigrRGB(0xff, 0xff, 0xff), output);
+
 
 #endif  DEBUG
 	tigrUpdate(screen);

@@ -18,6 +18,7 @@ Actor::~Actor()
 		it->second = nullptr;
 		it++;
 	}
+	int i = 0;
 }
 
 void Actor::tick(std::vector<std::vector<drawObject>> &bmp,float dt)
@@ -43,4 +44,14 @@ void Actor::tick(std::vector<std::vector<drawObject>> &bmp,float dt)
 void Actor::addComponent(std::string name,ActorComponent * component)
 {
 	components.insert({ name, component });
+}
+
+void Actor::killActor()
+{
+	toBeRemoved = true;
+}
+
+bool Actor::actorToBeRemoved()
+{
+	return toBeRemoved;
 }

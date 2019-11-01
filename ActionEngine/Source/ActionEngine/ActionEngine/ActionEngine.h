@@ -43,6 +43,10 @@ private:
 
 	bool engineActive;
 	float frameTime;
+
+
+
+	float timer = 2.0f;
 };
 
 
