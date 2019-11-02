@@ -89,11 +89,11 @@ void ActionEngine::tick()
 
 
 
-
+//test actor spawning and deletion
 	timer += frameTime;
 	if (timer >= 1.0f)
 	{
-		Actor* temp = new Actor(v2(-1000,-1000));
+		Actor* temp = new Actor(v2(-500,-500));
 
 		temp->addComponent("testImage", new DrawSprite(drawObject( 0,v2(0,0),true ), 0));
 		temp->addComponent("testScrolling", new SampleActorScript(temp));
@@ -129,10 +129,10 @@ void ActionEngine::draw()
 		{
 			if (drawList[i][q].alpha)
 			{
-				tigrBlitAlpha(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
+				tigrFastBlitAlpha(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
 					drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
 					spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
-					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y, 1.0f);
+					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y,0.5f);
 			}
 			else
 			{

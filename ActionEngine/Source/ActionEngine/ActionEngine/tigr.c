@@ -347,6 +347,29 @@ void tigrBlitAlpha(Tigr *dst, Tigr *src, int dx, int dy, int sx, int sy, int w, 
 	tigrBlitTint(dst, src, dx, dy, sx, sy, w, h, tigrRGBA(0xff,0xff,0xff,(unsigned char)(alpha*255)));
 }
 
+
+void tigrFastBlitAlpha(Tigr *dst, Tigr *src, int dx, int dy, int sx, int sy, int w, int h,float a)
+{
+	TPixel *td, *ts;
+	int x, st, dt;
+	CLIP();
+	ts = &src->pix[sy*src->w + sx];
+	td = &dst->pix[dy*dst->w + dx];
+	st = src->w;
+	dt = dst->w;
+	do {
+		for (x = 0; x < w; x++)
+		{
+			if (ts[x].a>a)
+				td[x] = ts[x];
+		}
+		ts += st;
+		td += dt;
+	} while (--h);
+
+}
+
+
 #undef CLIP0
 #undef CLIP1
 #undef CLIP
