@@ -23,6 +23,7 @@ int main()
 	{
 		
 		ActionEngine::Instance()->tick();
+		ActionEngine::Instance()->deleteFlaggedActors();
 		ActionEngine::Instance()->draw();
 	}
 

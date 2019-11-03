@@ -11,11 +11,10 @@ class Actor
 public:
 	Actor(v2);
 	~Actor();
-	void tick(std::vector<std::vector<drawObject>> &bmp,float dt);
 	void addComponent(std::string name, ActorComponent* component);
 	void killActor();
 	bool actorToBeRemoved();
-
+	void tick(std::vector<std::vector<drawObject>> &bmp, float dt);
 	std::unordered_map<std::string, ActorComponent*> components;
 private :
 	bool toBeRemoved = false;

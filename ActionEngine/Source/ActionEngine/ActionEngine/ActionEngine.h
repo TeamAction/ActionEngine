@@ -24,6 +24,9 @@ public:
 	bool isGameActive();
 	void tick();
 	void draw();
+	void deleteFlaggedActors();
+
+	void addActor(Actor* actor);
 private:
 	static ActionEngine* s_pInstance;
 
@@ -33,7 +36,6 @@ private:
 	void loadImage(const char* filePath);
 	void generateSprite(int index, v2 position, v2 size);
 	void createSampleActor();
-	Tigr* Scale(Tigr* originalImage, float xScale, float yScale);
 
 	Tigr *screen;
 	std::vector<Actor*> activeActors;

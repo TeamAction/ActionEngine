@@ -90,6 +90,9 @@ void tigrPlot(Tigr *bmp, int x, int y, TPixel pix);
 // Clears a bitmap to a color.
 void tigrClear(Tigr *bmp, TPixel color);
 
+//replaces image with scaled version, frees input image
+Tigr* tigrScale(Tigr* originalImage, float xScale, float yScale);
+
 // Fills in a solid rectangle.
 void tigrFill(Tigr *bmp, int x, int y, int w, int h, TPixel color);
 
@@ -109,8 +112,8 @@ void tigrBlit(Tigr *dest, Tigr *src, int dx, int dy, int sx, int sy, int w, int 
 // and uses the 'alpha' variable to fade out.
 void tigrBlitAlpha(Tigr *dest, Tigr *src, int dx, int dy, int sx, int sy, int w, int h, float alpha);
 
-//draws the pixel or not depending on alpha value no color blending, signifiacantly faster than tigrBlitAlpha
-void tigrFastBlitAlpha(Tigr *dest, Tigr *src, int dx, int dy, int sx, int sy, int w, int h, float a);
+//clips pixels with alpha values below a threshhold
+void tigrBlitAlphaClip(Tigr *dest, Tigr *src, int dx, int dy, int sx, int sy, int w, int h, float a);
 
 // Same as tigrBlit, but tints the source bitmap with a color.
 void tigrBlitTint(Tigr *dest, Tigr *src, int dx, int dy, int sx, int sy, int w, int h, TPixel tint);
