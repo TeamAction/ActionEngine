@@ -24,6 +24,10 @@ public:
 	bool isGameActive();
 	void tick();
 	void draw();
+	void deleteFlaggedActors();
+
+	void addActor(Actor* actor);
+	void addDrawItem(int layer, drawObject newObject);
 private:
 	static ActionEngine* s_pInstance;
 

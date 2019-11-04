@@ -1,4 +1,5 @@
 #pragma once
+#include "ActionEngine.h"
 
 enum TYPE
 {
@@ -6,6 +7,7 @@ enum TYPE
 	DRAW,
 	DATA
 };
+
 
 class Actor;
 class ActorComponent

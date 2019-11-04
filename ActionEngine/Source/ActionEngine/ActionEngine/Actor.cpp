@@ -32,7 +32,7 @@ void Actor::tick(std::vector<std::vector<drawObject>> &bmp,float dt)
 			((ScriptInterface*)it->second)->tick(this, dt);
 			break;
 		case DRAW:
-			bmp[((DrawInterface*)it->second)->getLayer(this, dt)].push_back(((DrawInterface*)it->second)->getObject(this, dt));
+			((DrawInterface*)it->second)->addObject(this, dt);
 			break;
 		default:
 			break;

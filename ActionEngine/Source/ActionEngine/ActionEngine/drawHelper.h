@@ -18,10 +18,9 @@ inline v2 operator*(v2 a, float b)
 
 struct drawObject
 {
-	drawObject(int _index = 0, v2 _position = v2(),bool _alpha= false): spriteIndex(_index), screenPosition(_position), alpha(_alpha) {}
+	drawObject(int _index = 0, v2 _position = v2()): spriteIndex(_index), screenPosition(_position) {}
 	int spriteIndex;
 	v2 screenPosition;
-	bool alpha;
 };
 
 struct Sprite

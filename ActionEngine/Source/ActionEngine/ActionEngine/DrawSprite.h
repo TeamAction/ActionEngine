@@ -8,8 +8,7 @@ class DrawSprite :public DrawInterface
 {
 public:
 	DrawSprite(drawObject _obj,int _layer);
-	virtual int getLayer(Actor *current, float dt);
-	virtual drawObject getObject(Actor *current, float dt);
+	virtual void addObject(Actor *current, float dt);
 private:
 	DataInterface<v2>* actorTransform;
 };

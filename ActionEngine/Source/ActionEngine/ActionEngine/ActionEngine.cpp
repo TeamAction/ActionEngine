@@ -67,15 +67,27 @@ void ActionEngine::generateSprite(int index, v2 position, v2 size)
 void ActionEngine::createSampleActor()
 {
 	loadImage("../../../Assets/gfx/cave.png");
-	generateSprite(0, v2(0, 0), v2(loadedImages[0]->w, loadedImages[0]->h));
-	//for (int i = 0; i < 100; i++)
-	//{
-		//Actor* temp = new Actor(v2(0,0));
+	generateSprite(0, v2(64 * 6, 64 * 8), v2(64,64));
+	generateSprite(0, v2(64*7, 64*9), v2(64,64));
 
-		//temp->addComponent("testImage", new DrawSprite(drawObject{ 0,v2(0,0),false}, 0));
-		//temp->addComponent("testScrolling", new SampleActorScript(temp));
-		//activeActors.push_back(temp);
-	//}
+	for (int j = 0; j < HEIGHT/64 +1; j++)
+	{
+		Actor* temp = new Actor();
+		temp->addComponent("testSpawning", new SampleActorSpawnScript());
+		temp->addComponent("transform", new DataInterface<v2>(v2(-64, j * 64)));
+		activeActors.push_back(temp);
+	}
+	for (int i = 0;i < WIDTH / 64 + 1; i++)
+	{
+		for (int j = 0; j < HEIGHT / 64 + 1; j++)
+		{
+			Actor* temp = new Actor();
+			temp->addComponent("testImage", new DrawSprite(drawObject(0, v2(0, 0)), 0));
+			temp->addComponent("transform", new DataInterface<v2>(v2(i * 64, j * 64)));
+			activeActors.push_back(temp);
+		}
+	}
+
 }
 
 bool ActionEngine::isGameActive()
@@ -127,20 +139,20 @@ void ActionEngine::draw()
 	{
 		for (int q = 0; q < drawList[i].size(); q++)
 		{
-			if (drawList[i][q].alpha)
-			{
-				tigrFastBlitAlpha(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
+			//if (drawList[i][q].alpha)
+			//{
+				tigrBlitAlphaClip(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
 					drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
 					spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
-					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y,0.5f);
-			}
+					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y,0.99f);
+			/*}
 			else
 			{
 				tigrBlit(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
 					drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
 					spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
 					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y);
-			}
+			}*/
 		}
 	}
 #ifdef DEBUG
@@ -174,3 +186,12 @@ Tigr* ActionEngine::Scale(Tigr* originalImage,float xScale, float yScale)
 	return newImage;
 }
 
+void ActionEngine::addActor(Actor * actor)
+{
+	activeActors.push_back(actor);
+}
+
+void ActionEngine::addDrawItem(int layer,drawObject newObject)
+{
+	drawList[layer].push_back(newObject);
+}
