@@ -2,8 +2,6 @@
 #include "ScriptInterface.h"
 #include "DrawInterface.h"
 #include "DataInterface.h"
-
-
 #include "tigr.h"
 
 Actor::Actor()
@@ -21,7 +19,7 @@ Actor::~Actor()
 	int i = 0;
 }
 
-void Actor::tick(std::vector<std::vector<drawObject>> &bmp,float dt)
+void Actor::tick(float dt)
 {
 	std::unordered_map<std::string, ActorComponent*>::iterator it = components.begin();
 	while (it != components.end())

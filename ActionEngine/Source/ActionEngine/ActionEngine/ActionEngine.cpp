@@ -101,7 +101,7 @@ void ActionEngine::tick()
 	frameTime = tigrTime();	
 	for (int i = 0; i < activeActors.size(); i++)
 	{
-		activeActors[i]->tick(drawList,frameTime);
+		activeActors[i]->tick(frameTime);
 	}
 }
 
