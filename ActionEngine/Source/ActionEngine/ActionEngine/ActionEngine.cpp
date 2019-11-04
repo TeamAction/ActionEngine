@@ -68,10 +68,31 @@ void ActionEngine::generateSprite(int index, v2 position, v2 size)
 void ActionEngine::createSampleActor()
 {
 	loadImage("../../../Assets/gfx/cave.png");
-	generateSprite(0, v2(0, 0), v2(loadedImages[0]->w, loadedImages[0]->h));
-	Actor* temp = new Actor(v2(-650,-650));
+	generateSprite(0, v2(64 * 6, 64 * 8), v2(64,64));
+	generateSprite(0, v2(64*7, 64*9), v2(64,64));
+
+	/*
+	Actor* temp = new Actor(v2(-650/4,-650/4));
 	temp->addComponent("testSpawning", new SampleActorSpawnScript());
-	activeActors.push_back(temp);
+	*/
+	for (int j = 0; j < HEIGHT/64 +1; j++)
+	{
+		Actor* temp = new Actor();
+		temp->addComponent("testSpawning", new SampleActorSpawnScript());
+		temp->addComponent("transform", new DataInterface<v2>(v2(-64, j * 64)));
+		activeActors.push_back(temp);
+	}
+	for (int i = 0;i < WIDTH / 64 + 1; i++)
+	{
+		for (int j = 0; j < HEIGHT / 64 + 1; j++)
+		{
+			Actor* temp = new Actor();
+			temp->addComponent("testImage", new DrawSprite(drawObject(0, v2(0, 0), true), 0));
+			temp->addComponent("transform", new DataInterface<v2>(v2(i * 64, j * 64)));
+			activeActors.push_back(temp);
+		}
+	}
+
 }
 
 bool ActionEngine::isGameActive()
@@ -116,7 +137,7 @@ void ActionEngine::draw()
 #ifdef DEBUG
 
 	char output[32];
-	sprintf_s(output, "FrameTime: %.2f", frameTime*1000);
+	sprintf_s(output, "FrameTime: %.2f ms", frameTime*1000);
 	tigrPrint(screen, tfont, WIDTH-tigrTextWidth(tfont, output)-10, 10, tigrRGB(0xff, 0xff, 0xff),output);
 
 	sprintf_s(output, "Number of Actors: %d", activeActors.size());

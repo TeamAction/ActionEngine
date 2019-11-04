@@ -7,8 +7,8 @@
 
 void SampleActorSpawnScript::onStart(Actor * current, float dt)
 {
-	actorTransform = ((DataInterface<v2>*)current->components["transform"]);
-	nextFunction = reinterpret_cast<void(ScriptInterface::*)(Actor *current, float dt)>(&SampleActorSpawnScript::onTick);
+	actorTransform = ((DataInterface<v2>*)current->getComponent("transform"));
+	nextFunction = static_cast<void(ScriptInterface::*)(Actor *current, float dt)>(&SampleActorSpawnScript::onTick);
 	onTick(current, dt);
 }
 
@@ -19,8 +19,9 @@ void SampleActorSpawnScript::onTick(Actor * current, float dt)
 	timer += dt;
 	if (timer >= 1.0f)
 	{
-		Actor* temp = new Actor(actorTransform->getData());
-		temp->addComponent("testImage", new DrawSprite(drawObject(0, v2(0, 0), true), 0));
+		Actor* temp = new Actor();
+		temp->addComponent("transform", new DataInterface<v2>(actorTransform->getData()));
+		temp->addComponent("testImage", new DrawSprite(drawObject(1, v2(0, 0), true), 0));
 		temp->addComponent("testScrolling", new SampleActorScript());
 		ActionEngine::Instance()->addActor(temp);
 		timer = 0;
