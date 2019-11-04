@@ -4,10 +4,10 @@
 #include "DataInterface.h"
 
 
-Actor::Actor(v2 transform)
-{
-	addComponent("transform",new DataInterface<v2>(transform));
-}
+#include "tigr.h"
+
+Actor::Actor()
+{}
 
 Actor::~Actor()
 {
@@ -29,7 +29,7 @@ void Actor::tick(std::vector<std::vector<drawObject>> &bmp,float dt)
 		switch (it->second->objectType)
 		{
 		case TICK:
-			((ScriptInterface*)it->second)->tick(this, dt);
+			static_cast<ScriptInterface*>(it->second)->tick(this, dt);
 			break;
 		case DRAW:
 			((DrawInterface*)it->second)->addObject(this, dt);
@@ -39,6 +39,14 @@ void Actor::tick(std::vector<std::vector<drawObject>> &bmp,float dt)
 		}
 		it++;
 	}
+}
+
+ActorComponent * Actor::getComponent(std::string name)
+{
+	ActorComponent* requested = components[name];
+	if (!requested)
+		tigrError(nullptr,"Requested Component not found");
+	return requested;
 }
 
 void Actor::addComponent(std::string name,ActorComponent * component)

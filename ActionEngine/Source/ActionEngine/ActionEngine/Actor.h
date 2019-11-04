@@ -3,20 +3,19 @@
 #include <unordered_map>
 
 struct drawObject;
-struct v2;
 class ActorComponent;
 
 class Actor
 {
 public:
-	Actor(v2);
+	Actor();
 	~Actor();
-	void tick(std::vector<std::vector<drawObject>> &bmp,float dt);
 	void addComponent(std::string name, ActorComponent* component);
 	void killActor();
 	bool actorToBeRemoved();
-
-	std::unordered_map<std::string, ActorComponent*> components;
+	void tick(std::vector<std::vector<drawObject>> &bmp, float dt);
+	ActorComponent* getComponent(std::string name);
 private :
+	std::unordered_map<std::string, ActorComponent*> components;
 	bool toBeRemoved = false;
 };

@@ -12,6 +12,7 @@
 //components
 #include "DrawSprite.h"
 #include "SampleActorScript.h"
+#include "SampleActorSpawnScript.h"
 
 #ifdef DEBUG
 #include <iostream>
@@ -48,15 +49,15 @@ ActionEngine::~ActionEngine()
 		tigrFree(loadedImages[i]);
 		loadedImages[i] = nullptr;
 	}
-	delete s_pInstance;
-	s_pInstance = nullptr;
 	tigrFree(screen);
 	screen = nullptr;
+	delete s_pInstance;
+	s_pInstance = nullptr;
 }
 
 void ActionEngine::loadImage(const char* filePath)
 {
-	loadedImages.push_back(Scale(tigrLoadImage(filePath),4,4));
+	loadedImages.push_back(tigrScale(tigrLoadImage(filePath),4,4));
 }
 
 void ActionEngine::generateSprite(int index, v2 position, v2 size)
@@ -97,37 +98,10 @@ bool ActionEngine::isGameActive()
 
 void ActionEngine::tick()
 {
-	frameTime = tigrTime();
-
-
-
-//test actor spawning and deletion
-	timer += frameTime;
-	if (timer >= 1.0f)
-	{
-		Actor* temp = new Actor(v2(-500,-500));
-
-		temp->addComponent("testImage", new DrawSprite(drawObject( 0,v2(0,0)), 0));
-		temp->addComponent("testScrolling", new SampleActorScript(temp));
-		activeActors.push_back(temp);
-		timer = 0;
-	}
-
-
-
-	
-	for (int i = 0; i < DRAWLAYERS; i++)
-	{
-		drawList[i].clear();
-	}
+	frameTime = tigrTime();	
 	for (int i = 0; i < activeActors.size(); i++)
 	{
 		activeActors[i]->tick(drawList,frameTime);
-		if (activeActors[i]->actorToBeRemoved())
-		{
-			delete activeActors[i];
-			activeActors.erase(activeActors.begin() + i);
-		}
 	}
 }
 
@@ -154,11 +128,12 @@ void ActionEngine::draw()
 					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y);
 			}*/
 		}
+		drawList[i].clear();
 	}
 #ifdef DEBUG
 
 	char output[32];
-	sprintf_s(output, "FrameTime: %.2f", frameTime*1000);
+	sprintf_s(output, "FrameTime: %.2f ms", frameTime*1000);
 	tigrPrint(screen, tfont, WIDTH-tigrTextWidth(tfont, output)-10, 10, tigrRGB(0xff, 0xff, 0xff),output);
 
 	sprintf_s(output, "Number of Actors: %d", activeActors.size());
@@ -169,21 +144,16 @@ void ActionEngine::draw()
 	tigrUpdate(screen);
 }
 
-
-Tigr* ActionEngine::Scale(Tigr* originalImage,float xScale, float yScale)
+void ActionEngine::deleteFlaggedActors()
 {
-	Tigr* newImage = tigrBitmap(originalImage->w*xScale,originalImage->h*yScale);
-	int nw = originalImage->w*xScale;
-	int nh = originalImage->h*yScale;
-	for (int i = 0; i < nh; i++)
+	for (int i = 0; i < activeActors.size(); i++)
 	{
-		for (int j = 0; j < nw; j++)
+		if (activeActors[i]->actorToBeRemoved())
 		{
-			newImage->pix[(i*(nw))+j] = originalImage->pix[((int)(i/yScale)*(originalImage->w)) + (int)(j/xScale)];
+			delete activeActors[i];
+			activeActors.erase(activeActors.begin() + i);
 		}
 	}
-	tigrFree(originalImage);
-	return newImage;
 }
 
 void ActionEngine::addActor(Actor * actor)

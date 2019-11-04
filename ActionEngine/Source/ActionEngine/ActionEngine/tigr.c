@@ -211,8 +211,24 @@ void tigrClear(Tigr *bmp, TPixel color)
 	int n;
 	for (n=0;n<count;n++)
 		bmp->pix[n] = color;
-	//memset(bmp->pix, 0, count*sizeof(color));
 }
+
+Tigr* tigrScale(Tigr* originalImage, float xScale, float yScale)
+{
+	Tigr* newImage = tigrBitmap(originalImage->w*xScale, originalImage->h*yScale);
+	int nw = originalImage->w*xScale;
+	int nh = originalImage->h*yScale;
+	for (int i = 0; i < nh; i++)
+	{
+		for (int j = 0; j < nw; j++)
+		{
+			newImage->pix[(i*(nw)) + j] = originalImage->pix[((int)(i / yScale)*(originalImage->w)) + (int)(j / xScale)];
+		}
+	}
+	tigrFree(originalImage);
+	return newImage;
+}
+
 
 void tigrFill(Tigr *bmp, int x, int y, int w, int h, TPixel color)
 {
@@ -348,7 +364,7 @@ void tigrBlitAlpha(Tigr *dst, Tigr *src, int dx, int dy, int sx, int sy, int w, 
 }
 
 
-void tigrFastBlitAlpha(Tigr *dst, Tigr *src, int dx, int dy, int sx, int sy, int w, int h,float a)
+void tigrBlitAlphaClip(Tigr *dst, Tigr *src, int dx, int dy, int sx, int sy, int w, int h,float a)
 {
 	TPixel *td, *ts;
 	int x, st, dt;
@@ -360,8 +376,8 @@ void tigrFastBlitAlpha(Tigr *dst, Tigr *src, int dx, int dy, int sx, int sy, int
 	do {
 		for (x = 0; x < w; x++)
 		{
-			if (ts[x].a>a)
-				td[x] = ts[x];
+			//td[x] = (ts[x].a > a) ? ts[x] : td[x];
+			if (ts[x].a > a) { td[x] = ts[x]; }
 		}
 		ts += st;
 		td += dt;
@@ -1824,7 +1840,7 @@ void tigrGAPICreate(Tigr *bmp)
 	d3d->params.SwapEffect				= D3DSWAPEFFECT_DISCARD;
 	d3d->params.BackBufferFormat		= D3DFMT_A8R8G8B8;
 	d3d->params.EnableAutoDepthStencil	= FALSE;
-	d3d->params.PresentationInterval	= D3DPRESENT_INTERVAL_ONE; // TODO- vsync off if fps suffers?
+	d3d->params.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE; // TODO- vsync off if fps suffers?
 	d3d->params.Flags					= 0;
 	d3d->params.BackBufferWidth			= bmp->w;
 	d3d->params.BackBufferHeight		= bmp->h;

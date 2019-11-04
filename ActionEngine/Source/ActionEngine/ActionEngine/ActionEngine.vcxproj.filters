@@ -38,6 +38,9 @@
     <ClCompile Include="SampleActorScript.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="SampleActorSpawnScript.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Initialize.h">
@@ -69,6 +72,9 @@
     </ClInclude>
     <ClInclude Include="ScriptInterface.h">
       <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleActorSpawnScript.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
