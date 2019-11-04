@@ -107,7 +107,7 @@ void ActionEngine::tick()
 	{
 		Actor* temp = new Actor(v2(-500,-500));
 
-		temp->addComponent("testImage", new DrawSprite(drawObject( 0,v2(0,0),true ), 0));
+		temp->addComponent("testImage", new DrawSprite(drawObject( 0,v2(0,0)), 0));
 		temp->addComponent("testScrolling", new SampleActorScript(temp));
 		activeActors.push_back(temp);
 		timer = 0;
