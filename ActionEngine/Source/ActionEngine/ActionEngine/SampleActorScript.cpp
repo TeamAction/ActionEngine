@@ -4,9 +4,8 @@
 
 void SampleActorScript::onStart(Actor * current, float dt)
 {
-	actorTransform = ((DataInterface<v2>*)current->getComponent("transform"));
+	actorTransform = static_cast<DataInterface<v2>*>(current->getComponent("transform"));
 	nextFunction = static_cast<void(ScriptInterface::*)(Actor *current, float dt)>(&SampleActorScript::onTick);
-	//(this->*tick)(current, dt);
 	onTick(current, dt);
 }
 

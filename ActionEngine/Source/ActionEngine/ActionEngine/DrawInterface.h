@@ -6,9 +6,12 @@
 class DrawInterface: public ActorComponent
 {
 public:
-	DrawInterface(drawObject _obj, int _layer) : ActorComponent(DRAW), object(_obj), layer(_layer) {}
-	virtual void addObject(Actor *current, float dt)= 0;
+	DrawInterface(int _layer) : ActorComponent(DRAW),layer(_layer) {}
+	void(DrawInterface::*nextFunction)(Actor *current, float dt) = &DrawInterface::onStart;
+	inline void addObject(Actor *current, float dt) { (this->*nextFunction)(current, dt); }
+
 protected:
-	drawObject object;
+	virtual void onAddObject(Actor *current, float dt) = 0;
+	virtual void onStart(Actor *current, float dt) = 0;
 	int layer;
 };

@@ -113,20 +113,10 @@ void ActionEngine::draw()
 	{
 		for (int q = 0; q < drawList[i].size(); q++)
 		{
-			//if (drawList[i][q].alpha)
-			//{
 				tigrBlitAlphaClip(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
 					drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
 					spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
 					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y,0.99f);
-			/*}
-			else
-			{
-				tigrBlit(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
-					drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
-					spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
-					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y);
-			}*/
 		}
 		drawList[i].clear();
 	}

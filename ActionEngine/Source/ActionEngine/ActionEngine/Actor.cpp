@@ -30,7 +30,7 @@ void Actor::tick(float dt)
 			static_cast<ScriptInterface*>(it->second)->tick(this, dt);
 			break;
 		case DRAW:
-			((DrawInterface*)it->second)->addObject(this, dt);
+			static_cast<DrawInterface*>(it->second)->addObject(this, dt);
 			break;
 		default:
 			break;
