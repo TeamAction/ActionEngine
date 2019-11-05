@@ -128,7 +128,29 @@ void ActionEngine::draw()
 
 	sprintf_s(output, "Number of Actors: %d", activeActors.size());
 	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, output) - 10,12 + tigrTextHeight(tfont, output), tigrRGB(0xff, 0xff, 0xff), output);
+	
+	int x, y, button1, button2, button3;
+	tigrMouse2(screen, &x, &y, &button1,&button2, &button3);
 
+	sprintf_s(output, "Mouse Position: %d, %d", x,y);
+	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, output) - 10,10 + ((2 + tigrTextHeight(tfont, output))*2), tigrRGB(0xff, 0xff, 0xff), output);
+	sprintf_s(output, "Mouse Buttons: %d ,%d ,%d", button1 , button2 , button3);
+	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, output) - 10, 10 + ((2 + tigrTextHeight(tfont, output)) * 3), tigrRGB(0xff, 0xff, 0xff), output);
+
+
+	char buffer[1024];
+	int keyboard[256];
+	tigrKeyboardState(screen, keyboard);
+	sprintf_s(buffer, "Keys Down:");
+	for (int i = 0; i < 256; i++)
+	{
+		if (keyboard[i] != 0)
+		{
+			sprintf_s(output, " %c,",i);
+			strcat_s(buffer, output);
+		}
+	}
+	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, buffer) - 10, 10 + ((2 + tigrTextHeight(tfont, buffer)) * 4), tigrRGB(0xff, 0xff, 0xff), buffer);
 
 #endif  DEBUG
 	tigrUpdate(screen);

@@ -2664,6 +2664,27 @@ void tigrMouse(Tigr *bmp, int *x, int *y, int *buttons)
 	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) *buttons |= 4;
 }
 
+void tigrMouse2(Tigr *bmp, int *x, int *y, int *button1, int *button2,int *button3)
+{
+	POINT pt;
+	TigrInternal *win;
+
+	win = tigrInternal(bmp);
+	GetCursorPos(&pt);
+	ScreenToClient((HWND)bmp->handle, &pt);
+	*x = (pt.x - win->pos[0]) / win->scale;
+	*y = (pt.y - win->pos[1]) / win->scale;
+	*button1 = 0;
+	*button2 = 0;
+	*button3 = 0;
+	if (GetFocus() != bmp->handle)
+		return;
+	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) *button1 = 1;
+	if (GetAsyncKeyState(VK_MBUTTON) & 0x8000) *button2 = 1;
+	if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) *button3 = 1;
+}
+
+
 static int tigrWinVK(int key)
 {
 	if (key >= 'A' && key <= 'Z') return key;
@@ -2762,6 +2783,19 @@ int tigrKeyHeld(Tigr *bmp, int key)
 	win = tigrInternal(bmp);
 	return win->keys[k];
 }
+
+void tigrKeyboardState(Tigr *bmp, int* keyboard)
+{
+	TigrInternal *win;
+	if (GetFocus() != bmp->handle)
+		return 0;
+	win = tigrInternal(bmp);
+	for (int i = 0; i < 256; i++)
+	{
+		keyboard[i] = win->keys[i];
+	}
+}
+
 
 int tigrReadChar(Tigr *bmp)
 {

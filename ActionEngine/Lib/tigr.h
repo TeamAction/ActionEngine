@@ -180,12 +180,16 @@ typedef enum {
 
 // Returns mouse input for a window.
 void tigrMouse(Tigr *bmp, int *x, int *y, int *buttons);
+void tigrMouse2(Tigr *bmp, int *x, int *y, int *button1, int *button2, int *button3);
+
 
 // Reads the keyboard for a window.
 // Returns non-zero if a key is pressed/held.
 // tigrKeyDown tests for the initial press, tigrKeyHeld repeats each frame.
 int tigrKeyDown(Tigr *bmp, int key);
 int tigrKeyHeld(Tigr *bmp, int key);
+
+void tigrKeyboardState(Tigr *bmp, int* keyboard);
 
 // Reads character input for a window.
 // Returns the Unicode value of the last key pressed, or 0 if none.
