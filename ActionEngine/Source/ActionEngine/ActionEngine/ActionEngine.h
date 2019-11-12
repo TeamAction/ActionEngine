@@ -7,6 +7,7 @@ class Actor;
 struct v2;
 struct Sprite;
 struct drawObject;
+class InputInterface;
 
 class ActionEngine
 {
@@ -25,6 +26,7 @@ public:
 	void tick();
 	void draw();
 	void deleteFlaggedActors();
+	InputInterface* getInputInterface();
 
 	void addActor(Actor* actor);
 	void addDrawItem(int layer, drawObject newObject);
@@ -43,6 +45,7 @@ private:
 	std::vector<Tigr*> loadedImages;
 	std::vector<Sprite*> spriteData;
 	std::vector<std::vector<drawObject>> drawList;
+	InputInterface* input;
 
 	bool engineActive;
 	float frameTime;

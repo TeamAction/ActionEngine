@@ -41,6 +41,9 @@
     <ClCompile Include="SampleActorSpawnScript.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="InputInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Initialize.h">
@@ -75,6 +78,9 @@
     </ClInclude>
     <ClInclude Include="SampleActorSpawnScript.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="InputInterface.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

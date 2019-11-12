@@ -152,6 +152,7 @@
     <ClCompile Include="DrawSprite.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="InputInterface.cpp" />
     <ClCompile Include="SampleActorScript.cpp" />
     <ClCompile Include="SampleActorSpawnScript.cpp" />
     <ClCompile Include="tigr.c" />
@@ -165,6 +166,7 @@
     <ClInclude Include="drawHelper.h" />
     <ClInclude Include="DrawSprite.h" />
     <ClInclude Include="Initialize.h" />
+    <ClInclude Include="InputInterface.h" />
     <ClInclude Include="SampleActorSpawnScript.h" />
     <ClInclude Include="ScriptInterface.h" />
     <ClInclude Include="SampleActorScript.h" />
