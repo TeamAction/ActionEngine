@@ -1,16 +1,21 @@
 #include "InputInterface.h"
 #include "tigr.h"
+#include <windows.h>
 
+#define DEBUG
 
 void InputInterface::prossesInput(Tigr* screen)
 {
 	std::unordered_map<int, std::vector<std::function<void()>>>::iterator it = events.begin();
+#ifdef DEBUG
 	tigrKeyboardState(screen, keyboard);
+#endif // DEBUG
 	tigrMouse2(screen, &mouseX, &mouseY, &mouseB1, &mouseB2, &mouseB3);
+
 
 	while (it != events.end())
 	{     
-		if (keyboard[it->first] != 0)
+		if (GetAsyncKeyState(it->first))
 		{
 			for (int i = 0; i < it->second.size(); i++)
 			{
