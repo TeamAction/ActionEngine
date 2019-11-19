@@ -101,11 +101,11 @@ bool ActionEngine::isGameActive()
 void ActionEngine::tick()
 {
 	frameTime = tigrTime();	
+	input->prossesInput(screen);
 	for (int i = 0; i < activeActors.size(); i++)
 	{
 		activeActors[i]->tick(frameTime);
 	}
-	input->prossesInput(screen);
 }
 
 void ActionEngine::draw()
