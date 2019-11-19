@@ -2,8 +2,6 @@
 #define HEIGHT 480
 #define DRAWLAYERS 5
 
-#define DEBUG
-
 #include "ActionEngine.h"
 #include "Actor.h"
 #include "tigr.h"

@@ -12,5 +12,5 @@ void DrawSprite::onStart(Actor * current, float dt)
 void DrawSprite::onAddObject(Actor *current, float dt)
 {
 	object.screenPosition = v2(actorTransform->getData())+objectOffset;
-	ActionEngine::Instance()->addDrawItem(object.spriteIndex, object);
+	ActionEngine::Instance()->addDrawItem(layer, object);
 }

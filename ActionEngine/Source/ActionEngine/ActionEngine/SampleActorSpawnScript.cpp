@@ -17,7 +17,7 @@ void SampleActorSpawnScript::spaceBarTest()
 {
 	Actor* temp = new Actor();
 	temp->addComponent("transform", new DataInterface<v2>(actorTransform->getData()));
-	temp->addComponent("testImage", new DrawSprite(drawObject(1, v2(0, 0)), 0));
+	temp->addComponent("testImage", new DrawSprite(drawObject(1, v2(0, 0)), 1));
 	temp->addComponent("testScrolling", new SampleActorScript());
 	ActionEngine::Instance()->addActor(temp);
 }
@@ -37,3 +37,7 @@ void SampleActorSpawnScript::onTick(Actor * current, float dt)
 		timer = 0;
 	}*/
 }
+
+
+
+

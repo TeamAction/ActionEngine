@@ -378,7 +378,7 @@ void tigrBlitAlphaClip(Tigr *dst, Tigr *src, int dx, int dy, int sx, int sy, int
 		{
 			//td[x] = (ts[x].a > a) ? ts[x] : td[x];
 			if (ts[x].a > a) { td[x] = ts[x]; }
-		}
+ 		}
 		ts += st;
 		td += dt;
 	} while (--h);
