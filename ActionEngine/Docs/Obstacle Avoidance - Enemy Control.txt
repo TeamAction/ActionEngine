@@ -1,0 +1,22 @@
+What if we want to implement obstacle avoidance for the same enemy,
+what would we add, remove, or change? Explain what you would do.
+
+
+	In the case of projectiles, add an additional mesh collider (sphere)
+and have the actor move when a hazardous projectile enters said collider.
+In the case of environment, such as obstructing terrain, the enemy would
+require a collision detection with blocking mesh. If obstructing mesh is
+identified, enemy priority changes to navigating obstacle instead of
+previous objective.
+
+
+-----------------------------------------
+
+
+If we want to make the enemy actor controllable, how would we change
+the component system for the enemy? Explain what would change.
+
+	Actor class variables that dictate whether or not its children are treated
+as enemy or ally e.g. can/cannot be hit by player, can/cannot pickup items.
+Actor components would then be able to toggle these variables based on whether
+or not it is friend or foe.
