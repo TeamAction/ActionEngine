@@ -158,6 +158,7 @@
     <ClCompile Include="InputInterface.cpp" />
     <ClCompile Include="SampleActorScript.cpp" />
     <ClCompile Include="SampleActorSpawnScript.cpp" />
+    <ClCompile Include="SampleMouseClickScript.cpp" />
     <ClCompile Include="tigr.c" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +172,7 @@
     <ClInclude Include="Initialize.h" />
     <ClInclude Include="InputInterface.h" />
     <ClInclude Include="SampleActorSpawnScript.h" />
+    <ClInclude Include="SampleMouseClickScript.h" />
     <ClInclude Include="ScriptInterface.h" />
     <ClInclude Include="SampleActorScript.h" />
   </ItemGroup>

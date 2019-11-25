@@ -2,7 +2,6 @@
 #include "SampleActorScript.h"
 #include "DrawSprite.h"
 #include "ActionEngine.h"
-#include "InputInterface.h"
 
 
 void SampleActorSpawnScript::onStart(Actor * current, float dt)

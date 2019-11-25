@@ -6,12 +6,14 @@
 #include "Actor.h"
 #include "tigr.h"
 #include "InputInterface.h"
+#include "Initialize.h"
 
 
 //components
 #include "DrawSprite.h"
 #include "SampleActorScript.h"
 #include "SampleActorSpawnScript.h"
+#include "SampleMouseClickScript.h"
 
 #ifdef DEBUG
 #include <iostream>
@@ -23,6 +25,13 @@ ActionEngine* ActionEngine::s_pInstance = 0;
 
 ActionEngine::ActionEngine()
 {
+	if (!Initialize::IsOnlyInstance("MyGame", &hHandle))
+		return;
+	if (!Initialize::CheckAvailibleMemory(300000, 300000)) // memory in kb
+		return;
+	if (!Initialize::CheckStorage(300)) // memory in mb
+		return;
+	Initialize::checkSystem();
 	engineActive = true;
 	screen = tigrWindow(WIDTH, HEIGHT, "Hello", 0);
 	input = new InputInterface();
@@ -55,6 +64,7 @@ ActionEngine::~ActionEngine()
 	s_pInstance = nullptr;
 	delete input;
 	input = nullptr;
+	Initialize::Terminate(&hHandle);
 }
 
 void ActionEngine::loadImage(const char* filePath)
@@ -72,6 +82,13 @@ void ActionEngine::createSampleActor()
 	loadImage("../../../Assets/gfx/cave.png");
 	generateSprite(0, v2(64 * 6, 64 * 8), v2(64,64));
 	generateSprite(0, v2(64*7, 64*9), v2(64,64));
+
+	{
+		Actor* temp = new Actor();
+		temp->addComponent("testSpawning", new SampleActorMouseClick());
+		activeActors.push_back(temp);
+	}
+
 
 	for (int j = 0; j < HEIGHT/64 +1; j++)
 	{
@@ -170,6 +187,17 @@ void ActionEngine::deleteFlaggedActors()
 InputInterface* ActionEngine::getInputInterface()
 {
 	return input;
+}
+
+void ActionEngine::play()
+{
+	while (isGameActive())
+	{
+
+		tick();
+		deleteFlaggedActors();
+		draw();
+	}
 }
 
 void ActionEngine::addActor(Actor * actor)

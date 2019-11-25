@@ -44,6 +44,9 @@
     <ClCompile Include="InputInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SampleMouseClickScript.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Initialize.h">
@@ -81,6 +84,9 @@
     </ClInclude>
     <ClInclude Include="InputInterface.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleMouseClickScript.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

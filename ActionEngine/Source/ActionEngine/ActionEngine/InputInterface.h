@@ -1,14 +1,12 @@
 #define DEBUG
-
 #pragma once
 #include <unordered_map>
 #include <functional>
 #include <Windows.h>
 
-#ifdef DEFINE_GUID
-// {D941B7E9-AC8A-4714-A1B9-BDF45D572552}
-DEFINE_GUID(test, 0xd941b7e9, 0xac8a, 0x4714, 0xa1, 0xb9, 0xbd, 0xf4, 0x5d, 0x57, 0x25, 0x52);
-#endif
+
+#define LEFTMOUSEBUTTON  -1
+#define RIGHTMOUSEBUTTON  -2
 
 struct Tigr;
 
@@ -16,8 +14,9 @@ class InputInterface
 {
 private:
 	std::unordered_map<int,std::vector<std::function<void()>>> events;
-
 	void fireEvent(std::vector<std::function<void()>> functions);
+	bool getEventTrigger(int key);
+
 public:
 #ifdef DEBUG
 	int keyboard[256];
@@ -26,5 +25,6 @@ public:
 
 	void prossesInput(Tigr* screen);
 	void bindEvent(int key, std::function<void()> func);
+	//void unBindEvent(int key, std::function<void()> func);
 };
 
