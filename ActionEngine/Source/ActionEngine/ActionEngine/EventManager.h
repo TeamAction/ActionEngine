@@ -5,10 +5,19 @@
 
 struct Tigr;
 
-//template <typename ...>
+enum eventParameterTypes {
+	NONE,
+	INT2
+};
+
+typedef union eventData{
+	struct int2 { int i1, i2;}int2;
+};
+
 struct EventCallbacks
 {
-	std::unordered_map<int, std::function<void()>> callbacks; //callback id , callback
+	std::unordered_map<int, std::function<void(eventData)>> callbacks; //callback id , callback
+	eventParameterTypes parameters = NONE;
 };
 
 struct EventId 
@@ -34,9 +43,7 @@ public:
 		}
 		return s_pInstance;
 	}
-
-	void fireEvent(std::string name);
-	EventId bindEvent(std::string, std::function<void()> func);
+	void fireEvent(std::string name,...);
+	EventId bindEvent(std::string, eventParameterTypes paramTypes,std::function<void(eventData)> func);
 	void unBindEvent(EventId);
 };
-

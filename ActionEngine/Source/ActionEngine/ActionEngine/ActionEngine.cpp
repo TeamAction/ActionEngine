@@ -124,7 +124,7 @@ void ActionEngine::tick()
 	InputManager::Instance()->updateMouse();
 	if (InputManager::Instance()->getMouseLeftButton())
 	{
-		EventManager::Instance()->fireEvent("click to spawn");
+		EventManager::Instance()->fireEvent("click to spawn",InputManager::Instance()->getMouseX(), InputManager::Instance()->getMouseY());
 	}
 	for (int i = 0; i < activeActors.size(); i++)
 	{

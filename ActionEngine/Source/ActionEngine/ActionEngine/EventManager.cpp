@@ -6,48 +6,48 @@
 
 EventManager* EventManager::s_pInstance = 0;
 
-void EventManager::fireEvent(std::string name)
+void EventManager::fireEvent(std::string name,...)
 {
 	removePendingEvents();
 	EventCallbacks* currentEvent = &events[name];
-	std::unordered_map<int, std::function<void()>>::iterator it = currentEvent->callbacks.begin();
+	std::unordered_map<int, std::function<void(eventData)>>::iterator it = currentEvent->callbacks.begin();
+
+
+	va_list args;
+	eventData parameters = {};
+	va_start(args,name);
+	switch (currentEvent->parameters)
+	{
+	case(NONE):
+			break;
+	case(INT2):
+		parameters.int2.i1 = va_arg(args, int);
+		parameters.int2.i2 = va_arg(args, int);
+			break;
+	default:
+		break;
+	}
+
+
 	while (it != currentEvent->callbacks.end())
 	{
-		it->second();
+		it->second(parameters);
 		it++;
 	}
 }
 
-/*void EventManager::prossesInput(Tigr* screen)
+
+EventId EventManager::bindEvent(std::string eventName, eventParameterTypes paramTypes, std::function<void(eventData)> func)
 {
-	if (GetFocus() != screen->handle)
-		return;
-
-	std::unordered_map<int, std::vector<std::function<void()>>>::iterator it = events.begin();
-	tigrMouse2(screen, &mouseX, &mouseY, &mouseB1, &mouseB2, &mouseB3);
-	while (it != events.end())
-	{
-		if (getEventTrigger(it->first))
-		{
-			fireEvent(it->second);
-		}
-		it++;
-	}
-
-#ifdef DEBUG
-	tigrKeyboardState(screen, keyboard);
-#endif // DEBUG
-}*/
-
-EventId EventManager::bindEvent(std::string eventName, std::function<void()> func)
-{
+	EventCallbacks* currentEvent = &events[eventName];
+	currentEvent->parameters = paramTypes;
 	EventId newEvent;
 	newEvent.name = eventName;
 	do{
 		newEvent.idNumber = rand();
-	} while (events[eventName].callbacks.count(newEvent.idNumber) > 0);
+	} while (currentEvent->callbacks.count(newEvent.idNumber) > 0);
 
-	events[eventName].callbacks[newEvent.idNumber] = func;
+	currentEvent->callbacks[newEvent.idNumber] = func;
 	return newEvent;
 }
 
