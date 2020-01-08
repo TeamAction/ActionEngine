@@ -2,13 +2,14 @@
 #include "SampleActorScript.h"
 #include "DrawSprite.h"
 #include "ActionEngine.h"
+#include "EventManager.h"
 
 
 void SampleActorSpawnScript::onStart(Actor * current, float dt)
 {
 	actorTransform = static_cast<DataInterface<v2>*>(current->getComponent("transform"));
 	nextFunction = static_cast<void(ScriptInterface::*)(Actor *current, float dt)>(&SampleActorSpawnScript::onTick);
-	ActionEngine::Instance()->getInputInterface()->bindEvent(' ', std::bind(&SampleActorSpawnScript::spaceBarTest, this));
+	test = EventManager::Instance()->bindEvent("spaceKey", std::bind(&SampleActorSpawnScript::spaceBarTest, this));
 	onTick(current, dt);
 }
 
@@ -19,6 +20,7 @@ void SampleActorSpawnScript::spaceBarTest()
 	temp->addComponent("testImage", new DrawSprite(drawObject(1, v2(0, 0)), 1));
 	temp->addComponent("testScrolling", new SampleActorScript());
 	ActionEngine::Instance()->addActor(temp);
+	EventManager::Instance()->unBindEvent(test);
 }
 
 

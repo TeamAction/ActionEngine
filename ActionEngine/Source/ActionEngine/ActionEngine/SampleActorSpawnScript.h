@@ -10,4 +10,5 @@ private:
 	virtual void spaceBarTest();
 	DataInterface<v2>* actorTransform;
 	float timer = 0;
+	EventId test;
 };
