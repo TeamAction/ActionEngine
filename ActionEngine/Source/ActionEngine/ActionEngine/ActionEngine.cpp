@@ -2,16 +2,19 @@
 #define HEIGHT 480
 #define DRAWLAYERS 5
 
+#define DEBUG
 #include "ActionEngine.h"
 #include "Actor.h"
 #include "tigr.h"
-#include "InputInterface.h"
+#include "InputManager.h"
+#include "Initialize.h"
 
 
 //components
 #include "DrawSprite.h"
 #include "SampleActorScript.h"
 #include "SampleActorSpawnScript.h"
+#include "SampleMouseClickScript.h"
 
 #ifdef DEBUG
 #include <iostream>
@@ -23,9 +26,15 @@ ActionEngine* ActionEngine::s_pInstance = 0;
 
 ActionEngine::ActionEngine()
 {
+	if (!Initialize::IsOnlyInstance("MyGame", &hHandle))
+		return;
+	if (!Initialize::CheckAvailibleMemory(300000, 300000)) // memory in kb
+		return;
+	if (!Initialize::CheckStorage(300)) // memory in mb
+		return;
+	Initialize::checkSystem();
 	engineActive = true;
 	screen = tigrWindow(WIDTH, HEIGHT, "Hello", 0);
-	input = new InputInterface();
 	drawList.resize(DRAWLAYERS);
 	createSampleActor();
 }
@@ -53,8 +62,7 @@ ActionEngine::~ActionEngine()
 	screen = nullptr;
 	delete s_pInstance;
 	s_pInstance = nullptr;
-	delete input;
-	input = nullptr;
+	Initialize::Terminate(&hHandle);
 }
 
 void ActionEngine::loadImage(const char* filePath)
@@ -72,6 +80,13 @@ void ActionEngine::createSampleActor()
 	loadImage("../../../Assets/gfx/cave.png");
 	generateSprite(0, v2(64 * 6, 64 * 8), v2(64,64));
 	generateSprite(0, v2(64*7, 64*9), v2(64,64));
+
+	{
+		Actor* temp = new Actor();
+		temp->addComponent("testSpawning", new SampleActorMouseClick());
+		activeActors.push_back(temp);
+	}
+
 
 	for (int j = 0; j < HEIGHT/64 +1; j++)
 	{
@@ -101,7 +116,16 @@ bool ActionEngine::isGameActive()
 void ActionEngine::tick()
 {
 	frameTime = tigrTime();	
-	input->prossesInput(screen);
+	//input->prossesInput(screen);
+	if (InputManager::Instance()->getKeyDown(' '))
+	{
+		EventManager::Instance()->fireEvent("spaceKey");
+	}
+	InputManager::Instance()->updateMouse();
+	if (InputManager::Instance()->getMouseLeftButton())
+	{
+		EventManager::Instance()->fireEvent("click to spawn");
+	}
 	for (int i = 0; i < activeActors.size(); i++)
 	{
 		activeActors[i]->tick(frameTime);
@@ -133,9 +157,9 @@ void ActionEngine::draw()
 	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, output) - 10,12 + tigrTextHeight(tfont, output), tigrRGB(0xff, 0xff, 0xff), output);
 	
 
-	sprintf_s(output, "Mouse Position: %d, %d", input->mouseX, input->mouseY);
+	sprintf_s(output, "Mouse Position: %d, %d", InputManager::Instance()->getMouseX(), InputManager::Instance()->getMouseY());
 	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, output) - 10,10 + ((2 + tigrTextHeight(tfont, output))*2), tigrRGB(0xff, 0xff, 0xff), output);
-	sprintf_s(output, "Mouse Buttons: %d ,%d ,%d", input->mouseB1 , input->mouseB2, input->mouseB3);
+	sprintf_s(output, "Mouse Buttons: %d ,%d ,%d", InputManager::Instance()->getMouseLeftButton(), 0, InputManager::Instance()->getMouseRightButton());
 	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, output) - 10, 10 + ((2 + tigrTextHeight(tfont, output)) * 3), tigrRGB(0xff, 0xff, 0xff), output);
 
 
@@ -143,7 +167,7 @@ void ActionEngine::draw()
 	sprintf_s(buffer, "Keys Down:");
 	for (int i = 0; i < 256; i++)
 	{
-		if (input->keyboard[i] != 0)
+		if (InputManager::Instance()->getKeyDown(i))
 		{
 			sprintf_s(output, " %c,",i);
 			strcat_s(buffer, output);
@@ -167,9 +191,16 @@ void ActionEngine::deleteFlaggedActors()
 	}
 }
 
-InputInterface* ActionEngine::getInputInterface()
+
+void ActionEngine::play()
 {
-	return input;
+	while (isGameActive())
+	{
+
+		tick();
+		deleteFlaggedActors();
+		draw();
+	}
 }
 
 void ActionEngine::addActor(Actor * actor)

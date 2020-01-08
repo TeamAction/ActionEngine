@@ -7,7 +7,9 @@ class Actor;
 struct v2;
 struct Sprite;
 struct drawObject;
-class InputInterface;
+class EventManager;
+class InputManager;
+typedef void *HANDLE;
 
 class ActionEngine
 {
@@ -22,14 +24,11 @@ public:
 	}
 
 
-	bool isGameActive();
-	void tick();
-	void draw();
-	void deleteFlaggedActors();
-	InputInterface* getInputInterface();
-
+	void play();
 	void addActor(Actor* actor);
 	void addDrawItem(int layer, drawObject newObject);
+	Tigr* screen;
+
 private:
 	static ActionEngine* s_pInstance;
 
@@ -39,19 +38,21 @@ private:
 	void loadImage(const char* filePath);
 	void generateSprite(int index, v2 position, v2 size);
 	void createSampleActor();
+	bool isGameActive();
+	void tick();
+	void draw();
+	void deleteFlaggedActors();
 
-	Tigr *screen;
 	std::vector<Actor*> activeActors;
 	std::vector<Tigr*> loadedImages;
 	std::vector<Sprite*> spriteData;
 	std::vector<std::vector<drawObject>> drawList;
-	InputInterface* input;
 
-	bool engineActive;
+	bool engineActive = false;
 	float frameTime;
 
 
-
+	HANDLE hHandle;
 	float timer = 2.0f;
 };
 

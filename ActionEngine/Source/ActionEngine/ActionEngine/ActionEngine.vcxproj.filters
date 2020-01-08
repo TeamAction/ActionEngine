@@ -41,7 +41,13 @@
     <ClCompile Include="SampleActorSpawnScript.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="InputInterface.cpp">
+    <ClCompile Include="SampleMouseClickScript.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -79,7 +85,13 @@
     <ClInclude Include="SampleActorSpawnScript.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="InputInterface.h">
+    <ClInclude Include="SampleMouseClickScript.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
