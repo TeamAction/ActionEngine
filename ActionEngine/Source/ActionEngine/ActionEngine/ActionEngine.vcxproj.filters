@@ -44,9 +44,6 @@
     <ClCompile Include="SampleMouseClickScript.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

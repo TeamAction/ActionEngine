@@ -7,8 +7,6 @@ class Actor;
 struct v2;
 struct Sprite;
 struct drawObject;
-class EventManager;
-class InputManager;
 typedef void *HANDLE;
 
 class ActionEngine

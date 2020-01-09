@@ -63,11 +63,11 @@ void InputManager::fireInputEvents() //should be replaced by a system to bind an
 	updateInputState();
 	if (InputManager::Instance()->getKeyDown(' '))
 	{
-		EventManager::Instance()->fireEvent("spaceKey");
+		EventManager<>::Instance()->fireEvent("spaceKey");
 	}
 	if (InputManager::Instance()->getMouseLeftButton())
 	{
-		EventManager::Instance()->fireEvent("click to spawn", getMouseX(), getMouseY());
+		EventManager<int,int>::Instance()->fireEvent("click to spawn", getMouseX(), getMouseY());
 	}
 
 }

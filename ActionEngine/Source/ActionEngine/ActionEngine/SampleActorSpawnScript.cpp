@@ -9,7 +9,7 @@ void SampleActorSpawnScript::onStart(Actor * current, float dt)
 {
 	actorTransform = static_cast<DataInterface<v2>*>(current->getComponent("transform"));
 	nextFunction = static_cast<void(ScriptInterface::*)(Actor *current, float dt)>(&SampleActorSpawnScript::onTick);
-	test = EventManager::Instance()->bindEvent("spaceKey", eventParameterTypes::NONE,std::bind(&SampleActorSpawnScript::spaceBarTest, this));
+	test = EventManager<>::Instance()->bindEvent("spaceKey",std::bind(&SampleActorSpawnScript::spaceBarTest, this));
 	onTick(current, dt);
 }
 
