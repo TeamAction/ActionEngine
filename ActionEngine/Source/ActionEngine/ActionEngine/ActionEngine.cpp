@@ -86,7 +86,7 @@ void ActionEngine::createSampleActor()
 	{
 		for (int j = 0; j < HEIGHT / 64 + 1; j++)
 		{
-			tigrBlit(background,loadedImages[spriteData[0]->index], i * 64, j * 64,spriteData[0]->positionOnSheet.x, spriteData[0]->positionOnSheet.y, spriteData[0]->sizeOnSheet.x, spriteData[0]->sizeOnSheet.y);
+			tigrBlit(background,loadedImages[spriteData[0]->index], i * 64, j * 64,(int)spriteData[0]->positionOnSheet.x, (int)spriteData[0]->positionOnSheet.y, (int)spriteData[0]->sizeOnSheet.x, (int)spriteData[0]->sizeOnSheet.y);
 		}
 	}
 	loadedImages.push_back(background);
@@ -105,7 +105,7 @@ void ActionEngine::createSampleActor()
 	{
 		Actor* temp = new Actor("Space Bar Spawner");
 		temp->addComponent("testSpawning", new SampleActorSpawnScript());
-		temp->addComponent("transform", new DataInterface<v2>(v2(-64, j * 64)));
+		temp->addComponent("transform", new DataInterface<v2>(v2(-64.0f, j * 64.0f)));
 		activeActors.push_back(temp);
 	}
  	Actor* temp = new Actor("background");
@@ -149,16 +149,16 @@ void ActionEngine::draw()
 		for (int q = 0; q < drawList[i].size(); q++)
 		{
 				tigrBlitAlphaClip(screen, loadedImages[spriteData[drawList[i][q].spriteIndex]->index],
-					drawList[i][q].screenPosition.x, drawList[i][q].screenPosition.y,
-					spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
-					spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y,0.99f);
+					(int)drawList[i][q].screenPosition.x, (int)drawList[i][q].screenPosition.y,
+					(int)spriteData[drawList[i][q].spriteIndex]->positionOnSheet.x, (int)spriteData[drawList[i][q].spriteIndex]->positionOnSheet.y,
+					(int)spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.x, (int)spriteData[drawList[i][q].spriteIndex]->sizeOnSheet.y,0.99f);
 		}
 		drawList[i].clear();
 	}
 #ifdef DEBUG
 
 	char output[32];
-	sprintf_s(output, "FrameTime: %.2f ms", frameTime*1000.0f);
+	sprintf_s(output, "FrameTime: %.2f ms", (float)frameTime*(float)1000.0f);
 	tigrPrint(screen, tfont, WIDTH-tigrTextWidth(tfont, output)-10, 10, tigrRGB(0xff, 0xff, 0xff),output);
 
 	sprintf_s(output, "Number of Actors: %d", (int)activeActors.size());
