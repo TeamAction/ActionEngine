@@ -4,7 +4,7 @@
 #include "DataInterface.h"
 #include "tigr.h"
 
-Actor::Actor()
+Actor::Actor(std::string _actorName = "UNNAMED") : actorName(_actorName)
 {}
 
 Actor::~Actor()
@@ -26,10 +26,10 @@ void Actor::tick(float dt)
 	{
 		switch (it->second->objectType)
 		{
-		case TICK:
+		case TYPE::TICK:
 			static_cast<ScriptInterface*>(it->second)->tick(this, dt);
 			break;
-		case DRAW:
+		case TYPE::DRAW:
 			static_cast<DrawInterface*>(it->second)->addObject(this, dt);
 			break;
 		default:
@@ -43,7 +43,11 @@ ActorComponent * Actor::getComponent(std::string name)
 {
 	ActorComponent* requested = components[name];
 	if (!requested)
-		tigrError(nullptr,"Requested Component not found");
+	{
+		char output[256];
+		sprintf_s(output, "Requested Component \"%s\" not found on actor \"%s\"",name.c_str() , actorName.c_str());
+		tigrError(nullptr,output);
+	}
 	return requested;
 }
 

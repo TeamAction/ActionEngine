@@ -1840,7 +1840,8 @@ void tigrGAPICreate(Tigr *bmp)
 	d3d->params.SwapEffect				= D3DSWAPEFFECT_DISCARD;
 	d3d->params.BackBufferFormat		= D3DFMT_A8R8G8B8;
 	d3d->params.EnableAutoDepthStencil	= FALSE;
-	d3d->params.PresentationInterval	= D3DPRESENT_INTERVAL_ONE; // TODO- vsync off if fps suffers?
+	//d3d->params.PresentationInterval	= D3DPRESENT_INTERVAL_ONE; // TODO- vsync off if fps suffers?
+	d3d->params.PresentationInterval	= D3DPRESENT_INTERVAL_IMMEDIATE; // TODO- vsync off if fps suffers?
 	d3d->params.Flags					= 0;
 	d3d->params.BackBufferWidth			= bmp->w;
 	d3d->params.BackBufferHeight		= bmp->h;

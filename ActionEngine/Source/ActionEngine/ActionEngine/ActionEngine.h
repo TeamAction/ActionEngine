@@ -27,7 +27,7 @@ public:
 	void play();
 	void addActor(Actor* actor);
 	void addDrawItem(int layer, drawObject newObject);
-	Tigr* screen;
+	Tigr* screen = nullptr;
 
 private:
 	static ActionEngine* s_pInstance;
@@ -49,7 +49,7 @@ private:
 	std::vector<std::vector<drawObject>> drawList;
 
 	bool engineActive = false;
-	float frameTime;
+	float frameTime = 0.0f;
 
 
 	HANDLE hHandle;

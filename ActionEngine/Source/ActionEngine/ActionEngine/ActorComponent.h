@@ -1,7 +1,7 @@
 #pragma once
 #include "ActionEngine.h"
 
-enum TYPE
+enum class TYPE
 {
 	TICK,
 	DRAW,

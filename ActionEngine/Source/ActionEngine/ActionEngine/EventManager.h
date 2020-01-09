@@ -5,7 +5,7 @@
 
 struct Tigr;
 
-enum eventParameterTypes {
+enum class eventParameterTypes {
 	NONE,
 	INT2
 };
@@ -17,7 +17,7 @@ typedef union eventData{
 struct EventCallbacks
 {
 	std::unordered_map<int, std::function<void(eventData)>> callbacks; //callback id , callback
-	eventParameterTypes parameters = NONE;
+	eventParameterTypes parameters = eventParameterTypes::NONE;
 };
 
 struct EventId 
