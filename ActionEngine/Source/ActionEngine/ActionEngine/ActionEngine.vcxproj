@@ -153,7 +153,6 @@
     <ClCompile Include="ActionEngine.cpp" />
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="DrawSprite.cpp" />
-    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="InputManager.cpp" />
