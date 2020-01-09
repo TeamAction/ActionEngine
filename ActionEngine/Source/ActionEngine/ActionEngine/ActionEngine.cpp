@@ -81,30 +81,47 @@ void ActionEngine::createSampleActor()
 	generateSprite(0, v2(64 * 6, 64 * 8), v2(64,64));
 	generateSprite(0, v2(64*7, 64*9), v2(64,64));
 
+	Tigr* background = tigrBitmap(640, 480);
+	for (int i = 0;i < WIDTH / 64 + 1; i++)
 	{
-		Actor* temp = new Actor();
+		for (int j = 0; j < HEIGHT / 64 + 1; j++)
+		{
+			tigrBlit(background,loadedImages[spriteData[0]->index], i * 64, j * 64,spriteData[0]->positionOnSheet.x, spriteData[0]->positionOnSheet.y, spriteData[0]->sizeOnSheet.x, spriteData[0]->sizeOnSheet.y);
+		}
+	}
+	loadedImages.push_back(background);
+	generateSprite(1, v2(0, 0), v2(640, 480));
+
+
+
+	{
+		Actor* temp = new Actor("Mouse Click Spawner");
 		temp->addComponent("testSpawning", new SampleActorMouseClick());
 		activeActors.push_back(temp);
 	}
 
 
-	for (int j = 0; j < HEIGHT/64 +1; j++)
+	for (int j = 0; j < HEIGHT/64+1; j++)
 	{
-		Actor* temp = new Actor();
+		Actor* temp = new Actor("Space Bar Spawner");
 		temp->addComponent("testSpawning", new SampleActorSpawnScript());
 		temp->addComponent("transform", new DataInterface<v2>(v2(-64, j * 64)));
 		activeActors.push_back(temp);
 	}
-	for (int i = 0;i < WIDTH / 64 + 1; i++)
+ 	Actor* temp = new Actor("background");
+	temp->addComponent("testImage", new DrawSprite(drawObject(2, v2(0, 0)), 0));
+	temp->addComponent("transform", new DataInterface<v2>(v2(0,0)));
+	activeActors.push_back(temp);
+	/*for (int i = 0;i < WIDTH / 64 + 1; i++)
 	{
 		for (int j = 0; j < HEIGHT / 64 + 1; j++)
 		{
-			Actor* temp = new Actor();
+			Actor* temp = new Actor("background");
 			temp->addComponent("testImage", new DrawSprite(drawObject(0, v2(0, 0)), 0));
 			temp->addComponent("transform", new DataInterface<v2>(v2(i * 64, j * 64)));
 			activeActors.push_back(temp);
 		}
-	}
+	}*/
 
 }
 
@@ -115,17 +132,8 @@ bool ActionEngine::isGameActive()
 
 void ActionEngine::tick()
 {
-	frameTime = tigrTime();	
-	//input->prossesInput(screen);
-	if (InputManager::Instance()->getKeyDown(' '))
-	{
-		EventManager::Instance()->fireEvent("spaceKey");
-	}
-	InputManager::Instance()->updateMouse();
-	if (InputManager::Instance()->getMouseLeftButton())
-	{
-		EventManager::Instance()->fireEvent("click to spawn",InputManager::Instance()->getMouseX(), InputManager::Instance()->getMouseY());
-	}
+	frameTime = tigrTime();
+    InputManager::Instance()->fireInputEvents();
 	for (int i = 0; i < activeActors.size(); i++)
 	{
 		activeActors[i]->tick(frameTime);
@@ -150,10 +158,10 @@ void ActionEngine::draw()
 #ifdef DEBUG
 
 	char output[32];
-	sprintf_s(output, "FrameTime: %.2f ms", frameTime*1000);
+	sprintf_s(output, "FrameTime: %.2f ms", frameTime*1000.0f);
 	tigrPrint(screen, tfont, WIDTH-tigrTextWidth(tfont, output)-10, 10, tigrRGB(0xff, 0xff, 0xff),output);
 
-	sprintf_s(output, "Number of Actors: %d", activeActors.size());
+	sprintf_s(output, "Number of Actors: %d", (int)activeActors.size());
 	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, output) - 10,12 + tigrTextHeight(tfont, output), tigrRGB(0xff, 0xff, 0xff), output);
 	
 
@@ -167,7 +175,7 @@ void ActionEngine::draw()
 	sprintf_s(buffer, "Keys Down:");
 	for (int i = 0; i < 256; i++)
 	{
-		if (InputManager::Instance()->getKeyDown(i))
+		if (InputManager::Instance()->getKeyHeld(i))
 		{
 			sprintf_s(output, " %c,",i);
 			strcat_s(buffer, output);

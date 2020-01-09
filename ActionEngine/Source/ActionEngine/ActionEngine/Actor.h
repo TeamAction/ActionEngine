@@ -8,8 +8,9 @@ class ActorComponent;
 class Actor
 {
 public:
-	Actor();
+	Actor(std::string _actorName);
 	~Actor();
+	std::string actorName;
 	void addComponent(std::string name, ActorComponent* component);
 	void killActor();
 	bool actorToBeRemoved();

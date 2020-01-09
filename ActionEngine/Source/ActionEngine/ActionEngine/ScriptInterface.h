@@ -8,7 +8,7 @@
 class ScriptInterface : public ActorComponent
 {
 public:
-	ScriptInterface() : ActorComponent(TICK) {}
+	ScriptInterface() : ActorComponent(TYPE::TICK) {}
 	void(ScriptInterface::*nextFunction)(Actor *current, float dt) = &ScriptInterface::onStart;
 	inline void tick(Actor *current, float dt) { (this->*nextFunction)(current,dt); }
 

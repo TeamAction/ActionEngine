@@ -10,6 +10,8 @@ void EventManager::fireEvent(std::string name,...)
 {
 	removePendingEvents();
 	EventCallbacks* currentEvent = &events[name];
+	if (currentEvent->callbacks.size() == 0)
+		return;
 	std::unordered_map<int, std::function<void(eventData)>>::iterator it = currentEvent->callbacks.begin();
 
 
@@ -18,9 +20,9 @@ void EventManager::fireEvent(std::string name,...)
 	va_start(args,name);
 	switch (currentEvent->parameters)
 	{
-	case(NONE):
+	case(eventParameterTypes::NONE):
 			break;
-	case(INT2):
+	case(eventParameterTypes::INT2):
 		parameters.int2.i1 = va_arg(args, int);
 		parameters.int2.i2 = va_arg(args, int);
 			break;

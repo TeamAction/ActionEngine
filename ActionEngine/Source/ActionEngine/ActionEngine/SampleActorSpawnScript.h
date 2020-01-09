@@ -8,7 +8,7 @@ private:
 	virtual void onTick(Actor *current, float dt);
 	virtual void onStart(Actor *current, float dt);
 	virtual void spaceBarTest();
-	DataInterface<v2>* actorTransform;
+	DataInterface<v2>* actorTransform = nullptr;
 	float timer = 0;
 	EventId test;
 };

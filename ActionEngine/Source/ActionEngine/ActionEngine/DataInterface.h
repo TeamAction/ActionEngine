@@ -6,7 +6,7 @@ template <class T>
 class DataInterface : public ActorComponent
 {
 public:
-	DataInterface(T _data) : ActorComponent(DATA), data(_data) {}
+	DataInterface(T _data) : ActorComponent(TYPE::DATA), data(_data) {}
 	
 	T getData()
 	{

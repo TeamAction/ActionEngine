@@ -6,7 +6,9 @@ class InputManager
 private:
 	static InputManager* s_pInstance;
 	InputManager() {}
-	int mouseX, mouseY, mouseB1, mouseB2, mouseB3;
+	int mouseX = 0, mouseY = 0, mouseB1 = 0, mouseB2 = 0, mouseB3 =0;
+	int keyboardState[256] = {0};
+	int prevKeyboardState[256] = {0};
 public:
 	static InputManager* Instance()
 	{
@@ -16,12 +18,14 @@ public:
 		}
 		return s_pInstance;
 	}
-
-	bool getKeyDown(char c);
-	void updateMouse();
+	void updateInputState();
+	bool getKeyHeld(int c);
+	bool getKeyDown(int c);
+	bool getKeyUp(int c);
 	int getMouseX();
 	int getMouseY();
 	bool getMouseRightButton();
 	bool getMouseLeftButton();
+	void fireInputEvents();
 };
 
