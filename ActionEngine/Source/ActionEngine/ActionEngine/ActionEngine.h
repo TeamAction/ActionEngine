@@ -23,7 +23,6 @@ public:
 
 
 	void play();
-	void addActor(Actor* actor);
 	void addDrawItem(int layer, drawObject newObject);
 	Tigr* screen = nullptr;
 
@@ -41,7 +40,6 @@ private:
 
 
 	Actor* sceneRoot;
-	std::vector<Actor*> activeActors;
 	std::vector<Tigr*> loadedImages;
 	std::vector<Sprite*> spriteData;
 	std::vector<std::vector<drawObject>> drawList;
