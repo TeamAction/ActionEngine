@@ -169,11 +169,6 @@ void ActionEngine::play()
 	}
 }
 
-void ActionEngine::addActor(Actor * actor)
-{
-	activeActors.push_back(actor);
-}
-
 void ActionEngine::addDrawItem(int layer,drawObject newObject)
 {
 	drawList[layer].push_back(newObject);
