@@ -5,8 +5,8 @@
 class SampleActorScript : public ScriptInterface
 {
 private:
-	virtual void onTick(Actor *current, float dt);
-	virtual void onStart(Actor *current, float dt);
+	virtual void onTick(float dt);
+	virtual void onStart(float dt);
 	DataInterface<v2>* actorTransform;
 };
 

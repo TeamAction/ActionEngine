@@ -2,18 +2,18 @@
 
 
 
-void SampleActorScript::onStart(Actor * current, float dt)
+void SampleActorScript::onStart(float dt)
 {
-	actorTransform = static_cast<DataInterface<v2>*>(current->getComponent("transform"));
-	nextFunction = static_cast<void(ScriptInterface::*)(Actor *current, float dt)>(&SampleActorScript::onTick);
-	onTick(current, dt);
+	actorTransform = static_cast<DataInterface<v2>*>(owner->getComponent("transform"));
+	nextFunction = static_cast<void(ScriptInterface::*)(float dt)>(&SampleActorScript::onTick);
+	onTick(dt);
 }
 
 
 
-void SampleActorScript::onTick(Actor * current, float dt)
+void SampleActorScript::onTick(float dt)
 {
 	actorTransform->setData(actorTransform->getData()+(v2(100,0)*dt));
 	if (actorTransform->getData().x > 640)
-		current->killActor();
+		owner->flagActorForRemoval();
 }

@@ -16,4 +16,6 @@ public:
 	ActorComponent(TYPE _objType) : objectType(_objType) {}
 	virtual ~ActorComponent() = default;
 	TYPE objectType;
+	Actor* owner;
+	void SetOwner(Actor* _owner){owner = _owner;}
 };

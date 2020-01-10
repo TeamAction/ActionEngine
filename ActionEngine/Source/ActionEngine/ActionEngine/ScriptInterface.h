@@ -9,10 +9,10 @@ class ScriptInterface : public ActorComponent
 {
 public:
 	ScriptInterface() : ActorComponent(TYPE::TICK) {}
-	void(ScriptInterface::*nextFunction)(Actor *current, float dt) = &ScriptInterface::onStart;
-	inline void tick(Actor *current, float dt) { (this->*nextFunction)(current,dt); }
+	void(ScriptInterface::*nextFunction)(float dt) = &ScriptInterface::onStart;
+	inline void tick(float dt) { (this->*nextFunction)(dt); }
 
 protected:
-	virtual void onTick(Actor *current, float dt) = 0;
-	virtual void onStart(Actor *current, float dt) = 0;
+	virtual void onTick(float dt) = 0;
+	virtual void onStart(float dt) = 0;
 };
