@@ -9,6 +9,7 @@ private:
 	virtual void onStart(float dt);
 	virtual void spaceBarTest();
 	DataInterface<v2>* actorTransform = nullptr;
+	v2 startPosition;
 	float timer = 0;
 	EventId test;
 };

@@ -19,9 +19,8 @@ void SampleActorMouseClick::mouseClickTest(int x, int y)
 	v2 spawnCoordinates((float)x, (float)y);
 	Actor* temp = new Actor("scrolling rock",owner);
 	temp->addComponent("transform", new DataInterface<v2>(spawnCoordinates));
-	temp->addComponent("testImage", new DrawSprite(drawObject(1, v2(0, 0)), 1));
+	temp->addComponent("testImage", new DrawSprite(drawObject(1, v2(0, 0)), 2));
 	temp->addComponent("testScrolling", new SampleActorScript());
-	//ActionEngine::Instance()->addActor(temp);
 }
 
 

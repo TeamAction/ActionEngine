@@ -4,13 +4,12 @@ DrawSprite::DrawSprite(drawObject _obj, int _layer) :DrawInterface(_layer) , obj
 
 void DrawSprite::onStart(float dt)
 {
-	actorTransform = static_cast<DataInterface<v2>*>(owner->getComponent("transform"));
 	nextFunction = static_cast<void(DrawInterface::*)(float dt)>(&DrawSprite::onAddObject);
 	onAddObject(dt);
 }
 
 void DrawSprite::onAddObject(float dt)
 {
-	object.screenPosition = v2(actorTransform->getData())+objectOffset;
+	object.screenPosition = v2(owner->getGlobalTransform())+objectOffset;
 	ActionEngine::Instance()->addDrawItem(layer, object);
 }

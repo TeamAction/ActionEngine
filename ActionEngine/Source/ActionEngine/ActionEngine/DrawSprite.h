@@ -13,6 +13,5 @@ private:
 	virtual void onAddObject(float dt);
 	drawObject object;
 	v2 objectOffset;
-	DataInterface<v2>* actorTransform;
 };
 
