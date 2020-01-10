@@ -36,6 +36,7 @@ ActionEngine::ActionEngine()
 	engineActive = true;
 	screen = tigrWindow(WIDTH, HEIGHT, "Hello", 0);
 	drawList.resize(DRAWLAYERS);
+	sceneRoot = new Actor("SceneRoot",nullptr);
 	createSampleActor();
 }
 
@@ -48,16 +49,13 @@ ActionEngine::~ActionEngine()
 		delete spriteData[i];
 		spriteData[i] = nullptr;
 	}
-	for (int i = 0; i < activeActors.size(); i++)
-	{
-		delete activeActors[i];
-		activeActors[i] = nullptr;
-	}
 	for (int i = 0; i < loadedImages.size(); i++)
 	{
 		tigrFree(loadedImages[i]);
 		loadedImages[i] = nullptr;
 	}
+	sceneRoot->flagActorForRemoval();
+	sceneRoot->removeFlaggedActors();
 	tigrFree(screen);
 	screen = nullptr;
 	delete s_pInstance;
@@ -93,36 +91,16 @@ void ActionEngine::createSampleActor()
 	generateSprite(1, v2(0, 0), v2(640, 480));
 
 
-
-	{
-		Actor* temp = new Actor("Mouse Click Spawner");
-		temp->addComponent("testSpawning", new SampleActorMouseClick());
-		activeActors.push_back(temp);
-	}
-
-
+	Actor* temp = new Actor("Mouse Click Spawner", sceneRoot);
+	temp->addComponent("testSpawning", new SampleActorMouseClick());
 	for (int j = 0; j < HEIGHT/64+1; j++)
 	{
-		Actor* temp = new Actor("Space Bar Spawner");
+		temp = new Actor("Space Bar Spawner",sceneRoot);
 		temp->addComponent("testSpawning", new SampleActorSpawnScript());
 		temp->addComponent("transform", new DataInterface<v2>(v2(-64, j * 64)));
-		activeActors.push_back(temp);
 	}
- 	Actor* temp = new Actor("background");
+ 	temp = new Actor("background",sceneRoot);
 	temp->addComponent("testImage", new DrawSprite(drawObject(2, v2(0, 0)), 0));
-	temp->addComponent("transform", new DataInterface<v2>(v2(0,0)));
-	activeActors.push_back(temp);
-	/*for (int i = 0;i < WIDTH / 64 + 1; i++)
-	{
-		for (int j = 0; j < HEIGHT / 64 + 1; j++)
-		{
-			Actor* temp = new Actor("background");
-			temp->addComponent("testImage", new DrawSprite(drawObject(0, v2(0, 0)), 0));
-			temp->addComponent("transform", new DataInterface<v2>(v2(i * 64, j * 64)));
-			activeActors.push_back(temp);
-		}
-	}*/
-
 }
 
 bool ActionEngine::isGameActive()
@@ -130,15 +108,6 @@ bool ActionEngine::isGameActive()
 	return engineActive && !tigrClosed(screen);
 }
 
-void ActionEngine::tick()
-{
-	frameTime = tigrTime();
-    InputManager::Instance()->fireInputEvents();
-	for (int i = 0; i < activeActors.size(); i++)
-	{
-		activeActors[i]->tick(frameTime);
-	}
-}
 
 void ActionEngine::draw()
 {
@@ -161,7 +130,7 @@ void ActionEngine::draw()
 	sprintf_s(output, "FrameTime: %.2f ms", frameTime*1000.0f);
 	tigrPrint(screen, tfont, WIDTH-tigrTextWidth(tfont, output)-10, 10, tigrRGB(0xff, 0xff, 0xff),output);
 
-	sprintf_s(output, "Number of Actors: %d", (int)activeActors.size());
+	sprintf_s(output, "Number of Actors: %d", sceneRoot->numberOfChildren());
 	tigrPrint(screen, tfont, WIDTH - tigrTextWidth(tfont, output) - 10,12 + tigrTextHeight(tfont, output), tigrRGB(0xff, 0xff, 0xff), output);
 	
 
@@ -187,26 +156,15 @@ void ActionEngine::draw()
 	tigrUpdate(screen);
 }
 
-void ActionEngine::deleteFlaggedActors()
-{
-	for (int i = 0; i < activeActors.size(); i++)
-	{
-		if (activeActors[i]->actorToBeRemoved())
-		{
-			delete activeActors[i];
-			activeActors.erase(activeActors.begin() + i);
-		}
-	}
-}
-
 
 void ActionEngine::play()
 {
 	while (isGameActive())
 	{
-
-		tick();
-		deleteFlaggedActors();
+		frameTime = tigrTime();
+		InputManager::Instance()->fireInputEvents();
+		sceneRoot->tick(frameTime);
+		sceneRoot->removeFlaggedActors();
 		draw();
 	}
 }

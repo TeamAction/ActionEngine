@@ -37,10 +37,10 @@ private:
 	void generateSprite(int index, v2 position, v2 size);
 	void createSampleActor();
 	bool isGameActive();
-	void tick();
 	void draw();
-	void deleteFlaggedActors();
 
+
+	Actor* sceneRoot;
 	std::vector<Actor*> activeActors;
 	std::vector<Tigr*> loadedImages;
 	std::vector<Sprite*> spriteData;
