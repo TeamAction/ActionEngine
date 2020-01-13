@@ -10,6 +10,7 @@ struct v2;
 struct SDL_Rect;
 struct drawObject;
 struct Sprite;
+union SDL_Event;
 
 class Renderer
 {
@@ -23,8 +24,6 @@ public:
 		return s_pInstance;
 	}
 
-	SDL_Renderer* window_renderer;
-	SDL_Window* window;
 	void loadImageFile(const char* path);
 	void ErrorPopup(const char* text);
 	void Init();
@@ -34,17 +33,31 @@ public:
 	void draw();
 	void updateTime();
 	float getDeltaTime();
-
+	int getWidth();
+	int getHeight();
 private:
+	void handleInternalEvents(SDL_Event& e);
 	uint64_t NOW = 0;
 	uint64_t LAST = 0;
-	double deltaTime = 0;
+	float deltaTime = 0;
 
 	static Renderer* s_pInstance;
 	std::vector<SDL_Texture*> textures;
 	std::vector<Sprite> sprites;
 	std::map<int, std::vector<drawObject>> renderQueue;
 	bool running = false;
+
+//window info
+	SDL_Renderer* window_renderer;
+	SDL_Window* window;
+	//SDL_Event event;
+
+	int mWidth = 640;
+	int mHeight = 480;
+
+	bool mMouseFocus = true;
+	bool mKeyboardFocus = true;
+	bool mMinimized;
 	Renderer();
 	~Renderer();
 };

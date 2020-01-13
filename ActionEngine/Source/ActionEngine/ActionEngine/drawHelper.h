@@ -14,10 +14,15 @@ inline v2 operator*(v2 a, float b)
 {
 	return v2(a.x *b, a.y *b);
 }
+inline v2 operator*(v2 a, v2 b)
+{
+	return v2(a.x *b.x, a.y *b.y);
+}
 
 struct drawObject
 {
-	inline drawObject(int _index, v2 _position = v2()): spriteIndex(_index), screenPosition(_position) {}
+	inline drawObject(int _index, v2 _position,v2 _scale): spriteIndex(_index), screenPosition(_position), screenScale(_scale) {}
 	int spriteIndex;
 	v2 screenPosition;
+	v2 screenScale;
 };

@@ -33,7 +33,7 @@ void Renderer::ErrorPopup(const char* text)
 
 void Renderer::Init()
 {
-	window = SDL_CreateWindow("Action Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("Action Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight,SDL_WINDOW_RESIZABLE);
 	window_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (SDL_SetRenderDrawColor(window_renderer, 0, 0, 0, 255))
 		ErrorPopup(SDL_GetError());
@@ -64,6 +64,16 @@ void Renderer::addDrawItem(int layer, drawObject newObject)
 
 void Renderer::draw()
 {
+	SDL_Event event;
+	while (SDL_PollEvent(&event) != 0)
+	{
+			if (event.type == SDL_QUIT)
+			{
+				running = false;
+			}
+			handleInternalEvents(event);
+	}
+
 	SDL_RenderClear(window_renderer);
 	std::map<int, std::vector<drawObject>>::iterator it = renderQueue.begin();
 	while(it != renderQueue.end())
@@ -73,8 +83,8 @@ void Renderer::draw()
 			SDL_Rect dest;
 			dest.x = it->second[i].screenPosition.x;
 			dest.y = it->second[i].screenPosition.y;
-			dest.w = sprites[it->second[i].spriteIndex].bounds.w * 4;
-			dest.h = sprites[it->second[i].spriteIndex].bounds.h * 4;
+			dest.w = sprites[it->second[i].spriteIndex].bounds.w * it->second[i].screenScale.x *4;
+			dest.h = sprites[it->second[i].spriteIndex].bounds.h * it->second[i].screenScale.y *4;
 			SDL_RenderCopy(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest);
 		}
 		it->second.clear();
@@ -93,6 +103,65 @@ void Renderer::updateTime()
 float Renderer::getDeltaTime()
 {
 	return deltaTime;
+}
+
+int Renderer::getWidth()
+{
+	return mWidth;
+}
+
+int Renderer::getHeight()
+{
+	return mHeight;
+}
+
+void Renderer::handleInternalEvents(SDL_Event& e)
+{
+	if (e.type == SDL_WINDOWEVENT)
+	{
+		switch (e.window.event)
+		{
+		case SDL_WINDOWEVENT_SIZE_CHANGED:
+			if (e.window.data1 < 640)
+				SDL_SetWindowSize(window, 640, e.window.data2);
+			if (e.window.data2 < 480)
+				SDL_SetWindowSize(window, e.window.data2, 480);
+			mWidth = e.window.data1;
+			mHeight = e.window.data2;
+			SDL_RenderPresent(window_renderer);
+			break;
+		case SDL_WINDOWEVENT_EXPOSED:
+			SDL_RenderPresent(window_renderer);
+			break;
+		case SDL_WINDOWEVENT_ENTER:
+			mMouseFocus = true;
+			break;
+
+		case SDL_WINDOWEVENT_LEAVE:
+			mMouseFocus = false;
+			break;
+
+		case SDL_WINDOWEVENT_FOCUS_GAINED:
+			mKeyboardFocus = true;
+			break;
+
+		case SDL_WINDOWEVENT_FOCUS_LOST:
+			mKeyboardFocus = false;
+			break;
+
+		case SDL_WINDOWEVENT_MINIMIZED:
+			mMinimized = true;
+			break;
+
+		case SDL_WINDOWEVENT_MAXIMIZED:
+			mMinimized = false;
+			break;
+
+		case SDL_WINDOWEVENT_RESTORED:
+			mMinimized = false;
+			break;
+		}
+	}
 }
 
 Renderer::Renderer(){}
