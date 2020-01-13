@@ -37,8 +37,8 @@ void Renderer::Init()
 	window_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (SDL_SetRenderDrawColor(window_renderer, 0, 0, 0, 255))
 		ErrorPopup(SDL_GetError());
-
 	SDL_SetRenderDrawColor(window_renderer, 0, 0, 0, 255);
+	SDL_RenderSetIntegerScale(window_renderer, SDL_TRUE);
 	running = true;
 }
 
@@ -83,8 +83,8 @@ void Renderer::draw()
 			SDL_Rect dest;
 			dest.x = it->second[i].screenPosition.x;
 			dest.y = it->second[i].screenPosition.y;
-			dest.w = sprites[it->second[i].spriteIndex].bounds.w * it->second[i].screenScale.x *4;
-			dest.h = sprites[it->second[i].spriteIndex].bounds.h * it->second[i].screenScale.y *4;
+			dest.w = sprites[it->second[i].spriteIndex].bounds.w * (int)(it->second[i].screenScale.x *4.0f);
+			dest.h = sprites[it->second[i].spriteIndex].bounds.h * (int)(it->second[i].screenScale.y *4.0f);
 			SDL_RenderCopy(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest);
 		}
 		it->second.clear();
