@@ -10,6 +10,6 @@ void DrawSprite::onStart(float dt)
 
 void DrawSprite::onAddObject(float dt)
 {
-	object.screenPosition = v2(owner->getGlobalTransform())+objectOffset;
-	ActionEngine::Instance()->addDrawItem(layer, object);
+	convertToScreenSpace(object,objectOffset);
+	Renderer::Instance()->addDrawItem(layer, object);
 }

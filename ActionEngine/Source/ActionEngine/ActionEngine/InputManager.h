@@ -1,12 +1,15 @@
 #pragma once
+#include <stdint.h>
 struct Tigr;
 
 class InputManager
 {
 private:
 	static InputManager* s_pInstance;
-	InputManager() {}
-	int mouseX = 0, mouseY = 0, mouseB1 = 0, mouseB2 = 0, mouseB3 =0;
+	InputManager() {updateInputState();}
+	~InputManager(){delete s_pInstance;s_pInstance = nullptr;}
+	int mouseX, mouseY;
+	uint32_t mouseButtons;
 	int keyboardState[256] = {0};
 	int prevKeyboardState[256] = {0};
 public:

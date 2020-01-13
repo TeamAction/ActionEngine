@@ -23,6 +23,7 @@ class EventManager
 private:
 	static EventManager<Args...>* s_pInstance;
 	EventManager() {}
+	~EventManager() {delete s_pInstance;s_pInstance = nullptr;}
 	typename std::unordered_map<std::string, EventCallbacks<Args...>> events; //event name, callback list
 	std::vector<EventId> pendingRemoval;
 	void removePendingEvents()

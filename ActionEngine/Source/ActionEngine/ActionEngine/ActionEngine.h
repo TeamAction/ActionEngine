@@ -23,33 +23,17 @@ public:
 
 
 	void play();
-	void addDrawItem(int layer, drawObject newObject);
-	Tigr* screen = nullptr;
-
 private:
 	static ActionEngine* s_pInstance;
 
 	ActionEngine();
 	~ActionEngine();
 
-	void loadImage(const char* filePath);
-	void generateSprite(int index, v2 position, v2 size);
 	void createSampleActor();
 	bool isGameActive();
-	void draw();
-
-
 	Actor* sceneRoot;
-	std::vector<Tigr*> loadedImages;
-	std::vector<Sprite*> spriteData;
-	std::vector<std::vector<drawObject>> drawList;
-
 	bool engineActive = false;
-	float frameTime = 0.0f;
-
-
 	HANDLE hHandle;
-	float timer = 2.0f;
 };
 
 

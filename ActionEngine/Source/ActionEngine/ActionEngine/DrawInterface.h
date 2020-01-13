@@ -9,6 +9,12 @@ public:
 	DrawInterface(int _layer) : ActorComponent(TYPE::DRAW),layer(_layer) {}
 	void(DrawInterface::*nextFunction)(float dt) = &DrawInterface::onStart;
 	inline void addObject(float dt) { (this->*nextFunction)(dt); }
+	inline void convertToScreenSpace(drawObject &obj,v2 offset) 
+	{
+		obj.screenScale = v2(Renderer::Instance()->getWidth() / 640, Renderer::Instance()->getHeight() / 480);
+		obj.screenPosition = (v2(owner->getGlobalTransform()) + offset) * (obj.screenScale);
+
+	}
 
 protected:
 	virtual void onAddObject(float dt) = 0;
