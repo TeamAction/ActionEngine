@@ -1,8 +1,6 @@
 #include "InputManager.h"
-#include "tigr.h"
-#include "ActionEngine.h"
+#include "SDL/SDL_mouse.h"
 #include <windows.h>
-#include <algorithm>
 #include "EventManager.h"
 
 InputManager* InputManager::s_pInstance = nullptr;
@@ -14,7 +12,7 @@ void InputManager::updateInputState()
 		prevKeyboardState[i] = keyboardState[i];
 		keyboardState[i] = GetAsyncKeyState(i);
 	}
-	tigrMouse2(ActionEngine::Instance()->screen, &mouseX, &mouseY, &mouseB1, &mouseB2, &mouseB3);
+	mouseButtons = SDL_GetMouseState(&mouseX, &mouseY);
 }
 
 bool InputManager::getKeyHeld(int c)
@@ -50,12 +48,12 @@ int InputManager::getMouseY()
 
 bool InputManager::getMouseRightButton()
 {
-	return mouseB3;
+	return 	SDL_BUTTON(mouseButtons)== SDL_BUTTON_RIGHT;
 }
 
 bool InputManager::getMouseLeftButton()
 {
-	return mouseB1;
+	return 	SDL_BUTTON(mouseButtons)== SDL_BUTTON_LEFT;
 }
 
 void InputManager::fireInputEvents() //should be replaced by a system to bind and free events to key and mouse clicks
@@ -63,7 +61,7 @@ void InputManager::fireInputEvents() //should be replaced by a system to bind an
 	updateInputState();
 	if (InputManager::Instance()->getKeyDown(' '))
 	{
-		EventManager<>::Instance()->fireEvent("spaceKey");
+   		EventManager<>::Instance()->fireEvent("spaceKey");
 	}
 	if (InputManager::Instance()->getMouseLeftButton())
 	{

@@ -2,7 +2,7 @@
 #include "ScriptInterface.h"
 #include "DrawInterface.h"
 #include "DataInterface.h"
-#include "tigr.h"
+#include "Renderer.h"
 
 Actor::Actor(std::string _actorName, Actor* _parent) : actorName(_actorName)
 {
@@ -38,7 +38,7 @@ ActorComponent * Actor::getComponent(std::string name)
 		return components[name];
 	char output[256];
 	sprintf_s(output, "Requested Component \"%s\" not found on actor \"%s\"",name.c_str() , actorName.c_str());
-	tigrError(nullptr,output);
+	Renderer::Instance()->ErrorPopup(output);
 }
 
 int Actor::numberOfChildren()
@@ -96,7 +96,7 @@ void Actor::addComponent(std::string name,ActorComponent * component)
 	{
 		char output[256];
 		sprintf_s(output, "Error compent of name \"%s\" already exists", name.c_str());
-		tigrError(nullptr, output);
+		Renderer::Instance()->ErrorPopup(output);
 	}
 	component->SetOwner(this);
 	components.insert({ name, component });

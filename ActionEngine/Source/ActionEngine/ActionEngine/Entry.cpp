@@ -1,8 +1,12 @@
 #pragma once
-#include <iostream>
 #include "ActionEngine.h"
+#include "windows.h"
 
-int main()
+int WINAPI WinMain(
+	HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine,
+	int nCmdShow)
 {
 	ActionEngine::Instance()->play();
 	return (0);

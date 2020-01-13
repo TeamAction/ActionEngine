@@ -1,6 +1,5 @@
 #include "SampleActorScript.h"
-
-
+#include <iostream>
 
 void SampleActorScript::onStart(float dt)
 {

@@ -4,6 +4,7 @@
 #include "ActionEngine.h"
 #include "EventManager.h"
 
+
 void SampleActorSpawnScript::onStart(float dt)
 {
 	actorTransform = static_cast<DataInterface<v2>*>(owner->getComponent("transform"));
