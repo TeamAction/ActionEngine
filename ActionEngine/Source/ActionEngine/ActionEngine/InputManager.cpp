@@ -1,7 +1,9 @@
+#pragma once
 #include "InputManager.h"
 #include "SDL/SDL_mouse.h"
 #include <windows.h>
 #include "EventManager.h"
+#include "Renderer.h"
 
 InputManager* InputManager::s_pInstance = nullptr;
 
@@ -13,6 +15,8 @@ void InputManager::updateInputState()
 		keyboardState[i] = GetAsyncKeyState(i);
 	}
 	mouseButtons = SDL_GetMouseState(&mouseX, &mouseY);
+	mouseX /= Renderer::Instance()->getWidth() / 640.0f;
+	mouseY /= Renderer::Instance()->getHeight() / 480.0f;
 }
 
 bool InputManager::getKeyHeld(int c)
