@@ -122,10 +122,10 @@ void Renderer::handleInternalEvents(SDL_Event& e)
 		switch (e.window.event)
 		{
 		case SDL_WINDOWEVENT_SIZE_CHANGED:
-			if (e.window.data1 < 640)
-				SDL_SetWindowSize(window, 640, e.window.data2);
-			if (e.window.data2 < 480)
-				SDL_SetWindowSize(window, e.window.data2, 480);
+			//if (e.window.data1 < 640)
+			//	SDL_SetWindowSize(window, 640, e.window.data2);
+			//if (e.window.data2 < 480)
+			//	SDL_SetWindowSize(window, e.window.data2, 480);
 			mWidth = e.window.data1;
 			mHeight = e.window.data2;
 			SDL_RenderPresent(window_renderer);
