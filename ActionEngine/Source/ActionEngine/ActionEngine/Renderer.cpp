@@ -3,6 +3,7 @@
 #include "drawHelper.h"
 #include "SDL/SDL.h"
 #include "SDL/SDL_Image.h"
+#include "SDL/SDL_FontCache.h"
 
 Renderer* Renderer::s_pInstance = 0;
 
@@ -39,6 +40,9 @@ void Renderer::Init()
 		ErrorPopup(SDL_GetError());
 	SDL_SetRenderDrawColor(window_renderer, 0, 0, 0, 255);
 	SDL_RenderSetIntegerScale(window_renderer, SDL_TRUE);
+	pFont = FC_CreateFont();
+	FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/FreeSans.ttf", 20, FC_MakeColor(255, 255, 255, 255), 0);
+	mScreenScale = v2(1, 1);
 	running = true;
 }
 
@@ -73,14 +77,13 @@ void Renderer::draw()
 			}
 			handleInternalEvents(event);
 	}
-
 	SDL_RenderClear(window_renderer);
+	SDL_Rect dest;
 	std::map<int, std::vector<drawObject>>::iterator it = renderQueue.begin();
 	while(it != renderQueue.end())
 	{
 		for (int i = 0; i < it->second.size(); i++)
 		{
-			SDL_Rect dest;
 			dest.x = it->second[i].screenPosition.x;
 			dest.y = it->second[i].screenPosition.y;
 			dest.w = sprites[it->second[i].spriteIndex].bounds.w * (int)(it->second[i].screenScale.x *4.0f);
@@ -90,6 +93,7 @@ void Renderer::draw()
 		it->second.clear();
 		it++;
 	}
+	FC_Draw(pFont, window_renderer, 0, 0, "%.4f", getDeltaTime());
 	SDL_RenderPresent(window_renderer);
 }
 
@@ -97,7 +101,7 @@ void Renderer::updateTime()
 {
 	LAST = NOW;
 	NOW = SDL_GetPerformanceCounter();
-	deltaTime = (double)((NOW - LAST) / (double)SDL_GetPerformanceFrequency());
+	deltaTime = (mKeyboardFocus && !mMinimized)?(double)((NOW - LAST) / (double)SDL_GetPerformanceFrequency()):0.0f;
 }
 
 float Renderer::getDeltaTime()
@@ -115,6 +119,11 @@ int Renderer::getHeight()
 	return mHeight;
 }
 
+v2 Renderer::getScreenScale()
+{
+	return mScreenScale;
+}
+
 void Renderer::handleInternalEvents(SDL_Event& e)
 {
 	if (e.type == SDL_WINDOWEVENT)
@@ -122,12 +131,10 @@ void Renderer::handleInternalEvents(SDL_Event& e)
 		switch (e.window.event)
 		{
 		case SDL_WINDOWEVENT_SIZE_CHANGED:
-			//if (e.window.data1 < 640)
-			//	SDL_SetWindowSize(window, 640, e.window.data2);
-			//if (e.window.data2 < 480)
-			//	SDL_SetWindowSize(window, e.window.data2, 480);
 			mWidth = e.window.data1;
 			mHeight = e.window.data2;
+			setScreenScale();
+			FC_ResetFontFromRendererReset(pFont, window_renderer, e.window.type);
 			SDL_RenderPresent(window_renderer);
 			break;
 		case SDL_WINDOWEVENT_EXPOSED:
@@ -164,6 +171,12 @@ void Renderer::handleInternalEvents(SDL_Event& e)
 	}
 }
 
+void Renderer::setScreenScale()
+{
+	mScreenScale.x = mWidth / 640.0f;
+	mScreenScale.y = mHeight / 480.0f;
+}
+
 Renderer::Renderer(){}
 
 
@@ -171,6 +184,7 @@ Renderer::~Renderer()
 {
 	SDL_DestroyRenderer(window_renderer);
 	SDL_DestroyWindow(window);
+	FC_FreeFont(pFont);
 	for (int i = 0; i < textures.size(); i++)
 	{
 		SDL_DestroyTexture(textures[i]);

@@ -1,12 +1,7 @@
 #pragma once
 #include <vector>
 
-//forward declared classes and structs
-struct Tigr;
 class Actor;
-struct v2;
-struct Sprite;
-struct drawObject;
 typedef void *HANDLE;
 
 class ActionEngine
