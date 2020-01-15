@@ -11,8 +11,8 @@ public:
 	inline void addObject(float dt) { (this->*nextFunction)(dt); }
 	inline void convertToScreenSpace(drawObject &obj,v2 offset) 
 	{
-		obj.screenScale = v2(Renderer::Instance()->getWidth() / 640.0f, Renderer::Instance()->getHeight() / 480.0f);
-		obj.screenPosition = (v2(owner->getGlobalTransform()) + offset) * (obj.screenScale);
+		obj.screenScale = Renderer::Instance()->getScreenScale();
+		obj.screenPosition = (v2(owner->getGlobalTransform()) + offset) * obj.screenScale;
 	}
 
 protected:

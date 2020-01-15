@@ -1,16 +1,16 @@
 #pragma once
 #include <vector>
 #include <map>
-
+#include "drawHelper.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Window;
-struct v2;
 struct SDL_Rect;
 struct drawObject;
 struct Sprite;
 union SDL_Event;
+struct FC_Font;
 
 class Renderer
 {
@@ -35,8 +35,10 @@ public:
 	float getDeltaTime();
 	int getWidth();
 	int getHeight();
+	v2 getScreenScale();
 private:
 	void handleInternalEvents(SDL_Event& e);
+	void setScreenScale();
 	uint64_t NOW = 0;
 	uint64_t LAST = 0;
 	float deltaTime = 0;
@@ -50,14 +52,15 @@ private:
 //window info
 	SDL_Renderer* window_renderer;
 	SDL_Window* window;
-	//SDL_Event event;
+	FC_Font* pFont;
 
 	int mWidth = 640;
 	int mHeight = 480;
+	v2 mScreenScale;
 
 	bool mMouseFocus = true;
 	bool mKeyboardFocus = true;
-	bool mMinimized;
+	bool mMinimized = false;
 	Renderer();
 	~Renderer();
 };

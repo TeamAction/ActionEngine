@@ -54,9 +54,11 @@ int Actor::numberOfChildren()
 
 v2 Actor::getGlobalTransform()
 {
-	if (parent == nullptr)
-		return static_cast<DataInterface<v2>*>(getComponent("transform"))->getData();
-	return static_cast<DataInterface<v2>*>(getComponent("transform"))->getData()+parent->getGlobalTransform();
+	if (!transform)
+		transform = static_cast<DataInterface<v2>*>(getComponent("transform"));
+	if (!parent)
+		return transform->getData();
+	return transform->getData()+parent->getGlobalTransform();
 }
 
 void Actor::updateComponents(float dt)
