@@ -5,6 +5,7 @@
 struct drawObject;
 class ActorComponent;
 struct v2;
+template < typename T > class DataInterface;
 
 class Actor
 {
@@ -21,6 +22,7 @@ public:
 	int numberOfChildren();
 	v2 getGlobalTransform();
 private :
+	DataInterface<v2>* transform = nullptr; //this is used very often so i am including this to reduce time spent fetching it
 	inline void tickComponents(float dt) { (this->*nextFunction)(dt); }
 	void(Actor::* nextFunction)(float dt) = &Actor::createTransform;
 	void updateComponents(float dt);
