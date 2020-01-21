@@ -27,6 +27,7 @@ public:
 	void loadImageFile(const char* path);
 	void ErrorPopup(const char* text);
 	void Init();
+	void showSplash();
 	bool status();
 	void generateSprite(int index, int x, int y, int w, int h);
 	void addDrawItem(int layer, drawObject newObject);

@@ -40,10 +40,26 @@ void Renderer::Init()
 		ErrorPopup(SDL_GetError());
 	SDL_SetRenderDrawColor(window_renderer, 0, 0, 0, 255);
 	SDL_RenderSetIntegerScale(window_renderer, SDL_TRUE);
+	showSplash();
 	pFont = FC_CreateFont();
 	FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/FreeSans.ttf", 20, FC_MakeColor(255, 255, 255, 255), 0);
 	mScreenScale = v2(1, 1);
 	running = true;
+}
+
+void Renderer::showSplash()
+{
+	loadImageFile("../../../Assets/gfx/win30.png");
+	SDL_RenderClear(window_renderer);
+	SDL_Rect rect;
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = 640;
+	rect.h = 480;
+	SDL_RenderCopy(window_renderer, textures[0], &rect, &rect);
+	SDL_RenderPresent(window_renderer);
+	SDL_DestroyTexture(textures[0]);
+	textures.clear();
 }
 
 bool Renderer::status()

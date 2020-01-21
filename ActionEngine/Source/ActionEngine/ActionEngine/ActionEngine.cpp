@@ -22,6 +22,7 @@ ActionEngine* ActionEngine::s_pInstance = 0;
 
 ActionEngine::ActionEngine()
 {
+	Renderer::Instance()->Init();
 	if (!Initialize::IsOnlyInstance("MyGame", &hHandle))
 		return;
 	if (!Initialize::CheckAvailibleMemory(300000, 300000)) // memory in kb
@@ -30,7 +31,6 @@ ActionEngine::ActionEngine()
 		return;
 	Initialize::checkSystem();
 	engineActive = true;
-	Renderer::Instance()->Init();
 	sceneRoot = new Actor("SceneRoot",nullptr);
 	createSampleActor();
 	Renderer::Instance()->updateTime();
