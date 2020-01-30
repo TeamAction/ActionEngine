@@ -136,34 +136,21 @@ void ActionEngine::loadSceneJson(std::string path)
 		//return;
 	//}
 	//input >> jsonParse; // uses an overloaded operator to parse file from iostream
-	loadLuaScript("../../../Assets/scripts/testScript.lua", "testScript");
 	Actor* temp = new Actor("scriptTester", sceneRoot);
-	temp->addComponent("testingBasicScript", new ScriptInterface("testScript"));
+	temp->addComponent("testingBasicScript", new ScriptInterface("../../../Assets/scripts/testScript.lua"));
 	temp->addComponent("transform", new DataInterface<v2>(v2(0,0)));
 	temp->addComponent("spriteTest", new DrawSprite(drawObject(1, v2(0, 0), v2(0, 0)), 0));
 	temp = new Actor("scriptTester", temp);
-	temp->addComponent("testingBasicScript", new ScriptInterface("testScript"));
+	temp->addComponent("testingBasicScript", new ScriptInterface("../../../Assets/scripts/testScript.lua"));
 	temp->addComponent("transform", new DataInterface<v2>(v2(-50, -50)));
 	temp->addComponent("spriteTest", new DrawSprite(drawObject(1, v2(0, 0), v2(0, 0)), 0));
-
-	/*
-	Actor* temp = new Actor("Mouse Click Spawner", sceneRoot);
-	temp->addComponent("testSpawning", new SampleActorMouseClick());
-	for (int j = 0; j < HEIGHT / 64 + 1; j++)
-	{
-		temp = new Actor("Space Bar Spawner", sceneRoot);
-		temp->addComponent("testSpawning", new SampleActorSpawnScript());
-		temp->addComponent("transform", new DataInterface<v2>(v2(-64.0f, j * 64.0f)));
-	
-	*/
 }
 
-void ActionEngine::loadLuaScript(std::string path, std::string name)
+void ActionEngine::loadLuaScript(std::string path, Actor* name)
 {
 	lua_getglobal(luaVM, "luaLoader");
 	lua_pushstring(luaVM, (char*)path.c_str());
-	lua_pushstring(luaVM, (char*)name.c_str());
-	lua_pcall(luaVM, 2, 0,0);
+	lua_pcall(luaVM, 1, 0,0);
 	lua_settop(luaVM, 0);
 }
 

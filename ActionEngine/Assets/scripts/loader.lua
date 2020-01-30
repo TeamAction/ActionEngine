@@ -1,15 +1,17 @@
 
-currentScope = nil
 scriptNamespace = {}
-v = nil
 
 function fireFunction(functionName,...)
-	return (scriptNamespace[currentScope][functionName](...))
+	return (scriptNamespace[this][functionName](...))
 end
 
 
-function luaLoader(path,scopeName)
-    scriptNamespace[scopeName]=setmetatable({},{__index=_G})
-    local chunk = loadfile(path,nil,scriptNamespace[scopeName])
+function luaLoader(path)
+    scriptNamespace[this]=setmetatable({},{__index=_G})
+    local chunk = loadfile(path,nil,scriptNamespace[this])
 	chunk()
+end
+
+function destroyScript()
+	scriptNamespace[this] = nil
 end

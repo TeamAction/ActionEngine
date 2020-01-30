@@ -18,7 +18,7 @@ int EventManager::fireEvent(lua_State* L)
 
 	int numberOfArgs = lua_gettop(L);
 	std::string eventName = std::string(lua_tostring(L, 2));
-	std::unordered_map<Actor*, std::pair<std::string, std::string>>::iterator it = events[eventName].begin();
+	std::unordered_map<Actor*, std::string>::iterator it = events[eventName].begin();
 	
 	while(it != events[eventName].end())
 	{
@@ -26,10 +26,8 @@ int EventManager::fireEvent(lua_State* L)
 		luaL_setmetatable(L, "Actor");
 		lua_setglobal(L, "this");
 
-		lua_pushstring(L, (char*)it->second.first.c_str());
-		lua_setglobal(L, "currentScope");
 		lua_getglobal(L, "fireFunction");
-		lua_pushstring(L, (char*)it->second.second.c_str());
+		lua_pushstring(L, (char*)it->second.c_str());
 		for (int i = 3; i <= numberOfArgs; i++)
 		{
 			int t = lua_type(L, i);
@@ -58,12 +56,7 @@ int EventManager::bindEvent(lua_State* L)
 	std::string eventName = std::string(lua_tostring(L, 2));
 	std::string functionName = std::string(lua_tostring(L, 3));
 
-	lua_getglobal(L, "currentScope");
-	std::string scopeName = std::string(lua_tostring(L, -1));
-
-	std::pair<std::string, std::string> function(scopeName, functionName);
-
-	events[eventName][actor] = function;
+	events[eventName][actor] = functionName;
 	lua_settop(L, 0);
 	return 0;
 }

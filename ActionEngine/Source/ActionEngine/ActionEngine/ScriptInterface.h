@@ -14,27 +14,29 @@ extern "C"
 class ScriptInterface : public ActorComponent
 {
 public:
-	ScriptInterface(std::string _name) : name(_name), ActorComponent(TYPE::TICK) {
-		luaVM = ActionEngine::Instance()->getLuaState();
+	ScriptInterface(std::string _path) : path(_path), ActorComponent(TYPE::TICK) {luaVM = ActionEngine::Instance()->getLuaState();}
+	~ScriptInterface() 
+	{
+		lua_pushlightuserdata(luaVM, owner);
+		luaL_setmetatable(luaVM, "Actor");
+		lua_setglobal(luaVM, "this");
+
+		lua_getglobal(luaVM, "destroyScript");
+		lua_pcall(luaVM, 0, 0, 0);
 	}
 	void(ScriptInterface::*nextFunction)(float dt) = &ScriptInterface::onStart;
 	inline void tick(float dt) { (this->*nextFunction)(dt); }
 
 protected:
-	std::string name;
 	lua_State* luaVM;
-	Actor** luaActorPointer;
+	std::string path;
 
 	virtual void onTick(float dt)
 	{
 		lua_pushlightuserdata(luaVM, owner);
-		//luaActorPointer = static_cast<Actor**>(lua_newuserdata(luaVM, sizeof(Actor*)));
-		//*(luaActorPointer) = owner;
 		luaL_setmetatable(luaVM, "Actor");
 		lua_setglobal(luaVM, "this");
 
-		lua_pushstring(luaVM, (char*)name.c_str());
-		lua_setglobal(luaVM, "currentScope");
 		lua_getglobal(luaVM, "fireFunction");
 		lua_pushstring(luaVM, "onTick");
 		lua_pushnumber(luaVM, dt);
@@ -43,14 +45,12 @@ protected:
 	}
 	virtual void onStart(float dt)
 	{
+
 		lua_pushlightuserdata(luaVM, owner);
-		//luaActorPointer = static_cast<Actor**>(lua_newuserdata(luaVM, sizeof(Actor*)));
-		//*(luaActorPointer) = owner;
 		luaL_setmetatable(luaVM, "Actor");
 		lua_setglobal(luaVM, "this");
+		ActionEngine::Instance()->loadLuaScript(path, owner);
 
-		lua_pushstring(luaVM, (char*)name.c_str());
-		lua_setglobal(luaVM, "currentScope");
 		lua_getglobal(luaVM, "fireFunction");
 		lua_pushstring(luaVM, "onStart");
 		lua_pcall(luaVM, 1, 0,0);
