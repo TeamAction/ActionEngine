@@ -1,19 +1,22 @@
-timer  = 0
-
+vars = {}
 function onStart()
+	vars[this] = {}
+	vars[this].test = 0
+	vars[this].timer = 0
 	screenText(200,300,"test script prints for 5 seconds on start",5)
 	bindEvent(this,"test","boundEvent")
 	bindEvent(this,"test2","otherBoundEvent")
+	vars[this].test = vars[this].test + 1
 end
 
 function onTick(dt)
-	timer =  timer + dt
-	screenText(50,150,"test script prints time since start using local varaiables "..tonumber(string.format("%.3f", timer)),0)
+	vars[this].timer =  vars[this].timer + dt
+	screenText(50,150,"test script prints time since start using local varaiables "..tonumber(string.format("%.3f", vars[this].timer)),0)
 	screenText(0,0,tonumber(string.format("%.4f", dt)),0)
 	x,y = this:getTransform()
-	this:setTransform(x+(50*dt),y+(50*dt))
+	this:setTransform(tonumber(x+(50*dt)),tonumber(y+(50*dt)))
 	fireEvent(this,"test")
-	fireEvent(this,"test2","working "," arbitrary params ",11)
+	fireEvent(this,"test2","working "," arbitrary params ",vars[this].test)
 end
 
 function boundEvent()

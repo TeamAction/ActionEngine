@@ -27,8 +27,9 @@ protected:
 
 	virtual void onTick(float dt)
 	{
-		luaActorPointer = static_cast<Actor**>(lua_newuserdata(luaVM, sizeof(Actor*)));
-		*(luaActorPointer) = owner;
+		lua_pushlightuserdata(luaVM, owner);
+		//luaActorPointer = static_cast<Actor**>(lua_newuserdata(luaVM, sizeof(Actor*)));
+		//*(luaActorPointer) = owner;
 		luaL_setmetatable(luaVM, "Actor");
 		lua_setglobal(luaVM, "this");
 
@@ -42,8 +43,9 @@ protected:
 	}
 	virtual void onStart(float dt)
 	{
-		luaActorPointer = static_cast<Actor**>(lua_newuserdata(luaVM, sizeof(Actor*)));
-		*(luaActorPointer) = owner;
+		lua_pushlightuserdata(luaVM, owner);
+		//luaActorPointer = static_cast<Actor**>(lua_newuserdata(luaVM, sizeof(Actor*)));
+		//*(luaActorPointer) = owner;
 		luaL_setmetatable(luaVM, "Actor");
 		lua_setglobal(luaVM, "this");
 

@@ -30,18 +30,18 @@ extern "C" int bindEvent(lua_State* L) { return EventManager::Instance()->bindEv
 extern "C" int unBindEvent(lua_State* L) { return EventManager::Instance()->unBindEvent(L); }
 extern "C" int getTransform(lua_State* L) 
 { 
-	Actor** actor = static_cast<Actor**>(luaL_checkudata(L, 1, "Actor"));
-	v2 transform = (*actor)->getGlobalTransform();
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	v2 transform = actor->getGlobalTransform();
 	lua_pushnumber(L, transform.x);
 	lua_pushnumber(L, transform.y);
 	return 2;
 }
 extern "C" int setTransform(lua_State* L) 
 { 
-	Actor** actor = static_cast<Actor**>(luaL_checkudata(L, 1, "Actor"));
-	float x = lua_tonumber(L, 2);
-	float y = lua_tonumber(L, 3);
-	(*actor)->setGlobalTransform(v2(x,y));
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	float x = lua_tonumber(L, -2);
+	float y = lua_tonumber(L, -1);
+	actor->setGlobalTransform(v2(x,y));
 	return 0;
 }
 extern "C" int screenText(lua_State* L)

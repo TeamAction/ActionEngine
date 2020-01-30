@@ -1,6 +1,7 @@
 
 currentScope = nil
 scriptNamespace = {}
+v = nil
 
 function fireFunction(functionName,...)
 	return (scriptNamespace[currentScope][functionName](...))

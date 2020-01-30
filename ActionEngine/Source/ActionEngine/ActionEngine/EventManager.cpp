@@ -22,8 +22,7 @@ int EventManager::fireEvent(lua_State* L)
 	
 	while(it != events[eventName].end())
 	{
-		Actor** luaActorPointer = static_cast<Actor**>(lua_newuserdata(L, sizeof(Actor*)));
-		*(luaActorPointer) = it->first;
+		lua_pushlightuserdata(L, it->first);
 		luaL_setmetatable(L, "Actor");
 		lua_setglobal(L, "this");
 
@@ -55,7 +54,7 @@ int EventManager::fireEvent(lua_State* L)
 
 int EventManager::bindEvent(lua_State* L)
 {
-	Actor* actor = (*static_cast<Actor**>(luaL_checkudata(L, 1, "Actor")));
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
 	std::string eventName = std::string(lua_tostring(L, 2));
 	std::string functionName = std::string(lua_tostring(L, 3));
 
@@ -71,7 +70,7 @@ int EventManager::bindEvent(lua_State* L)
 
 int EventManager::unBindEvent(lua_State* L)
 {
-	Actor* actor = (*static_cast<Actor**>(luaL_checkudata(L, 1, "Actor")));
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
 	std::string eventName = std::string(lua_tostring(L, 2));
 
 	std::pair<std::string, Actor*> pendingErasure(eventName, actor);
