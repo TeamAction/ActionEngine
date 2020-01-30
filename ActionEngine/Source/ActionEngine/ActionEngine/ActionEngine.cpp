@@ -46,10 +46,10 @@ extern "C" int setTransform(lua_State* L)
 }
 extern "C" int screenText(lua_State* L)
 { 
-	int x = lua_tointeger(L, -4);
-	int y = lua_tointeger(L, -3);
-	std::string text = std::string(lua_tostring(L, -2));
-	float time = lua_tonumber(L, -1);
+	int x = lua_tointeger(L, 1);
+	int y = lua_tointeger(L, 2);
+	std::string text = std::string(lua_tostring(L, 3));
+	float time = lua_tonumber(L, 4);
 	Renderer::Instance()->addScreenText(x, y, (char*)text.c_str(),time);
 	lua_settop(L, 0);
 	return 0;
@@ -140,6 +140,10 @@ void ActionEngine::loadSceneJson(std::string path)
 	Actor* temp = new Actor("scriptTester", sceneRoot);
 	temp->addComponent("testingBasicScript", new ScriptInterface("testScript"));
 	temp->addComponent("transform", new DataInterface<v2>(v2(0,0)));
+	temp->addComponent("spriteTest", new DrawSprite(drawObject(1, v2(0, 0), v2(0, 0)), 0));
+	temp = new Actor("scriptTester", temp);
+	temp->addComponent("testingBasicScript", new ScriptInterface("testScript"));
+	temp->addComponent("transform", new DataInterface<v2>(v2(-50, -50)));
 	temp->addComponent("spriteTest", new DrawSprite(drawObject(1, v2(0, 0), v2(0, 0)), 0));
 
 	/*

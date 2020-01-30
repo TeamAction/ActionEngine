@@ -2,8 +2,8 @@ timer  = 0
 
 function onStart()
 	screenText(200,300,"test script prints for 5 seconds on start",5)
-	bindEvent("test","boundEvent")
-	bindEvent("test2","otherBoundEvent")
+	bindEvent(this,"test","boundEvent")
+	bindEvent(this,"test2","otherBoundEvent")
 end
 
 function onTick(dt)
@@ -12,13 +12,13 @@ function onTick(dt)
 	screenText(0,0,tonumber(string.format("%.4f", dt)),0)
 	x,y = this:getTransform()
 	this:setTransform(x+(50*dt),y+(50*dt))
-	fireEvent("test")
-	fireEvent("test2","working "," arbitrary params ",11)
+	fireEvent(this,"test")
+	fireEvent(this,"test2","working "," arbitrary params ",11)
 end
 
 function boundEvent()
 	x,y = this:getTransform()
-	screenText(50,400,"test event fired " .. x .. "," .. y ,0)
+	screenText(math.floor(x),math.floor(y-10),tonumber(string.format("%.1f", x)) .. "," .. tonumber(string.format("%.1f", y)) ,0)
 end
 
 function otherBoundEvent(arb, arb2, arb3)

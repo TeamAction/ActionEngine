@@ -67,7 +67,7 @@ void Actor::setGlobalTransform(v2 newTransform)
 		transform->setData(newTransform);
 		return;
 	}
-	transform->setData(newTransform + parent->getGlobalTransform());
+	transform->setData(newTransform - parent->getGlobalTransform());
 }
 
 void Actor::updateComponents(float dt)

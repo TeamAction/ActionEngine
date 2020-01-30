@@ -9,15 +9,15 @@ extern "C"
 #include "Lua/lualib.h"
 #include "Lua/lauxlib.h"
 }
-
+class Actor;
 class EventManager
 {
 private:
 	static EventManager* s_pInstance;
 	EventManager() {}
 	~EventManager() {delete s_pInstance;s_pInstance = nullptr;}
-	std::unordered_map<std::string, std::unordered_map<std::string,std::string>> events; //eventName<scopeName,functionName>
-	std::vector<std::pair<std::string,std::string>> pendingRemoval; //eventName,scopeName
+	std::unordered_map<std::string, std::unordered_map<Actor*,std::pair<std::string,std::string>>> events; //event name , owning actor <scope,function>
+	std::vector<std::pair<std::string, Actor*>> pendingRemoval; //eventName,owning actor
 	
 	void removePendingEvents();
 public:	
