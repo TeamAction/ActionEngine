@@ -21,6 +21,7 @@ public:
 	ActorComponent* getComponent(std::string name);
 	int numberOfChildren();
 	v2 getGlobalTransform();
+	void setGlobalTransform(v2 newTransform);
 private :
 	DataInterface<v2>* transform = nullptr; //this is used very often so i am including this to reduce time spent fetching it
 	inline void tickComponents(float dt) { (this->*nextFunction)(dt); }

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <map>
+#include <string>
 #include "drawHelper.h"
 
 struct SDL_Texture;
@@ -11,6 +12,13 @@ struct drawObject;
 struct Sprite;
 union SDL_Event;
 struct FC_Font;
+
+struct screenText
+{
+	int x,y;
+	float time;
+	std::string text;
+};
 
 class Renderer
 {
@@ -31,6 +39,7 @@ public:
 	bool status();
 	void generateSprite(int index, int x, int y, int w, int h);
 	void addDrawItem(int layer, drawObject newObject);
+	void addScreenText(int x,int y,std::string text,float timer);
 	void draw();
 	void updateTime();
 	float getDeltaTime();
@@ -48,6 +57,7 @@ private:
 	std::vector<SDL_Texture*> textures;
 	std::vector<Sprite> sprites;
 	std::map<int, std::vector<drawObject>> renderQueue;
+	std::vector<screenText> renderText;
 	bool running = false;
 
 //window info
