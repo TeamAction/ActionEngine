@@ -120,30 +120,50 @@ void ActionEngine::play()
 
 void ActionEngine::loadSceneJson(std::string path)
 {
+	std::unordered_map<std::string, Actor*> actorMap;
 	if (sceneRoot) // remove previous scene if it exists
 	{
 		sceneRoot->flagActorForRemoval();
 		sceneRoot->removeFlaggedActors();
 		delete sceneRoot; // the scene root cannot be removed by the remove flagged actors method
 	}
-	sceneRoot = new Actor("SceneRoot", nullptr); // create new scene root
+	sceneRoot = new Actor("sceneRoot", nullptr); // create new scene root
+	actorMap["sceneRoot"] = sceneRoot;
 
-	//std::ifstream input(path); //load json file from provided path
-	//json jsonParse;
-	//if (!input) //thow error if file failed to load 
-	//{
-		//Renderer::Instance()->ErrorPopup("JSON file failed to load");
-		//return;
-	//}
-	//input >> jsonParse; // uses an overloaded operator to parse file from iostream
-	Actor* temp = new Actor("scriptTester", sceneRoot);
-	temp->addComponent("testingBasicScript", new ScriptInterface("../../../Assets/scripts/testScript.lua"));
-	temp->addComponent("transform", new DataInterface<v2>(v2(0,0)));
-	temp->addComponent("spriteTest", new DrawSprite(drawObject(1, v2(0, 0), v2(0, 0)), 0));
-	temp = new Actor("scriptTester", temp);
-	temp->addComponent("testingBasicScript", new ScriptInterface("../../../Assets/scripts/testScript.lua"));
-	temp->addComponent("transform", new DataInterface<v2>(v2(-50, -50)));
-	temp->addComponent("spriteTest", new DrawSprite(drawObject(1, v2(0, 0), v2(0, 0)), 0));
+	std::ifstream input(path); //load json file from provided path
+	json jsonParse;
+	if (!input) //thow error if file failed to load 
+	{
+		Renderer::Instance()->ErrorPopup("JSON file failed to load");
+		return;
+	}
+	input >> jsonParse; // uses an overloaded operator to parse file from iostream
+
+	std::string name;
+	std::string compType;
+	for (int i = 0; i < jsonParse.size(); i++)
+	{
+		name = jsonParse[i]["name"].get<std::string>();
+		actorMap[name] = new Actor(name, actorMap[jsonParse[i]["parent"].get<std::string>()]);
+		for (int q = 0; q < jsonParse[i]["components"].size(); q++)
+		{
+			compType = jsonParse[i]["components"][q]["type"].get<std::string>();
+			if(compType == "sprite")
+			{ 
+				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(),
+					new DrawSprite(drawObject(jsonParse[i]["components"][q]["value"][0].get<int>(),v2(jsonParse[i]["components"][q]["value"][1].get<int>(), jsonParse[i]["components"][q]["value"][2].get<int>()),
+					v2(jsonParse[i]["components"][q]["value"][3].get<int>(), jsonParse[i]["components"][q]["value"][4].get<int>())), jsonParse[i]["components"][q]["value"][5].get<int>()));
+			}
+			else if(compType == "script")
+			{ 
+				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new ScriptInterface(jsonParse[i]["components"][q]["value"].get<std::string>()));
+			}
+			else if(compType == "data<v2>")
+			{ 
+				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new DataInterface<v2>(v2(jsonParse[i]["components"][q]["value"][0].get<int>(), jsonParse[i]["components"][q]["value"][1].get<int>())));
+			}
+		}
+	}
 }
 
 void ActionEngine::loadLuaScript(std::string path, Actor* name)

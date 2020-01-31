@@ -123,15 +123,14 @@ void Renderer::draw()
 			dest.y = it->second[i].screenPosition.y;
 			dest.w = sprites[it->second[i].spriteIndex].bounds.w * (int)(it->second[i].screenScale.x *4.0f);
 			dest.h = sprites[it->second[i].spriteIndex].bounds.h * (int)(it->second[i].screenScale.y *4.0f);
-			//SDL_RenderCopyEx(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest,0,NULL, SDL_FLIP_NONE);
-			SDL_RenderCopy(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest);
+			SDL_RenderCopyEx(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest,0,NULL, SDL_FLIP_NONE);
 		}
 		it->second.clear();
 		it++;
 	}
 	for (int i = 0; i < renderText.size(); i++)
 	{
-		FC_Draw(pFont, window_renderer, renderText[i].x, renderText[i].y, (char*)renderText[i].text.c_str());
+		FC_Draw(pFont, window_renderer, renderText[i].x*mScreenScale.x, renderText[i].y*mScreenScale.y, (char*)renderText[i].text.c_str());
 		renderText[i].time -= getDeltaTime();
 		if (renderText[i].time  <= 0.0f)
 		{
@@ -147,8 +146,7 @@ void Renderer::updateTime()
 {
 	LAST = NOW;
 	NOW = SDL_GetPerformanceCounter();
-	//deltaTime = (mKeyboardFocus && !mMinimized)?(double)((NOW - LAST) / (double)SDL_GetPerformanceFrequency()):0.0f;
-	deltaTime = (double)((NOW - LAST) / (double)SDL_GetPerformanceFrequency());
+	deltaTime = (mKeyboardFocus && !mMinimized)?(double)((NOW - LAST) / (double)SDL_GetPerformanceFrequency()):0.0f;
 }
 
 float Renderer::getDeltaTime()
@@ -181,11 +179,12 @@ void Renderer::handleInternalEvents(SDL_Event& e)
 			mWidth = e.window.data1;
 			mHeight = e.window.data2;
 			setScreenScale();
-			FC_ResetFontFromRendererReset(pFont, window_renderer, e.window.type);
-			SDL_RenderPresent(window_renderer);
+			FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/FreeSans.ttf", 20*(mScreenScale.x>mScreenScale.y?mScreenScale.y:mScreenScale.x), FC_MakeColor(255, 255, 255, 255), 0);
+			//FC_ResetFontFromRendererReset(pFont, window_renderer, e.window.type);
+			//SDL_RenderPresent(window_renderer);
 			break;
 		case SDL_WINDOWEVENT_EXPOSED:
-			SDL_RenderPresent(window_renderer);
+			//SDL_RenderPresent(window_renderer);
 			break;
 		case SDL_WINDOWEVENT_ENTER:
 			mMouseFocus = true;
