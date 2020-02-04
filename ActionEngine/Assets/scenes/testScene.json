@@ -1,0 +1,44 @@
+[
+ {
+    "name": "Actor1",
+    "parent": "sceneRoot",
+    "components": [
+      {
+        "type": "sprite",
+        "name": "spriteTest",
+        "value": [1,0,0,0,0,0]
+      },
+      {
+        "type": "script",
+        "name": "testingBasicScript",
+        "value": "../../../Assets/scripts/testScript.lua"
+      },
+      {
+        "type": "data<v2>",
+        "name": "transform",
+        "value": [0,0]
+      }
+    ]
+  },
+   {
+    "name": "Actor2",
+    "parent": "Actor1",
+    "components": [
+      {
+        "type": "sprite",
+        "name": "spriteTest",
+        "value": [1,0,0,0,0,0]
+      },
+      {
+        "type": "script",
+        "name": "testingBasicScript",
+        "value": "../../../Assets/scripts/testScript.lua"
+      },
+      {
+        "type": "data<v2>",
+        "name": "transform",
+        "value": [-50,-50]
+      }
+    ]
+  }
+]

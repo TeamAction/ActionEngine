@@ -18,7 +18,7 @@ void SampleActorSpawnScript::spaceBarTest()
 {
 	Actor* temp = new Actor("scrolling rock",owner);
 	temp->addComponent("testImage", new DrawSprite(drawObject(1, v2(0, 0),v2(0,0)), 1));
-	temp->addComponent("testScrolling", new SampleActorScript());
+	//temp->addComponent("testScrolling", new SampleActorScript());
 }
 
 

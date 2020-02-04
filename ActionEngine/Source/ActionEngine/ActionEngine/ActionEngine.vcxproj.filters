@@ -32,15 +32,6 @@
     <ClCompile Include="DrawSprite.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="SampleActorScript.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SampleActorSpawnScript.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SampleMouseClickScript.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -48,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SDL_FontCache.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -73,20 +67,11 @@
     <ClInclude Include="DrawInterface.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SampleActorScript.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="DataInterface.h">
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="ScriptInterface.h">
       <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleActorSpawnScript.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleMouseClickScript.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Header Files</Filter>

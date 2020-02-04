@@ -34,16 +34,44 @@ void Renderer::ErrorPopup(const char* text)
 
 void Renderer::Init()
 {
+	if (window)
+	{
+		SDL_DestroyWindow(window);
+		window = nullptr;
+	}
+	if (window_renderer)
+	{
+		SDL_DestroyRenderer(window_renderer);
+		window_renderer = nullptr;
+	}
 	window = SDL_CreateWindow("Action Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight,SDL_WINDOW_RESIZABLE);
 	window_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (SDL_SetRenderDrawColor(window_renderer, 0, 0, 0, 255))
 		ErrorPopup(SDL_GetError());
-	SDL_SetRenderDrawColor(window_renderer, 0, 0, 0, 255);
 	SDL_RenderSetIntegerScale(window_renderer, SDL_TRUE);
 	pFont = FC_CreateFont();
 	FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/FreeSans.ttf", 20, FC_MakeColor(255, 255, 255, 255), 0);
 	mScreenScale = v2(1, 1);
 	running = true;
+}
+
+void Renderer::showSplash()
+{
+	window = SDL_CreateWindow("Action Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 400, 202, SDL_WINDOW_BORDERLESS);
+	window_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	SDL_SetRenderDrawColor(window_renderer, 255, 255, 255, 255);
+	SDL_RenderSetIntegerScale(window_renderer, SDL_TRUE);
+	SDL_RenderClear(window_renderer);
+	loadImageFile("../../../Assets/gfx/splash.png");
+	SDL_Rect rect;
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = 400;
+	rect.h = 202;
+	SDL_RenderCopy(window_renderer, textures[0], &rect, &rect);
+	SDL_RenderPresent(window_renderer);
+	SDL_DestroyTexture(textures[0]);
+	textures.clear();
 }
 
 bool Renderer::status()
@@ -64,6 +92,13 @@ void Renderer::generateSprite(int index, int x,int y,int w ,int h)
 void Renderer::addDrawItem(int layer, drawObject newObject)
 {
 	renderQueue[layer].push_back(newObject);
+}
+
+void Renderer::addScreenText(int x, int y, std::string text,float timer)
+{
+	screenText temp;
+	temp.x = x; temp.y = y; temp.text = text; temp.time = timer;
+	renderText.push_back(temp);
 }
 
 void Renderer::draw()
@@ -88,12 +123,22 @@ void Renderer::draw()
 			dest.y = it->second[i].screenPosition.y;
 			dest.w = sprites[it->second[i].spriteIndex].bounds.w * (int)(it->second[i].screenScale.x *4.0f);
 			dest.h = sprites[it->second[i].spriteIndex].bounds.h * (int)(it->second[i].screenScale.y *4.0f);
-			SDL_RenderCopy(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest);
+			SDL_RenderCopyEx(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest,0,NULL, SDL_FLIP_NONE);
 		}
 		it->second.clear();
 		it++;
 	}
-	FC_Draw(pFont, window_renderer, 0, 0, "%.4f", getDeltaTime());
+	for (int i = 0; i < renderText.size(); i++)
+	{
+		FC_Draw(pFont, window_renderer, renderText[i].x*mScreenScale.x, renderText[i].y*mScreenScale.y, (char*)renderText[i].text.c_str());
+		renderText[i].time -= getDeltaTime();
+		if (renderText[i].time  <= 0.0f)
+		{
+			renderText.erase(renderText.begin() + i);
+			i--;
+		}
+
+	}
 	SDL_RenderPresent(window_renderer);
 }
 
@@ -134,11 +179,12 @@ void Renderer::handleInternalEvents(SDL_Event& e)
 			mWidth = e.window.data1;
 			mHeight = e.window.data2;
 			setScreenScale();
-			FC_ResetFontFromRendererReset(pFont, window_renderer, e.window.type);
-			SDL_RenderPresent(window_renderer);
+			FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/FreeSans.ttf", 20*(mScreenScale.x>mScreenScale.y?mScreenScale.y:mScreenScale.x), FC_MakeColor(255, 255, 255, 255), 0);
+			//FC_ResetFontFromRendererReset(pFont, window_renderer, e.window.type);
+			//SDL_RenderPresent(window_renderer);
 			break;
 		case SDL_WINDOWEVENT_EXPOSED:
-			SDL_RenderPresent(window_renderer);
+			//SDL_RenderPresent(window_renderer);
 			break;
 		case SDL_WINDOWEVENT_ENTER:
 			mMouseFocus = true;

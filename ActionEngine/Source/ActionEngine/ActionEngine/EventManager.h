@@ -1,81 +1,38 @@
 #pragma once
 #include <unordered_map>
-#include <functional>
-#include <Windows.h>
 #include <algorithm>
+#include <utility>
 
-template <typename ...Args>
-struct EventCallbacks
+extern "C"
 {
-	std::unordered_map<int, std::function<void(Args...)>> callbacks; //callback id , callback
-};
-
-struct EventId 
-{
-	std::string name;
-	int idNumber;
-};
-
-
-template <typename ...Args>
+#include "Lua/lua.h"
+#include "Lua/lualib.h"
+#include "Lua/lauxlib.h"
+}
+class Actor;
 class EventManager
 {
 private:
-	static EventManager<Args...>* s_pInstance;
+	static EventManager* s_pInstance;
 	EventManager() {}
 	~EventManager() {delete s_pInstance;s_pInstance = nullptr;}
-	typename std::unordered_map<std::string, EventCallbacks<Args...>> events; //event name, callback list
-	std::vector<EventId> pendingRemoval;
-	void removePendingEvents()
-	{
-		for (int i = 0; i < pendingRemoval.size(); i++)
-		{
-			events[pendingRemoval[i].name].callbacks.erase(pendingRemoval[i].idNumber);
-		}
-		pendingRemoval.clear();
-	}
+	std::unordered_map<std::string, std::unordered_map<Actor*,std::string>> events; //event name , owning actor <scope,function>
+	std::vector<std::pair<std::string, Actor*>> pendingRemoval; //eventName,owning actor
+	
+	void removePendingEvents();
 public:	
 	static EventManager* Instance()
 	{
 		if (s_pInstance == 0)
 		{
-			s_pInstance = new EventManager<Args...>();
+			s_pInstance = new EventManager();
 		}
 		return s_pInstance;
 	}
 
-	void fireEvent(std::string name, Args ...args)
-	{
-		removePendingEvents();
-		EventCallbacks<Args...>* currentEvent = &events[name];
-		if (currentEvent->callbacks.size() == 0)
-			return;
+	int fireEvent(lua_State* L);
 
-		typename std::unordered_map<int, typename std::function<void(Args...)>>::iterator it = currentEvent->callbacks.begin();
-		while (it != currentEvent->callbacks.end())
-		{
-			it->second(args...);
-			it++;
-		}
-	}
+	int bindEvent(lua_State* L);
 
-	EventId bindEvent(std::string eventName, std::function<void(Args...)> func)
-	{
-		EventCallbacks<Args...>* currentEvent = &events[eventName];
-		EventId newEvent;
-		newEvent.name = eventName;
-		do {
-			newEvent.idNumber = rand();
-		} while (currentEvent->callbacks.count(newEvent.idNumber) > 0);
-
-		currentEvent->callbacks[newEvent.idNumber] = func;
-		return newEvent;
-	}
-	void unBindEvent(EventId id) 
-	{
-		pendingRemoval.push_back(id);
-	}
+	int unBindEvent(lua_State* L);
 };
-
-EventManager<>* EventManager<>::s_pInstance = nullptr;
-EventManager<int, int>* EventManager<int, int>::s_pInstance = nullptr;

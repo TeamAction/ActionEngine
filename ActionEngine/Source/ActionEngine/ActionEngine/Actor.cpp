@@ -54,11 +54,20 @@ int Actor::numberOfChildren()
 
 v2 Actor::getGlobalTransform()
 {
-	if (!transform)
-		transform = static_cast<DataInterface<v2>*>(getComponent("transform"));
 	if (!parent)
 		return transform->getData();
 	return transform->getData()+parent->getGlobalTransform();
+}
+
+void Actor::setGlobalTransform(v2 newTransform)
+{
+	v2 currentTransform = transform->getData();
+	if (!parent)
+	{
+		transform->setData(newTransform);
+		return;
+	}
+	transform->setData(newTransform - parent->getGlobalTransform());
 }
 
 void Actor::updateComponents(float dt)
@@ -88,6 +97,7 @@ void Actor::createTransform(float dt)
 	{
 		addComponent("transform", new DataInterface<v2>(v2(0,0)));
 	}
+	transform = static_cast<DataInterface<v2>*>(getComponent("transform"));
 	nextFunction = &Actor::updateComponents;
 	tickComponents(dt);
 }

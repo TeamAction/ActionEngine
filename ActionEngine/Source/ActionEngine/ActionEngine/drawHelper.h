@@ -2,12 +2,17 @@
 
 struct v2
 {
-	inline v2(float _x =0, float _y=0) : x(_x), y(_y) {}
+	inline v2(float _x =.0f, float _y=.0f) : x(_x), y(_y) {}
 	float x, y;
 };
 inline v2 operator+(v2 a, v2 b)
 {
 	return v2(a.x + b.x, a.y+ b.y);
+}
+
+inline v2 operator-(v2 a, v2 b)
+{
+	return v2(a.x - b.x, a.y - b.y);
 }
 
 inline v2 operator*(v2 a, float b)
