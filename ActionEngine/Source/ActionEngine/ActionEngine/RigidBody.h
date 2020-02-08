@@ -7,7 +7,7 @@
 class RigidBody : public ActorComponent
 {
 public:
-	RigidBody(v2 _size = v2(1,1),float _mass = 1.0f,float _bounceiness = 0.8f, bool _gravity = true, v2 _maxVel = v2(10,10)) : ActorComponent(TYPE::RIGIDBODY), 
+	RigidBody(v2 _size = v2(32,32),float _mass = 1.0f,float _bounceiness = 0.2f, bool _gravity = true, v2 _maxVel = v2(100,100)) : ActorComponent(TYPE::RIGIDBODY), 
 		size(_size),mass(_mass), bounciness(_bounceiness), obeysGravity(_gravity), maxVelocity(_maxVel){}
 	void(RigidBody::* nextFunction)(float dt) = &RigidBody::onStart;
 	inline void updatePhysics(float dt) { (this->*nextFunction)(dt); }

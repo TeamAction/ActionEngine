@@ -29,11 +29,10 @@ void PhysicsSystem::PositionalCorrection(CollisionPair c, CollisionInfo i)
         invMassB = 0;
     else
         invMassB = 1 / c.rigidBodyB->mass;
-    v2 test = (-1 * i.collisionNormal);
-    v2 correction = ((i.penetration / (invMassA + invMassB)) * 0.2f) * i.collisionNormal;
+    v2 correction = ((i.penetration / (invMassA + invMassB)) * 1.0f) * i.collisionNormal;
 
     v2 temp = c.rigidBodyA->getCenter();
-    temp = temp - (invMassA * correction);
+    temp = temp + (invMassA * correction);
     c.rigidBodyA->setCenter(temp);
 
     temp = c.rigidBodyB->getCenter();
@@ -44,18 +43,18 @@ void PhysicsSystem::PositionalCorrection(CollisionPair c, CollisionInfo i)
 
 void PhysicsSystem::IsGrounded()
 {
-    for (int i = 0; i < rigidBodies.size()-1;i++) {
-        for (int q = i+1; q < rigidBodies.size(); q++) {
+    for (int i = 0; i < rigidBodies.size();i++) {
+        rigidBodies[i]->grounded = false;
+        for (int q = 0; q < rigidBodies.size(); q++) {
             if (i != q) {
-                if (rigidBodies[i]->aabb.bLeft.x < rigidBodies[q]->aabb.tRight.x
-                    && rigidBodies[i]->aabb.tRight.x > rigidBodies[q]->aabb.bLeft.x
-                    && abs(rigidBodies[i]->aabb.bLeft.y - rigidBodies[q]->aabb.tRight.y) <= 0.1) {
-                    if (abs(rigidBodies[i]->currentVelocity.y) < 0.1)
+                if (rigidBodies[q]->aabb.bLeft.x < rigidBodies[i]->aabb.tRight.x
+                    && rigidBodies[q]->aabb.tRight.x > rigidBodies[i]->aabb.bLeft.x
+                    && abs(rigidBodies[q]->aabb.bLeft.y - rigidBodies[i]->aabb.tRight.y) <= 1.0f) {
+                    if (abs(rigidBodies[i]->currentVelocity.y) < 10.0f)
                         rigidBodies[i]->grounded = true;
                 }
             }
         }
-        rigidBodies[i]->grounded = false;
     }
 }
 
@@ -130,7 +129,7 @@ void PhysicsSystem::ResolveCollisions(float dt)
         collisions[i].first.rigidBodyA->AddForce((impulse * -1) / dt);
         collisions[i].first.rigidBodyB->AddForce(impulse / dt);
 
-        if (abs(collisions[i].second.penetration) > 0.1f) {
+        if (abs(collisions[i].second.penetration) > 0.01) {
             PositionalCorrection(collisions[i].first, collisions[i].second);
         }
     }
