@@ -5,6 +5,7 @@
 struct drawObject;
 class ActorComponent;
 struct v2;
+class RigidBody;
 template < typename T > class DataInterface;
 
 class Actor
@@ -22,8 +23,11 @@ public:
 	int numberOfChildren();
 	v2 getGlobalTransform();
 	void setGlobalTransform(v2 newTransform);
+	void addForce(v2 force);
+	bool isGrounded();
 private :
 	DataInterface<v2>* transform = nullptr; //this is used very often so i am including this to reduce time spent fetching it
+	RigidBody* rigidBody = nullptr;
 	inline void tickComponents(float dt) { (this->*nextFunction)(dt); }
 	void(Actor::* nextFunction)(float dt) = &Actor::createTransform;
 	void updateComponents(float dt);

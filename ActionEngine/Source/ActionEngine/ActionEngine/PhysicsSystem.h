@@ -8,20 +8,7 @@ class RigidBody;
 struct CollisionPair {
     RigidBody* rigidBodyA;
     RigidBody* rigidBodyB;
-    /*bool operator==(const CollisionPair& other) const
-    {
-        return (rigidBodyA == other.rigidBodyA && rigidBodyB == other.rigidBodyB || rigidBodyA == other.rigidBodyB && rigidBodyB == other.rigidBodyA);
-    }*/
 };
-
-/*truct KeyHasher
-{
-    std::size_t operator()(const CollisionPair& k) const
-    {
-        using std::size_t;
-        return (&k.rigidBodyA && &k.rigidBodyB);
-    }
-};*/
 
 struct CollisionInfo {
     v2 collisionNormal;

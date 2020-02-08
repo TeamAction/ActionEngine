@@ -32,7 +32,7 @@ void RigidBody::onUpdate(float dt)
         acceleration = gravity;
     }
     else {
-        if (abs(currentVelocity.y) < 0.05f) currentVelocity.y = 0;
+        if (abs(currentVelocity.y) < 25.0f) currentVelocity.y = 0;
     }
 
     acceleration = acceleration + totalForces * (1/mass);

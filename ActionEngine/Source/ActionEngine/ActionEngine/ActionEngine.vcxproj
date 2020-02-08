@@ -177,6 +177,7 @@
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Initialize.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LuaInterfaceFucntions.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RigidBody.h" />

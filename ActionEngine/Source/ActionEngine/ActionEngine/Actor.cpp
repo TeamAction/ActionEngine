@@ -71,6 +71,30 @@ void Actor::setGlobalTransform(v2 newTransform)
 	transform->setData(newTransform - parent->getGlobalTransform());
 }
 
+void Actor::addForce(v2 force)
+{
+	if (!rigidBody)
+	{
+		char output[256];
+		sprintf_s(output, "%s does not have a rigid body add one to use forces", actorName.c_str());
+		Renderer::Instance()->ErrorPopup(output);
+		return;
+	}
+	rigidBody->AddForce(force);
+}
+
+bool Actor::isGrounded()
+{
+	if (!rigidBody)
+	{
+		char output[256];
+		sprintf_s(output, "%s does not have a rigid body add one to check if grounded", actorName.c_str());
+		Renderer::Instance()->ErrorPopup(output);
+		return false;
+	}
+	return rigidBody->grounded;
+}
+
 void Actor::updateComponents(float dt)
 {
 	std::unordered_map<std::string, ActorComponent*>::iterator it = components.begin();
@@ -116,6 +140,16 @@ void Actor::addComponent(std::string name,ActorComponent * component)
 	}
 	component->SetOwner(this);
 	components.insert({ name, component });
+	if (component->objectType == TYPE::RIGIDBODY)
+	{
+		if (rigidBody)
+		{
+			char output[256];
+			sprintf_s(output, "%s already has a rigid body only one per actor", actorName.c_str());
+			Renderer::Instance()->ErrorPopup(output);
+		}
+		rigidBody = static_cast<RigidBody*>(component);
+	}
 }
 
 void Actor::addChild(Actor* child)
