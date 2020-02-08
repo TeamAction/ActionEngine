@@ -2,7 +2,6 @@
 #include "InputManager.h"
 #include "SDL/SDL_mouse.h"
 #include <windows.h>
-#include "EventManager.h"
 #include "Renderer.h"
 
 InputManager* InputManager::s_pInstance = nullptr;
@@ -60,16 +59,17 @@ bool InputManager::getMouseLeftButton()
 	return 	SDL_BUTTON(mouseButtons)== SDL_BUTTON_LEFT;
 }
 
-void InputManager::fireInputEvents() //should be replaced by a system to bind and free events to key and mouse clicks
+void InputManager::debugPrintKeyState()
 {
-	updateInputState();
-	if (InputManager::Instance()->getKeyDown(' '))
+	std::string buffer;
+	for (int i = 0; i < 256; i++)
 	{
-   		//EventManager<>::Instance()->fireEvent("spaceKey");
-	}
-	if (InputManager::Instance()->getMouseLeftButton())
-	{
-		//EventManager<int,int>::Instance()->fireEvent("click to spawn", getMouseX(), getMouseY());
-	}
+		if (keyboardState[i] != 0)
+		{
+		buffer += "," + std::to_string(i);
 
+		}
+	}
+	buffer += "\n";
+	Renderer::Instance()->addScreenText(100, 100, buffer, 0.0f);
 }

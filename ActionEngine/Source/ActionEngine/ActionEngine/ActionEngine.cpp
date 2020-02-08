@@ -20,6 +20,9 @@ extern "C"
 
 #include "DrawSprite.h"
 #include "json.hpp"
+#include "ScriptInterface.h"
+#include "RigidBody.h"
+#include "PhysicsSystem.h"
 using json = nlohmann::json;
 
 
@@ -55,6 +58,30 @@ extern "C" int screenText(lua_State* L)
 	return 0;
 }
 
+extern "C" int keyUp(lua_State * L){lua_pushboolean(L, InputManager::Instance()->getKeyUp(*lua_tostring(L, 1)));return 1;}
+extern "C" int keyDown(lua_State * L)
+{
+	std::string test = lua_tostring(L, 1);
+	lua_pushboolean(L, InputManager::Instance()->getKeyDown(int(*test.c_str())));
+	return 1;
+}
+extern "C" int keyHeld(lua_State * L){lua_pushboolean(L, InputManager::Instance()->getKeyHeld(*lua_tostring(L, 1)));return 1;}
+
+extern "C" int mousePosition(lua_State * L)
+{
+	lua_pushnumber(L, InputManager::Instance()->getMouseX());
+	lua_pushnumber(L, InputManager::Instance()->getMouseY());
+	return 0;
+}
+
+extern "C" int mouseButtons(lua_State * L)
+{
+	lua_pushboolean(L, InputManager::Instance()->getMouseLeftButton());
+	lua_pushboolean(L, InputManager::Instance()->getMouseRightButton());
+	return 0;
+}
+
+
 
 ActionEngine::ActionEngine()
 {
@@ -77,6 +104,11 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("fireEvent",&fireEvent);
 	bindLuaFunction("unBindEvent",&unBindEvent);
 	bindLuaFunction("screenText",&screenText);
+	bindLuaFunction("keyDown",&keyDown);
+	bindLuaFunction("keyUp",&keyUp);
+	bindLuaFunction("keyHeld",&keyHeld);
+	bindLuaFunction("mousePosition",&mousePosition);
+	bindLuaFunction("mouseButtons",&mouseButtons);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -111,8 +143,9 @@ void ActionEngine::play()
 	while (isGameActive())
 	{
 		Renderer::Instance()->updateTime();
-		InputManager::Instance()->fireInputEvents();
+		InputManager::Instance()->updateInputState();
 		sceneRoot->tick(Renderer::Instance()->getDeltaTime());
+		PhysicsSystem::Instance()->UpdatePhysics(Renderer::Instance()->getDeltaTime());
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();
 	}
@@ -150,9 +183,13 @@ void ActionEngine::loadSceneJson(std::string path)
 			compType = jsonParse[i]["components"][q]["type"].get<std::string>();
 			if(compType == "sprite")
 			{ 
-				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(),
-					new DrawSprite(drawObject(jsonParse[i]["components"][q]["value"][0].get<int>(),v2(jsonParse[i]["components"][q]["value"][1].get<int>(), jsonParse[i]["components"][q]["value"][2].get<int>()),
-					v2(jsonParse[i]["components"][q]["value"][3].get<int>(), jsonParse[i]["components"][q]["value"][4].get<int>())), jsonParse[i]["components"][q]["value"][5].get<int>()));
+				std::vector<drawObject> animFrames;
+				int numFrames = jsonParse[i]["components"][q]["frames"].size();
+				for (int z = 0; z < numFrames; z++)
+				{
+					animFrames.push_back(drawObject(jsonParse[i]["components"][q]["frames"][z].get<int>()));
+				}
+				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(),new DrawSprite(animFrames,jsonParse[i]["components"][q]["layer"].get<int>(), 1.5f));
 			}
 			else if(compType == "script")
 			{ 
@@ -161,6 +198,13 @@ void ActionEngine::loadSceneJson(std::string path)
 			else if(compType == "data<v2>")
 			{ 
 				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new DataInterface<v2>(v2(jsonParse[i]["components"][q]["value"][0].get<int>(), jsonParse[i]["components"][q]["value"][1].get<int>())));
+			}
+			else if(compType == "rigidBody")
+			{ 
+				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new RigidBody(
+					v2(jsonParse[i]["components"][q]["value"][0].get<float>(), jsonParse[i]["components"][q]["value"][1].get<float>()),
+					jsonParse[i]["components"][q]["value"][2].get<float>(), jsonParse[i]["components"][q]["value"][3].get<float>(), 
+					jsonParse[i]["components"][q]["value"][4].get<bool>(), v2(jsonParse[i]["components"][q]["value"][5].get<float>(), jsonParse[i]["components"][q]["value"][6].get<float>())));
 			}
 		}
 	}
