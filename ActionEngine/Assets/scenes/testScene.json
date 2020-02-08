@@ -6,7 +6,9 @@
       {
         "type": "sprite",
         "name": "spriteTest",
-        "value": [1,0,0,0,0,0]
+        "frames": [0,1,2,3],
+		"layer": 0,
+		"loopTime": 5.0
       },
       {
         "type": "script",
@@ -27,7 +29,9 @@
       {
         "type": "sprite",
         "name": "spriteTest",
-        "value": [1,0,0,0,0,0]
+        "frames": [4],
+		"layer": 0,
+		"loopTime": 5.0
       },
       {
         "type": "script",

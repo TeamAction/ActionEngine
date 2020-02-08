@@ -150,9 +150,13 @@ void ActionEngine::loadSceneJson(std::string path)
 			compType = jsonParse[i]["components"][q]["type"].get<std::string>();
 			if(compType == "sprite")
 			{ 
-				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(),
-					new DrawSprite(drawObject(jsonParse[i]["components"][q]["value"][0].get<int>(),v2(jsonParse[i]["components"][q]["value"][1].get<int>(), jsonParse[i]["components"][q]["value"][2].get<int>()),
-					v2(jsonParse[i]["components"][q]["value"][3].get<int>(), jsonParse[i]["components"][q]["value"][4].get<int>())), jsonParse[i]["components"][q]["value"][5].get<int>()));
+				std::vector<drawObject> animFrames;
+				int numFrames = jsonParse[i]["components"][q]["frames"].size();
+				for (int z = 0; z < numFrames; z++)
+				{
+					animFrames.push_back(drawObject(jsonParse[i]["components"][q]["frames"][z].get<int>()));
+				}
+				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(),new DrawSprite(animFrames,jsonParse[i]["components"][q]["layer"].get<int>(), 1.5f));
 			}
 			else if(compType == "script")
 			{ 
