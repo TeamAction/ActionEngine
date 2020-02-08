@@ -55,6 +55,30 @@ extern "C" int screenText(lua_State* L)
 	return 0;
 }
 
+extern "C" int keyUp(lua_State * L){lua_pushboolean(L, InputManager::Instance()->getKeyUp(*lua_tostring(L, 1)));return 1;}
+extern "C" int keyDown(lua_State * L)
+{
+	std::string test = lua_tostring(L, 1);
+	lua_pushboolean(L, InputManager::Instance()->getKeyDown(int(*test.c_str())));
+	return 1;
+}
+extern "C" int keyHeld(lua_State * L){lua_pushboolean(L, InputManager::Instance()->getKeyHeld(*lua_tostring(L, 1)));return 1;}
+
+extern "C" int mousePosition(lua_State * L)
+{
+	lua_pushnumber(L, InputManager::Instance()->getMouseX());
+	lua_pushnumber(L, InputManager::Instance()->getMouseY());
+	return 0;
+}
+
+extern "C" int mouseButtons(lua_State * L)
+{
+	lua_pushboolean(L, InputManager::Instance()->getMouseLeftButton());
+	lua_pushboolean(L, InputManager::Instance()->getMouseRightButton());
+	return 0;
+}
+
+
 
 ActionEngine::ActionEngine()
 {
@@ -77,6 +101,11 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("fireEvent",&fireEvent);
 	bindLuaFunction("unBindEvent",&unBindEvent);
 	bindLuaFunction("screenText",&screenText);
+	bindLuaFunction("keyDown",&keyDown);
+	bindLuaFunction("keyUp",&keyUp);
+	bindLuaFunction("keyHeld",&keyHeld);
+	bindLuaFunction("mousePosition",&mousePosition);
+	bindLuaFunction("mouseButtons",&mouseButtons);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -111,7 +140,8 @@ void ActionEngine::play()
 	while (isGameActive())
 	{
 		Renderer::Instance()->updateTime();
-		InputManager::Instance()->fireInputEvents();
+		InputManager::Instance()->updateInputState();
+		InputManager::Instance()->debugPrintKeyState();
 		sceneRoot->tick(Renderer::Instance()->getDeltaTime());
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();

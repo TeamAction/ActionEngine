@@ -29,6 +29,9 @@ public:
 	int getMouseY();
 	bool getMouseRightButton();
 	bool getMouseLeftButton();
-	void fireInputEvents();
+
+
+
+	void debugPrintKeyState();
 };
 
