@@ -5,7 +5,8 @@ enum class TYPE
 {
 	TICK,
 	DRAW,
-	DATA
+	DATA,
+	RIGIDBODY
 };
 
 

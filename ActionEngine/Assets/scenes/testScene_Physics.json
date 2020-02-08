@@ -1,0 +1,71 @@
+[
+ {
+    "name": "floor",
+    "parent": "sceneRoot",
+    "components": [
+      {
+        "type": "sprite",
+        "name": "spriteTest",
+        "frames": [5],
+		"layer": 0,
+		"loopTime": 5.0
+      },
+      {
+        "type": "rigidBody",
+        "name": "testRB",
+        "value": [2000,64,0,0.8,false,0,0]
+      },
+      {
+        "type": "data<v2>",
+        "name": "transform",
+        "value": [-50,400]
+      }
+    ]
+  },
+   {
+    "name": "rock",
+    "parent": "sceneRoot",
+    "components": [
+      {
+        "type": "sprite",
+        "name": "spriteTest",
+        "frames": [4],
+		"layer": 0,
+		"loopTime": 5.0
+      },
+      {
+        "type": "rigidBody",
+        "name": "testRB",
+        "value": [64,64,1,0.8,true,10,10]
+      },
+      {
+        "type": "data<v2>",
+        "name": "transform",
+        "value": [100,300]
+      }
+    ]
+  },
+  {
+    "name": "rock2",
+    "parent": "sceneRoot",
+    "components": [
+      {
+        "type": "sprite",
+        "name": "spriteTest",
+        "frames": [4],
+		"layer": 0,
+		"loopTime": 5.0
+      },
+      {
+        "type": "rigidBody",
+        "name": "testRB",
+        "value": [64,64,1,0.8,true,10,10]
+      },
+      {
+        "type": "data<v2>",
+        "name": "transform",
+        "value": [100,200]
+      }
+    ]
+  }
+]

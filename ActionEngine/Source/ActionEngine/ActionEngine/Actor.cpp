@@ -3,6 +3,7 @@
 #include "DrawInterface.h"
 #include "DataInterface.h"
 #include "Renderer.h"
+#include "RigidBody.h"
 
 Actor::Actor(std::string _actorName, Actor* _parent) : actorName(_actorName)
 {
@@ -32,7 +33,7 @@ void Actor::tick(float dt)
 	}
 }
 
-ActorComponent * Actor::getComponent(std::string name)
+ActorComponent* Actor::getComponent(std::string name)
 {
 	if(components.count(name))
 		return components[name];
@@ -83,6 +84,9 @@ void Actor::updateComponents(float dt)
 			break;
 		case TYPE::DRAW:
 			static_cast<DrawInterface*>(it->second)->addObject(dt);
+			break;
+		case TYPE::RIGIDBODY:
+			static_cast<RigidBody*>(it->second)->updatePhysics(dt);
 			break;
 		default:
 			break;

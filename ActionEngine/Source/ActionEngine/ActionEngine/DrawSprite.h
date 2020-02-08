@@ -1,6 +1,5 @@
 #pragma once
 #include "DrawInterface.h"
-#include "ScriptInterface.h"
 #include "DataInterface.h"
 
 

@@ -20,6 +20,9 @@ extern "C"
 
 #include "DrawSprite.h"
 #include "json.hpp"
+#include "ScriptInterface.h"
+#include "RigidBody.h"
+#include "PhysicsSystem.h"
 using json = nlohmann::json;
 
 
@@ -141,8 +144,8 @@ void ActionEngine::play()
 	{
 		Renderer::Instance()->updateTime();
 		InputManager::Instance()->updateInputState();
-		InputManager::Instance()->debugPrintKeyState();
 		sceneRoot->tick(Renderer::Instance()->getDeltaTime());
+		PhysicsSystem::Instance()->UpdatePhysics(Renderer::Instance()->getDeltaTime());
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();
 	}
@@ -195,6 +198,13 @@ void ActionEngine::loadSceneJson(std::string path)
 			else if(compType == "data<v2>")
 			{ 
 				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new DataInterface<v2>(v2(jsonParse[i]["components"][q]["value"][0].get<int>(), jsonParse[i]["components"][q]["value"][1].get<int>())));
+			}
+			else if(compType == "rigidBody")
+			{ 
+				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new RigidBody(
+					v2(jsonParse[i]["components"][q]["value"][0].get<float>(), jsonParse[i]["components"][q]["value"][1].get<float>()),
+					jsonParse[i]["components"][q]["value"][2].get<float>(), jsonParse[i]["components"][q]["value"][3].get<float>(), 
+					jsonParse[i]["components"][q]["value"][4].get<bool>(), v2(jsonParse[i]["components"][q]["value"][5].get<float>(), jsonParse[i]["components"][q]["value"][6].get<float>())));
 			}
 		}
 	}
