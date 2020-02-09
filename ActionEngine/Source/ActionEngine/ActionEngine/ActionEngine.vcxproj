@@ -172,7 +172,7 @@
     <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="DataInterface.h" />
     <ClInclude Include="DrawInterface.h" />
-    <ClInclude Include="drawHelper.h" />
+    <ClInclude Include="helperStructs.h" />
     <ClInclude Include="DrawSprite.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Initialize.h" />

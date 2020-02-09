@@ -1,6 +1,6 @@
 #pragma once
 #include "ActorComponent.h" 
-#include "drawHelper.h"
+#include "helperStructs.h"
 #include "Actor.h"
 
 
@@ -16,7 +16,7 @@ public:
 	float mass = 1.0f;                            
 	float bounciness = 1;                       
 	bool obeysGravity = true;                  
-	v2 gravity =  v2(0, 98.1f);     
+	v2 gravity =  v2(0, 160.1f);     
 	v2 currentVelocity;                    
 	v2 maxVelocity =  v2(10.0f, 10.0f); 
 	bool grounded;
@@ -35,11 +35,4 @@ protected:
 	v2 size;
 	void SetAABB();
 };
-
-
-/*public bool IsGrounded()
-{
-    grounded = engine.IsGrounded(this);
-    return grounded;
-}*/
 

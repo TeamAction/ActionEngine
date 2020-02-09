@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <utility>     
-#include "drawHelper.h"
+#include "helperStructs.h"
 
 
 class RigidBody;
