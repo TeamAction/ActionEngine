@@ -61,6 +61,6 @@ void RigidBody::onStart(float dt)
 void RigidBody::SetAABB()
 {
     v2 transform = actorTransform->getData();
-    aabb.bLeft = v2(transform.x, transform.y - size.y);
-    aabb.tRight = v2(transform.x + size.x, transform.y);
+    aabb.bLeft = v2(transform.x, transform.y + size.y);
+    aabb.tRight = v2(transform.x + size.x, transform.y );
 }

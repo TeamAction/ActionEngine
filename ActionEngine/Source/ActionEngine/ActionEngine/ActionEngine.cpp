@@ -102,7 +102,7 @@ void ActionEngine::play()
 		Renderer::Instance()->updateTime();
 		InputManager::Instance()->updateInputState();
 		sceneRoot->tick(Renderer::Instance()->getDeltaTime());
-		PhysicsSystem::Instance()->UpdatePhysics(0.016f); //using fixed time step not deltatime
+		PhysicsSystem::Instance()->UpdatePhysics(Renderer::Instance()->getDeltaTime()); //using fixed time step not deltatime
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();
 	}

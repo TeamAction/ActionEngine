@@ -2,7 +2,7 @@
 #include <vector>
 #include <map>
 #include <string>
-#include "drawHelper.h"
+#include "helperStructs.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;

@@ -1,6 +1,6 @@
 #pragma once
 #include "ActorComponent.h" 
-#include "drawHelper.h"
+#include "helperStructs.h"
 #include "Actor.h"
 
 class DrawInterface: public ActorComponent

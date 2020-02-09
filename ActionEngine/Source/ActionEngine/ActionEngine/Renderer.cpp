@@ -1,6 +1,6 @@
 #pragma once
 #include "Renderer.h"
-#include "drawHelper.h"
+#include "helperStructs.h"
 #include "SDL/SDL.h"
 #include "SDL/SDL_Image.h"
 #include "SDL/SDL_FontCache.h"
@@ -181,10 +181,10 @@ void Renderer::handleInternalEvents(SDL_Event& e)
 			setScreenScale();
 			FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/FreeSans.ttf", 20*(mScreenScale.x>mScreenScale.y?mScreenScale.y:mScreenScale.x), FC_MakeColor(255, 255, 255, 255), 0);
 			//FC_ResetFontFromRendererReset(pFont, window_renderer, e.window.type);
-			//SDL_RenderPresent(window_renderer);
+			SDL_RenderPresent(window_renderer);
 			break;
 		case SDL_WINDOWEVENT_EXPOSED:
-			//SDL_RenderPresent(window_renderer);
+			SDL_RenderPresent(window_renderer);
 			break;
 		case SDL_WINDOWEVENT_ENTER:
 			mMouseFocus = true;

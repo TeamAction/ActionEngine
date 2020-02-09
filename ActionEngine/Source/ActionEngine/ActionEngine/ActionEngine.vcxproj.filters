@@ -61,9 +61,6 @@
     <ClInclude Include="Actor.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="drawHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DrawSprite.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -95,6 +92,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LuaInterfaceFucntions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helperStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

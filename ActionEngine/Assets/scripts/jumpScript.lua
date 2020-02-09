@@ -8,6 +8,12 @@ function onTick(dt)
 	if keyDown(' ') and this:isGrounded()then
 		this:addImpulse(0,-200)
 	end
+	if keyHeld('D') then
+		this:addImpulse(10,0)
+	end
+	if keyHeld('A') then
+		this:addImpulse(-10,0)
+	end
 end
 
 

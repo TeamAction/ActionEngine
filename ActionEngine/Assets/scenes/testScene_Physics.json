@@ -13,7 +13,7 @@
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [2000,64,0,0.8,false,0,0]
+        "value": [1000,64,0,0.8,false,0,0]
       },
       {
         "type": "data<v2>",

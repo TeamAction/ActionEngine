@@ -47,9 +47,9 @@ void PhysicsSystem::IsGrounded()
         rigidBodies[i]->grounded = false;
         for (int q = 0; q < rigidBodies.size(); q++) {
             if (i != q) {
-                if (rigidBodies[q]->aabb.bLeft.x < rigidBodies[i]->aabb.tRight.x
-                    && rigidBodies[q]->aabb.tRight.x > rigidBodies[i]->aabb.bLeft.x
-                    && abs(rigidBodies[q]->aabb.bLeft.y - rigidBodies[i]->aabb.tRight.y) <= 1.0f) {
+                if (rigidBodies[i]->aabb.bLeft.x < rigidBodies[q]->aabb.tRight.x
+                    && rigidBodies[i]->aabb.tRight.x > rigidBodies[q]->aabb.bLeft.x
+                    && abs(rigidBodies[q]->aabb.tRight.y - rigidBodies[i]->aabb.bLeft.y) <= 1.0f) {
                     if (abs(rigidBodies[i]->currentVelocity.y) < 10.0f)
                         rigidBodies[i]->grounded = true;
                 }
@@ -57,6 +57,8 @@ void PhysicsSystem::IsGrounded()
         }
     }
 }
+
+
 
 void PhysicsSystem::CheckCollisions()
 {
@@ -69,8 +71,9 @@ void PhysicsSystem::CheckCollisions()
 
                 v2 distance = rigidBodies[q]->getCenter() - rigidBodies[i]->getCenter();
 
-                v2 halfSizeA = (rigidBodies[i]->aabb.tRight - rigidBodies[i]->aabb.bLeft) / 2;
-                v2 halfSizeB = (rigidBodies[q]->aabb.tRight - rigidBodies[q]->aabb.bLeft) / 2;
+                v2 halfSizeA = abs(rigidBodies[i]->aabb.tRight - rigidBodies[i]->aabb.bLeft) / 2;
+                v2 halfSizeB = abs(rigidBodies[q]->aabb.tRight - rigidBodies[q]->aabb.bLeft) / 2;
+                abs(halfSizeB);
 
                 v2 gap =  v2(abs(distance.x), abs(distance.y)) - (halfSizeA + halfSizeB);
 
@@ -127,7 +130,7 @@ void PhysicsSystem::ResolveCollisions(float dt)
         v2 impulse = collisions[i].second.collisionNormal*j;
 
         collisions[i].first.rigidBodyA->AddForce((impulse * -1) / dt);
-        collisions[i].first.rigidBodyB->AddForce(impulse / dt);
+        collisions[i].first.rigidBodyB->AddForce(impulse/ dt);
 
         if (abs(collisions[i].second.penetration) > 0.01) {
             PositionalCorrection(collisions[i].first, collisions[i].second);

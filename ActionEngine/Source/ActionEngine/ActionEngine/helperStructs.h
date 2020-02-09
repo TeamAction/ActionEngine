@@ -20,6 +20,11 @@ inline float dot(v2 a, v2 b)
 	return(a.x * b.x + a.y * b.y);
 }
 
+inline v2 abs(v2 a){
+	a.x = abs(a.x); a.y = abs(a.y);
+	return a;
+}
+
 inline v2 operator*(v2 a, float b)
 {
 	return v2(a.x *b, a.y *b);
@@ -57,11 +62,9 @@ struct AABB
 	v2 tRight;
 };
 
-
-
 struct mat3x3
 {
-	float mat[3][3] = { {1,0,0},{0,1,0},{0,0,1}};
+	float mat[3][3] = { {1,0,0},{0,1,0},{0,0,1} };
 };
 
 inline mat3x3 operator*(mat3x3 a,mat3x3 b)
@@ -109,3 +112,21 @@ inline void Rotate(mat3x3 a, float degrees)
 	b.mat[2][0] = 0; b.mat[2][1] = 0; b.mat[2][2] = 1;
 	a = a * b;
 }
+
+struct transform
+{
+	transform(v2 _translate = v2(), float _rotation = 0, v2 _scale = v2(1,1)): 
+		translate(_translate), rotation(_rotation), scale(_scale) {};
+	v2 translate;
+	v2 scale;
+	float rotation;
+	inline mat3x3 getMatrix()
+	{
+		mat3x3 matrix;
+		Translate(matrix, translate.x, translate.y);
+		Rotate(matrix, rotation);
+		Scale(matrix, scale.x, scale.y);
+		return matrix;
+	}
+};
+
