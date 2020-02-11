@@ -3,6 +3,8 @@
 #include "Renderer.h"
 #include "windows.h"
 
+#include "SDL/SDL_mixer.h"
+
 /*
 //i added these because my computer was using my igpu not sure if they are really needed
 //use nvidia graphics adapter if available
