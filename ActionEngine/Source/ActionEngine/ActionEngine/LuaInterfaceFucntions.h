@@ -10,8 +10,6 @@ extern "C"
 #include "InputManager.h"
 #include "EventManager.h"
 
-
-
 extern "C" int fireEvent(lua_State * L) { return EventManager::Instance()->fireEvent(L); }
 extern "C" int bindEvent(lua_State * L) { return EventManager::Instance()->bindEvent(L); }
 extern "C" int unBindEvent(lua_State * L) { return EventManager::Instance()->unBindEvent(L); }
@@ -57,24 +55,19 @@ extern "C" int screenText(lua_State * L)
 }
 
 extern "C" int keyUp(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyUp(*lua_tostring(L, 1))); return 1; }
-extern "C" int keyDown(lua_State * L)
-{
-	std::string test = lua_tostring(L, 1);
-	lua_pushboolean(L, InputManager::Instance()->getKeyDown(int(*test.c_str())));
-	return 1;
-}
+extern "C" int keyDown(lua_State * L){lua_pushboolean(L, InputManager::Instance()->getKeyDown(*lua_tostring(L, 1)));return 1;}
 extern "C" int keyHeld(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyHeld(*lua_tostring(L, 1))); return 1; }
 
 extern "C" int mousePosition(lua_State * L)
 {
 	lua_pushnumber(L, InputManager::Instance()->getMouseX());
 	lua_pushnumber(L, InputManager::Instance()->getMouseY());
-	return 0;
+	return 2;
 }
 
 extern "C" int mouseButtons(lua_State * L)
 {
 	lua_pushboolean(L, InputManager::Instance()->getMouseLeftButton());
 	lua_pushboolean(L, InputManager::Instance()->getMouseRightButton());
-	return 0;
+	return 2;
 }
