@@ -71,6 +71,16 @@ void Actor::setGlobalTransform(v2 newTransform)
 	transform->setData(newTransform - parent->getGlobalTransform());
 }
 
+v2 Actor::getLocalTransform()
+{
+	return transform->getData();
+}
+
+void Actor::setLocalTransform(v2 newTransform)
+{
+	transform->setData(newTransform);
+}
+
 void Actor::addForce(v2 force)
 {
 	if (!rigidBody)

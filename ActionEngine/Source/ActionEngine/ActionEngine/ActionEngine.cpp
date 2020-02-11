@@ -66,10 +66,14 @@ ActionEngine::ActionEngine()
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
 	lua_setfield(luaVM, -2, "__index");
-	lua_pushcfunction(luaVM, getTransform);
-	lua_setfield(luaVM, -2, "getTransform"); 
-	lua_pushcfunction(luaVM, setTransform);
-	lua_setfield(luaVM, -2, "setTransform"); 
+	lua_pushcfunction(luaVM, getGlobalTransform);
+	lua_setfield(luaVM, -2, "getGlobalTransform"); 
+	lua_pushcfunction(luaVM, setGlobalTransform);
+	lua_setfield(luaVM, -2, "setGlobalTransform"); 
+	lua_pushcfunction(luaVM, getLocalTransform);
+	lua_setfield(luaVM, -2, "getLocalTransform"); 
+	lua_pushcfunction(luaVM, setLocalTransform);
+	lua_setfield(luaVM, -2, "setLocalTransform"); 
 	lua_pushcfunction(luaVM, addImpulse);
 	lua_setfield(luaVM, -2, "addImpulse"); 
 	lua_pushcfunction(luaVM, isGrounded);

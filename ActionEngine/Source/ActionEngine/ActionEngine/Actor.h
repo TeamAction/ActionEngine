@@ -23,6 +23,8 @@ public:
 	int numberOfChildren();
 	v2 getGlobalTransform();
 	void setGlobalTransform(v2 newTransform);
+	v2 getLocalTransform();
+	void setLocalTransform(v2 newTransform);
 	void addForce(v2 force);
 	bool isGrounded();
 private :

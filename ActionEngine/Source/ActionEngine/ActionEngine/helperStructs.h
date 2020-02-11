@@ -113,9 +113,9 @@ inline void Rotate(mat3x3 a, float degrees)
 	a = a * b;
 }
 
-struct transform
+struct objectTransform
 {
-	transform(v2 _translate = v2(), float _rotation = 0, v2 _scale = v2(1,1)): 
+	objectTransform(v2 _translate = v2(), float _rotation = 0, v2 _scale = v2(1,1)):
 		translate(_translate), rotation(_rotation), scale(_scale) {};
 	v2 translate;
 	v2 scale;
