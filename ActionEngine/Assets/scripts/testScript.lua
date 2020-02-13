@@ -25,6 +25,11 @@ function onTick(dt)
 		x = x+(50*dt)
 	end
 	this:setGlobalTransform(x,y)
+	
+	if keyDown('P') then
+		loadScene("../../../Assets/scenes/testScene_Physics.json")
+	end
+
 
 	fireEvent(this,"test")
 	fireEvent(this,"test2","move ","with ","WASD")

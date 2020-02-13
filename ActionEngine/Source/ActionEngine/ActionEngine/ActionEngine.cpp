@@ -48,7 +48,23 @@ ActionEngine::ActionEngine()
 
 	luaVM = luaL_newstate();
 	luaL_openlibs(luaVM);
-	luaL_loadfile(luaVM, "../../../Assets/scripts/loader.lua");
+	//luaL_loadfile(luaVM, "../../../Assets/scripts/loader.lua"); // loading from string directly to prevent user fuckery
+	luaL_loadstring(luaVM, "scriptNamespace = {}"
+		""
+		"function fireFunction(functionName, ...)"
+		"return (scriptNamespace[this][functionName](...))"
+		"end"
+		""
+		""
+		"		function luaLoader(path)"
+		"		scriptNamespace[this] = setmetatable({}, { __index = _G })"
+		"		local chunk = loadfile(path, nil, scriptNamespace[this])"
+		"		chunk()"
+		"		end"
+		""
+		"		function destroyScript()"
+		"		scriptNamespace[this] = nil"
+		"		end");
 	if (lua_pcall(luaVM, 0, 0, 0))
 	{
 		Renderer::Instance()->ErrorPopup("lua priming call failed");
@@ -62,6 +78,7 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("keyHeld",&keyHeld);
 	bindLuaFunction("mousePosition",&mousePosition);
 	bindLuaFunction("mouseButtons",&mouseButtons);
+	bindLuaFunction("loadScene",&loadScene);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -97,23 +114,9 @@ bool ActionEngine::isGameActive()
 	return engineActive && Renderer::Instance()->status();
 }
 
-void ActionEngine::play()
+void ActionEngine::loadScenePostTick()
 {
-	bool test = Renderer::Instance()->status();
-	Renderer::Instance()->updateTime();
-	while (isGameActive())
-	{
-		Renderer::Instance()->updateTime();
-		InputManager::Instance()->updateInputState();
-		sceneRoot->tick(Renderer::Instance()->getDeltaTime());
-		PhysicsSystem::Instance()->UpdatePhysics(Renderer::Instance()->getDeltaTime()); //using fixed time step not deltatime
-		sceneRoot->removeFlaggedActors();
-		Renderer::Instance()->draw();
-	}
-}
-
-void ActionEngine::loadSceneJson(std::string path)
-{
+	loadScenePending = false;
 	std::unordered_map<std::string, Actor*> actorMap;
 	if (sceneRoot) // remove previous scene if it exists
 	{
@@ -124,7 +127,7 @@ void ActionEngine::loadSceneJson(std::string path)
 	sceneRoot = new Actor("sceneRoot", nullptr); // create new scene root
 	actorMap["sceneRoot"] = sceneRoot;
 
-	std::ifstream input(path); //load json file from provided path
+	std::ifstream input(sceneFile); //load json file from provided path
 	json jsonParse;
 	if (!input) //thow error if file failed to load 
 	{
@@ -142,33 +145,56 @@ void ActionEngine::loadSceneJson(std::string path)
 		for (int q = 0; q < jsonParse[i]["components"].size(); q++)
 		{
 			compType = jsonParse[i]["components"][q]["type"].get<std::string>();
-			if(compType == "sprite")
-			{ 
+			if (compType == "sprite")
+			{
 				std::vector<drawObject> animFrames;
 				int numFrames = jsonParse[i]["components"][q]["frames"].size();
 				for (int z = 0; z < numFrames; z++)
 				{
 					animFrames.push_back(drawObject(jsonParse[i]["components"][q]["frames"][z].get<int>()));
 				}
-				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(),new DrawSprite(animFrames,jsonParse[i]["components"][q]["layer"].get<int>(), 1.5f));
+				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new DrawSprite(animFrames, jsonParse[i]["components"][q]["layer"].get<int>(), 1.5f));
 			}
-			else if(compType == "script")
-			{ 
+			else if (compType == "script")
+			{
 				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new ScriptInterface(jsonParse[i]["components"][q]["value"].get<std::string>()));
 			}
-			else if(compType == "data<v2>")
-			{ 
+			else if (compType == "data<v2>")
+			{
 				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new DataInterface<v2>(v2(jsonParse[i]["components"][q]["value"][0].get<int>(), jsonParse[i]["components"][q]["value"][1].get<int>())));
 			}
-			else if(compType == "rigidBody")
-			{ 
+			else if (compType == "rigidBody")
+			{
 				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new RigidBody(
 					v2(jsonParse[i]["components"][q]["value"][0].get<float>(), jsonParse[i]["components"][q]["value"][1].get<float>()),
-					jsonParse[i]["components"][q]["value"][2].get<float>(), jsonParse[i]["components"][q]["value"][3].get<float>(), 
+					jsonParse[i]["components"][q]["value"][2].get<float>(), jsonParse[i]["components"][q]["value"][3].get<float>(),
 					jsonParse[i]["components"][q]["value"][4].get<bool>(), v2(jsonParse[i]["components"][q]["value"][5].get<float>(), jsonParse[i]["components"][q]["value"][6].get<float>())));
 			}
 		}
 	}
+}
+
+void ActionEngine::play()
+{
+	bool test = Renderer::Instance()->status();
+	Renderer::Instance()->updateTime();
+	while (isGameActive())
+	{
+		if (loadScenePending)
+			loadScenePostTick();
+		Renderer::Instance()->updateTime();
+		InputManager::Instance()->updateInputState();
+		sceneRoot->tick(Renderer::Instance()->getDeltaTime());
+		PhysicsSystem::Instance()->UpdatePhysics(Renderer::Instance()->getDeltaTime());
+		sceneRoot->removeFlaggedActors();
+		Renderer::Instance()->draw();
+	}
+}
+
+void ActionEngine::loadSceneJson(std::string path)
+{
+	sceneFile = path;
+	loadScenePending = true;
 }
 
 void ActionEngine::loadLuaScript(std::string path, Actor* name)

@@ -61,7 +61,7 @@ struct AABB
 	v2 bLeft;
 	v2 tRight;
 };
-
+/*
 struct mat3x3
 {
 	float mat[3][3] = { {1,0,0},{0,1,0},{0,0,1} };
@@ -130,3 +130,8 @@ struct objectTransform
 	}
 };
 
+inline objectTransform getTransform(mat3x3 m)
+{
+	return objectTransform(v2(m.mat[2][0], m.mat[2][1]), atan2(m.mat[0][1], m.mat[0][0]), v2(sqrt(m.mat[0][0] * m.mat[0][0] + m.mat[0][1] * m.mat[0][1]), sqrt(m.mat[1][0] * m.mat[1][0] + m.mat[1][1] * m.mat[1][1])));
+}
+*/

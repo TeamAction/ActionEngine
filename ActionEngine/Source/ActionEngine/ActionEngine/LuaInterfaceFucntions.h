@@ -9,6 +9,7 @@ extern "C"
 #include "Renderer.h"
 #include "InputManager.h"
 #include "EventManager.h"
+#include "ActionEngine.h"
 
 extern "C" int fireEvent(lua_State * L) { return EventManager::Instance()->fireEvent(L); }
 extern "C" int bindEvent(lua_State * L) { return EventManager::Instance()->bindEvent(L); }
@@ -87,3 +88,5 @@ extern "C" int mouseButtons(lua_State * L)
 	lua_pushboolean(L, InputManager::Instance()->getMouseRightButton());
 	return 2;
 }
+
+extern "C" int loadScene(lua_State * L){ActionEngine::Instance()->loadSceneJson(lua_tostring(L, 1));return 0;}

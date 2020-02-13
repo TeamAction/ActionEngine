@@ -33,6 +33,10 @@ private:
 	~ActionEngine();
 
 	bool isGameActive();
+	void loadScenePostTick();
+
+	bool loadScenePending = false;
+	std::string sceneFile;
 	Actor* sceneRoot;
 	bool engineActive = false;
 	HANDLE hHandle;
