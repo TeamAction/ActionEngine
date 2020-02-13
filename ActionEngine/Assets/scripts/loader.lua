@@ -1,4 +1,4 @@
-
+--this file is no longer used and is loaded as a string literal in c++ to prevent user changes
 scriptNamespace = {}
 
 function fireFunction(functionName,...)

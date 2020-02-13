@@ -61,7 +61,7 @@ struct AABB
 	v2 bLeft;
 	v2 tRight;
 };
-
+/*
 struct mat3x3
 {
 	float mat[3][3] = { {1,0,0},{0,1,0},{0,0,1} };
@@ -113,9 +113,9 @@ inline void Rotate(mat3x3 a, float degrees)
 	a = a * b;
 }
 
-struct transform
+struct objectTransform
 {
-	transform(v2 _translate = v2(), float _rotation = 0, v2 _scale = v2(1,1)): 
+	objectTransform(v2 _translate = v2(), float _rotation = 0, v2 _scale = v2(1,1)):
 		translate(_translate), rotation(_rotation), scale(_scale) {};
 	v2 translate;
 	v2 scale;
@@ -130,3 +130,8 @@ struct transform
 	}
 };
 
+inline objectTransform getTransform(mat3x3 m)
+{
+	return objectTransform(v2(m.mat[2][0], m.mat[2][1]), atan2(m.mat[0][1], m.mat[0][0]), v2(sqrt(m.mat[0][0] * m.mat[0][0] + m.mat[0][1] * m.mat[0][1]), sqrt(m.mat[1][0] * m.mat[1][0] + m.mat[1][1] * m.mat[1][1])));
+}
+*/

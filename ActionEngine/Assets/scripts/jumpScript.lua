@@ -14,6 +14,10 @@ function onTick(dt)
 	if keyHeld('A') then
 		this:addImpulse(-10,0)
 	end
+	if keyDown('P') then
+		loadScene("../../../Assets/scenes/testScene.json")
+	end
+
 end
 
 

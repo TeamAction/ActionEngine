@@ -18,7 +18,7 @@
       {
         "type": "data<v2>",
         "name": "transform",
-        "value": [0,0]
+        "value": [200,250]
       }
     ]
   },
@@ -36,12 +36,12 @@
       {
         "type": "script",
         "name": "testingBasicScript",
-        "value": "../../../Assets/scripts/testScript.lua"
+        "value": "../../../Assets/scripts/orbitParentScript.lua"
       },
       {
         "type": "data<v2>",
         "name": "transform",
-        "value": [-50,-50]
+        "value": [-100,0]
       }
     ]
   }

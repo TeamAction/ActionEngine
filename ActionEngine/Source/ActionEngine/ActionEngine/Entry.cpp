@@ -3,8 +3,6 @@
 #include "Renderer.h"
 #include "windows.h"
 
-#include "SDL/SDL_mixer.h"
-
 /*
 //i added these because my computer was using my igpu not sure if they are really needed
 //use nvidia graphics adapter if available
@@ -26,8 +24,8 @@ int WINAPI WinMain(
 	int nCmdShow)
 {
 	Renderer::Instance()->showSplash();
-	ActionEngine::Instance()->loadSceneJson("../../../Assets/scenes/testScene_Physics.json"); // this will load scene info from json
-	//ActionEngine::Instance()->loadSceneJson("../../../Assets/scenes/testScene.json"); // this will load scene info from json
+	//ActionEngine::Instance()->loadSceneJson("../../../Assets/scenes/testScene_Physics.json"); // this will load scene info from json
+	ActionEngine::Instance()->loadSceneJson("../../../Assets/scenes/testScene.json"); // this will load scene info from json
 	Renderer::Instance()->generateSprite(0, 16 * 5, 16 * 8, 16, 16);
 	Renderer::Instance()->generateSprite(0, 16 * 6, 16 * 8, 16, 16);
 	Renderer::Instance()->generateSprite(0, 16 * 7, 16 * 8, 16, 16);

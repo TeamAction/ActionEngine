@@ -9,11 +9,12 @@ extern "C"
 #include "Renderer.h"
 #include "InputManager.h"
 #include "EventManager.h"
+#include "ActionEngine.h"
 
 extern "C" int fireEvent(lua_State * L) { return EventManager::Instance()->fireEvent(L); }
 extern "C" int bindEvent(lua_State * L) { return EventManager::Instance()->bindEvent(L); }
 extern "C" int unBindEvent(lua_State * L) { return EventManager::Instance()->unBindEvent(L); }
-extern "C" int getTransform(lua_State * L)
+extern "C" int getGlobalTransform(lua_State * L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
 	v2 transform = actor->getGlobalTransform();
@@ -21,12 +22,28 @@ extern "C" int getTransform(lua_State * L)
 	lua_pushnumber(L, transform.y);
 	return 2;
 }
-extern "C" int setTransform(lua_State * L)
+extern "C" int setGlobalTransform(lua_State * L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
 	float x = lua_tonumber(L, -2);
 	float y = lua_tonumber(L, -1);
 	actor->setGlobalTransform(v2(x, y));
+	return 0;
+}
+extern "C" int getLocalTransform(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	v2 transform = actor->getLocalTransform();
+	lua_pushnumber(L, transform.x);
+	lua_pushnumber(L, transform.y);
+	return 2;
+}
+extern "C" int setLocalTransform(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	float x = lua_tonumber(L, -2);
+	float y = lua_tonumber(L, -1);
+	actor->setLocalTransform(v2(x, y));
 	return 0;
 }
 extern "C" int addImpulse(lua_State * L)
@@ -71,3 +88,5 @@ extern "C" int mouseButtons(lua_State * L)
 	lua_pushboolean(L, InputManager::Instance()->getMouseRightButton());
 	return 2;
 }
+
+extern "C" int loadScene(lua_State * L){ActionEngine::Instance()->loadSceneJson(lua_tostring(L, 1));return 0;}
