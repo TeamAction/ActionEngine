@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "SDL/SDL_mixer.h"
 #include <iostream> //used to parse json
 #include <fstream> 
 #include "json.hpp"
