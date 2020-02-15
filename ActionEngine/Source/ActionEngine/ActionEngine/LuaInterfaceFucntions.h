@@ -51,9 +51,19 @@ extern "C" int addImpulse(lua_State * L)
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
 	float x = lua_tonumber(L, -2);
 	float y = lua_tonumber(L, -1);
-	actor->addForce(v2(x, y) / Renderer::Instance()->getDeltaTime());
+	actor->addForce(v2(x, y) /0.016f);
 	return 0;
 }
+
+extern "C" int getVelocity(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	v2 velocity = actor->getVelocity();
+	lua_pushnumber(L, velocity.x);
+	lua_pushnumber(L, velocity.y);
+	return 2;
+}
+
 extern "C" int isGrounded(lua_State * L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));

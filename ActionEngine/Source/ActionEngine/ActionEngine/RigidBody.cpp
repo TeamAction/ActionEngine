@@ -27,6 +27,12 @@ void RigidBody::setCenter(v2 cen)
 
 void RigidBody::onUpdate(float dt)
 {
+    dt = 0.016;
+    if (mass == 0)
+    {
+        PhysicsSystem::Instance()->rigidBodies.push_back(this);
+        return;
+    }
     v2 acceleration =  v2();
     if (obeysGravity && !grounded) {
         acceleration = gravity;
@@ -36,10 +42,11 @@ void RigidBody::onUpdate(float dt)
     }
 
     acceleration = acceleration + totalForces * (1/mass);
-    if (mass == 0)
-        acceleration = v2(0,0);
 
     currentVelocity = currentVelocity + acceleration * dt;
+    currentVelocity.x = currentVelocity.x * 0.9;
+    if (abs(currentVelocity.x) < 1.0f)
+        currentVelocity.x = 0;
 
     v2 temp = actorTransform->getData();
     temp = temp + currentVelocity * dt;

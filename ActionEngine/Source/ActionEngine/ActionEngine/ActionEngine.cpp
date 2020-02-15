@@ -56,15 +56,15 @@ ActionEngine::ActionEngine()
 		"end"
 		""
 		""
-		"		function luaLoader(path)"
-		"		scriptNamespace[this] = setmetatable({}, { __index = _G })"
-		"		local chunk = loadfile(path, nil, scriptNamespace[this])"
-		"		chunk()"
-		"		end"
+		" function luaLoader(path)"
+		" scriptNamespace[this] = setmetatable({}, { __index = _G })"
+		" local chunk = loadfile(path, nil, scriptNamespace[this])"
+		" chunk()"
+		" end"
 		""
-		"		function destroyScript()"
-		"		scriptNamespace[this] = nil"
-		"		end");
+		" function destroyScript()"
+		" scriptNamespace[this] = nil"
+		" end");
 	if (lua_pcall(luaVM, 0, 0, 0))
 	{
 		Renderer::Instance()->ErrorPopup("lua priming call failed");
@@ -93,6 +93,8 @@ ActionEngine::ActionEngine()
 	lua_setfield(luaVM, -2, "setLocalTransform"); 
 	lua_pushcfunction(luaVM, addImpulse);
 	lua_setfield(luaVM, -2, "addImpulse"); 
+	lua_pushcfunction(luaVM, getVelocity);
+	lua_setfield(luaVM, -2, "getVelocity"); 
 	lua_pushcfunction(luaVM, isGrounded);
 	lua_setfield(luaVM, -2, "isGrounded"); 
 	engineActive = true;
@@ -185,7 +187,7 @@ void ActionEngine::play()
 		Renderer::Instance()->updateTime();
 		InputManager::Instance()->updateInputState();
 		sceneRoot->tick(Renderer::Instance()->getDeltaTime());
-		PhysicsSystem::Instance()->UpdatePhysics(Renderer::Instance()->getDeltaTime());
+		PhysicsSystem::Instance()->UpdatePhysics(0.016f);
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();
 	}

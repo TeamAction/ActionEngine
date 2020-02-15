@@ -93,6 +93,11 @@ void Actor::addForce(v2 force)
 	rigidBody->AddForce(force);
 }
 
+v2 Actor::getVelocity()
+{
+	return rigidBody->currentVelocity;
+}
+
 bool Actor::isGrounded()
 {
 	if (!rigidBody)

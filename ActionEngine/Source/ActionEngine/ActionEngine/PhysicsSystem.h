@@ -36,7 +36,7 @@ private:
 
     std::vector<std::pair<CollisionPair, CollisionInfo>> collisions;
     void PositionalCorrection(CollisionPair c, CollisionInfo i);
-    void IsGrounded();
+    void IsGrounded(RigidBody* r);
     void CheckCollisions();
     void ResolveCollisions(float dt);
 

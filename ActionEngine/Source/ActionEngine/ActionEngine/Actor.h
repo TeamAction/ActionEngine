@@ -26,6 +26,7 @@ public:
 	v2 getLocalTransform();
 	void setLocalTransform(v2 newTransform);
 	void addForce(v2 force);
+	v2 getVelocity();
 	bool isGrounded();
 private :
 	DataInterface<v2>* transform = nullptr; //this is used very often so i am including this to reduce time spent fetching it
