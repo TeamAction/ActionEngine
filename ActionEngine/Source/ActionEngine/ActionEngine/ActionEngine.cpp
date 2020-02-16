@@ -48,23 +48,18 @@ ActionEngine::ActionEngine()
 
 	luaVM = luaL_newstate();
 	luaL_openlibs(luaVM);
-	//luaL_loadfile(luaVM, "../../../Assets/scripts/loader.lua"); // loading from string directly to prevent user fuckery
-	luaL_loadstring(luaVM, "scriptNamespace = {}"
-		""
-		"function fireFunction(functionName, ...)"
-		"return (scriptNamespace[this][functionName](...))"
-		"end"
-		""
-		""
-		" function luaLoader(path)"
-		" scriptNamespace[this] = setmetatable({}, { __index = _G })"
-		" local chunk = loadfile(path, nil, scriptNamespace[this])"
-		" chunk()"
-		" end"
-		""
-		" function destroyScript()"
-		" scriptNamespace[this] = nil"
-		" end");
+	luaL_loadstring(luaVM, "scriptNamespace = {} "
+		"function fireFunction(functionName, ...) "
+		"return (scriptNamespace[this][functionName](...)) "
+		"end "
+		"function luaLoader(path) "
+		"scriptNamespace[this] = setmetatable({}, { __index = _G }) "
+		"local chunk = loadfile(path, nil, scriptNamespace[this]) "
+		"chunk() "
+		"end "
+		"function destroyScript() "
+		"scriptNamespace[this] = nil "
+		"end");
 	if (lua_pcall(luaVM, 0, 0, 0))
 	{
 		Renderer::Instance()->ErrorPopup("lua priming call failed");

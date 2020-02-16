@@ -23,7 +23,7 @@
     ]
   },
    {
-    "name": "rock",
+    "name": "platform1",
     "parent": "sceneRoot",
     "components": [
       {
@@ -36,7 +36,7 @@
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [64,64,1,0.1,true,100,100]
+        "value": [64,64,0,0.1,false,100,100]
       },
       {
         "type": "data<v2>",
@@ -59,7 +59,7 @@
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [50,50,1,0.1,true,100,100]
+        "value": [64,50,1,0.1,true,100,100]
       },
 	  {
         "type": "script",
@@ -87,7 +87,7 @@
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [50,50,1,0.8,true,100,100]
+        "value": [64,50,1,0.8,true,100,100]
       },
       {
         "type": "data<v2>",
@@ -110,12 +110,35 @@
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [50,50,1,0.8,true,100,100]
+        "value": [64,50,1,0.8,true,100,100]
       },
       {
         "type": "data<v2>",
         "name": "transform",
         "value": [200,300]
+      }
+    ]
+  },
+     {
+    "name": "platform2",
+    "parent": "sceneRoot",
+    "components": [
+      {
+        "type": "sprite",
+        "name": "spriteTest",
+        "frames": [0,1,2,3],
+		"layer": 0,
+		"loopTime": 5.0
+      },
+      {
+        "type": "rigidBody",
+        "name": "testRB",
+        "value": [64,64,0,0.1,false,100,100]
+      },
+      {
+        "type": "data<v2>",
+        "name": "transform",
+        "value": [300,190]
       }
     ]
   }
