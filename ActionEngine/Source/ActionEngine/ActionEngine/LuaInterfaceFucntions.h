@@ -14,6 +14,9 @@ extern "C"
 extern "C" int fireEvent(lua_State * L) { return EventManager::Instance()->fireEvent(L); }
 extern "C" int bindEvent(lua_State * L) { return EventManager::Instance()->bindEvent(L); }
 extern "C" int unBindEvent(lua_State * L) { return EventManager::Instance()->unBindEvent(L); }
+extern "C" int unBindAll(lua_State * L) {
+	return EventManager::Instance()->unBindAll(L); 
+}
 extern "C" int getGlobalTransform(lua_State * L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
@@ -116,3 +119,11 @@ extern "C" int getActorByName(lua_State * L)
 	}
 	return 1;
 }
+
+extern "C" int destroyActor(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	actor->flagActorForRemoval();
+	return 0;
+}
+

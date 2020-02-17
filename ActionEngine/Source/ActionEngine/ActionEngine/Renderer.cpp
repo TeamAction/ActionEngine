@@ -50,7 +50,7 @@ void Renderer::Init()
 		ErrorPopup(SDL_GetError());
 	SDL_RenderSetIntegerScale(window_renderer, SDL_TRUE);
 	pFont = FC_CreateFont();
-	FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/8bit.ttf",10, FC_MakeColor(255, 255, 255, 255), 0);
+	FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/FreeSans.ttf",20, FC_MakeColor(255, 255, 255, 255), 0);
 	mScreenScale = v2(1, 1);
 	running = true;
 }

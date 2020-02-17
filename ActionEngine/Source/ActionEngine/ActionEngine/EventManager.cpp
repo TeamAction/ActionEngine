@@ -5,11 +5,39 @@ EventManager* EventManager::s_pInstance = 0;
 
 void EventManager::removePendingEvents()
 {
+	for (int i = 0; i < removedActors.size(); i++)
+	{
+		std::unordered_map<std::string, std::unordered_map<Actor*, std::string>>::iterator it = events.begin();
+		while (it != events.end())
+		{
+			if (it->second.count(removedActors[i]) != 0)
+			{
+				std::pair<std::string, Actor*> pendingErasure(it->first, removedActors[i]);
+				pendingRemoval.push_back(pendingErasure);
+			}
+			it++;
+		}
+	}
+	removedActors.clear();
+
 	for (int i = 0; i < pendingRemoval.size(); i++)
 	{
 		events[pendingRemoval[i].first].erase(pendingRemoval[i].second);
 	}
 	pendingRemoval.clear();
+
+	std::unordered_map<std::string, std::unordered_map<Actor*, std::string>>::iterator it = events.begin();
+	while (it != events.end())
+	{
+		if (it->second.size() < 1)
+		{
+			it = events.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
 }
 
 int EventManager::fireEvent(lua_State* L)
@@ -17,7 +45,7 @@ int EventManager::fireEvent(lua_State* L)
 	removePendingEvents();
 
 	int numberOfArgs = lua_gettop(L);
-	std::string eventName = std::string(lua_tostring(L, 2));
+	std::string eventName = std::string(lua_tostring(L, 1));
 	std::unordered_map<Actor*, std::string>::iterator it = events[eventName].begin();
 	
 	while(it != events[eventName].end())
@@ -28,7 +56,7 @@ int EventManager::fireEvent(lua_State* L)
 
 		lua_getglobal(L, "fireFunction");
 		lua_pushstring(L, (char*)it->second.c_str());
-		for (int i = 3; i <= numberOfArgs; i++)
+		for (int i = 2; i <= numberOfArgs; i++)
 		{
 			int t = lua_type(L, i);
 			switch (t) {
@@ -43,7 +71,7 @@ int EventManager::fireEvent(lua_State* L)
 				break;
 			}
 		}
-		lua_pcall(L,numberOfArgs-1, 0, 0);
+		lua_pcall(L,numberOfArgs, 0, 0);
 		it++;
 	}
 	lua_settop(L, 0);
@@ -70,5 +98,12 @@ int EventManager::unBindEvent(lua_State* L)
 
 	pendingRemoval.push_back(pendingErasure);
 	lua_settop(L, 0);
+	return 0;
+}
+
+int EventManager::unBindAll(lua_State* L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	removedActors.push_back(actor);
 	return 0;
 }

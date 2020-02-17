@@ -31,8 +31,8 @@ function onTick(dt)
 	end
 
 
-	fireEvent(this,"test")
-	fireEvent(this,"test2","move ","with ","WASD")
+	fireEvent("test")
+	fireEvent("test2","move ","with ","WASD")
 end
 
 function boundEvent()

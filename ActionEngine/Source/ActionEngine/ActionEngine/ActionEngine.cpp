@@ -58,6 +58,7 @@ ActionEngine::ActionEngine()
 		"chunk() "
 		"end "
 		"function destroyScript() "
+		"unBindAll(this) "
 		"scriptNamespace[this] = nil "
 		"end");
 	if (lua_pcall(luaVM, 0, 0, 0))
@@ -67,6 +68,7 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("bindEvent",&bindEvent);
 	bindLuaFunction("fireEvent",&fireEvent);
 	bindLuaFunction("unBindEvent",&unBindEvent);
+	bindLuaFunction("unBindAll",&unBindAll);
 	bindLuaFunction("screenText",&screenText);
 	bindLuaFunction("keyDown",&keyDown);
 	bindLuaFunction("keyUp",&keyUp);
@@ -75,6 +77,7 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("mouseButtons",&mouseButtons);
 	bindLuaFunction("loadScene",&loadScene);
 	bindLuaFunction("getActorByName",&getActorByName);
+	bindLuaFunction("destoryActor",&destroyActor);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -93,6 +96,7 @@ ActionEngine::ActionEngine()
 	lua_setfield(luaVM, -2, "getVelocity"); 
 	lua_pushcfunction(luaVM, isGrounded);
 	lua_setfield(luaVM, -2, "isGrounded"); 
+
 	engineActive = true;
 }
 
@@ -121,6 +125,8 @@ void ActionEngine::loadScenePostTick()
 		sceneRoot->removeFlaggedActors();
 		delete sceneRoot; // the scene root cannot be removed by the remove flagged actors method
 	}
+	EventManager::Instance()->removePendingEvents();
+
 	sceneRoot = new Actor("sceneRoot", nullptr); // create new scene root
 	actorMap["sceneRoot"] = sceneRoot;
 

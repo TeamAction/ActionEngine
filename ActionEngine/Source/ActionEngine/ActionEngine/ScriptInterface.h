@@ -20,7 +20,6 @@ public:
 		lua_pushlightuserdata(luaVM, owner);
 		luaL_setmetatable(luaVM, "Actor");
 		lua_setglobal(luaVM, "this");
-
 		lua_getglobal(luaVM, "destroyScript");
 		lua_pcall(luaVM, 0, 0, 0);
 	}
