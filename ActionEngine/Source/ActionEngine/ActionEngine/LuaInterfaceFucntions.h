@@ -100,3 +100,19 @@ extern "C" int mouseButtons(lua_State * L)
 }
 
 extern "C" int loadScene(lua_State * L){ActionEngine::Instance()->loadSceneJson(lua_tostring(L, 1));return 0;}
+
+extern "C" int getActorByName(lua_State * L)
+{
+	const char* actorName = lua_tostring(L, 1);
+	Actor* test = ActionEngine::Instance()->actorMap["platform2"];
+	if(ActionEngine::Instance()->actorMap.count(actorName) == 1)
+		lua_pushlightuserdata(L,ActionEngine::Instance()->actorMap[actorName]);
+	else
+	{
+		lua_pushlightuserdata(L, ActionEngine::Instance()->actorMap["sceneRoot"]);
+		char output[256];
+		sprintf_s(output, "requested actor \"%s\" not found", actorName);
+		Renderer::Instance()->ErrorPopup(output);
+	}
+	return 1;
+}

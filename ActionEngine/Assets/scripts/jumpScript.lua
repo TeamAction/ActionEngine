@@ -1,6 +1,8 @@
 
-function onStart()
+platform2 = nil
 
+function onStart()
+	platform2 = getActorByName("platform2")
 end
 
 function onTick(dt)
@@ -27,6 +29,16 @@ function onTick(dt)
 	if keyDown('P') then
 		loadScene("../../../Assets/scenes/testScene.json")
 	end
+	
+	x,y = platform2:getGlobalTransform()
+	if keyHeld('W') then
+		y = y+(-50*dt)
+	end
+	if keyHeld('S') then
+		y = y+(50*dt)
+	end
+	platform2:setGlobalTransform(x,y)
+
 
 end
 

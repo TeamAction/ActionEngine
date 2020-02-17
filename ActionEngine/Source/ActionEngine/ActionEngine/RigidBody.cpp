@@ -28,11 +28,6 @@ void RigidBody::setCenter(v2 cen)
 void RigidBody::onUpdate(float dt)
 {
     dt = 0.016;
-    if (mass == 0)
-    {
-        PhysicsSystem::Instance()->rigidBodies.push_back(this);
-        return;
-    }
     v2 acceleration =  v2();
     if (obeysGravity && !grounded) {
         acceleration = gravity;
@@ -41,7 +36,10 @@ void RigidBody::onUpdate(float dt)
         if (abs(currentVelocity.y) < 25.0f) currentVelocity.y = 0;
     }
 
-    acceleration = acceleration + totalForces * (1/mass);
+    if (mass != 0)
+    {
+        acceleration = acceleration + totalForces * (1 / mass);
+    }
 
     currentVelocity = currentVelocity + acceleration * dt;
     currentVelocity.x = currentVelocity.x * 0.9;

@@ -121,6 +121,8 @@ void PhysicsSystem::ResolveCollisions(float dt)
         else
             invMassB = 1 / collisions[i].first.rigidBodyB->mass;
 
+        if (invMassA + invMassB == 0)
+            continue;
         j /= invMassA + invMassB;
 
         v2 impulse = collisions[i].second.collisionNormal*j;

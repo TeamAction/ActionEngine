@@ -74,6 +74,7 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("mousePosition",&mousePosition);
 	bindLuaFunction("mouseButtons",&mouseButtons);
 	bindLuaFunction("loadScene",&loadScene);
+	bindLuaFunction("getActorByName",&getActorByName);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -114,7 +115,6 @@ bool ActionEngine::isGameActive()
 void ActionEngine::loadScenePostTick()
 {
 	loadScenePending = false;
-	std::unordered_map<std::string, Actor*> actorMap;
 	if (sceneRoot) // remove previous scene if it exists
 	{
 		sceneRoot->flagActorForRemoval();
