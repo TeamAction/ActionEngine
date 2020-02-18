@@ -18,7 +18,6 @@ private:
 	~EventManager() {delete s_pInstance;s_pInstance = nullptr;}
 	std::unordered_map<std::string, std::unordered_map<Actor*,std::string>> events; //event name , owning actor <scope,function>
 	std::vector<std::pair<std::string, Actor*>> pendingRemoval; //eventName,owning actor
-	std::vector<Actor*> removedActors;
 	
 public:	
 	static EventManager* Instance()

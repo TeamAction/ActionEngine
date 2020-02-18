@@ -1,10 +1,13 @@
 
 timer = 0
+--otherActor = nil
+
 
 function onStart()
 	screenText(200,300,"test script prints for 5 seconds on start",5)
 	bindEvent(this,"test","boundEvent")
 	bindEvent(this,"test2","otherBoundEvent")
+	--otherActor = getActorByName("Actor2")
 end
 
 function onTick(dt)
@@ -30,7 +33,7 @@ function onTick(dt)
 		loadScene("../../../Assets/scenes/testScene_Physics.json")
 	end
 
-
+	--screenText(300,350,tostring(scriptNamespace[otherActor].oribtDistance),0)
 	fireEvent("test")
 	fireEvent("test2","move ","with ","WASD")
 end

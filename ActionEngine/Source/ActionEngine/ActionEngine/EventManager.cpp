@@ -5,21 +5,6 @@ EventManager* EventManager::s_pInstance = 0;
 
 void EventManager::removePendingEvents()
 {
-	for (int i = 0; i < removedActors.size(); i++)
-	{
-		std::unordered_map<std::string, std::unordered_map<Actor*, std::string>>::iterator it = events.begin();
-		while (it != events.end())
-		{
-			if (it->second.count(removedActors[i]) != 0)
-			{
-				std::pair<std::string, Actor*> pendingErasure(it->first, removedActors[i]);
-				pendingRemoval.push_back(pendingErasure);
-			}
-			it++;
-		}
-	}
-	removedActors.clear();
-
 	for (int i = 0; i < pendingRemoval.size(); i++)
 	{
 		events[pendingRemoval[i].first].erase(pendingRemoval[i].second);
@@ -104,6 +89,15 @@ int EventManager::unBindEvent(lua_State* L)
 int EventManager::unBindAll(lua_State* L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
-	removedActors.push_back(actor);
+	std::unordered_map<std::string, std::unordered_map<Actor*, std::string>>::iterator it = events.begin();
+	while (it != events.end())
+	{
+		if (it->second.count(actor) != 0)
+		{
+			std::pair<std::string, Actor*> pendingErasure(it->first, actor);
+			pendingRemoval.push_back(pendingErasure);
+		}
+		it++;
+	}
 	return 0;
 }
