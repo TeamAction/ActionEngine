@@ -26,14 +26,34 @@ void Renderer::loadImageFile(const char* path)
 	SDL_FreeSurface(surface);
 }
 
+void Renderer::loadImageFile(const char* path, int &w,int &h)
+{
+	SDL_Surface* surface = IMG_Load(path);
+	if (!surface)
+	{
+		ErrorPopup(SDL_GetError());
+		return;
+	}
+	w = surface->w;
+	h = surface->h;
+	textures.push_back(SDL_CreateTextureFromSurface(window_renderer, surface));
+	SDL_FreeSurface(surface);
+}
+
 void Renderer::ErrorPopup(const char* text)
 {
 	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,"Error",text, NULL);
 	running = false;
 }
 
-void Renderer::Init()
+void Renderer::Init(int w, int h, const char* fontPath, int fontSize)
 {
+	mWidth = w;
+	mHeight = h;
+	mInitWidth = w;
+	mInitHeight = h;
+	mFontPath = fontPath;
+	mFontSize = fontSize;
 	if (window)
 	{
 		SDL_DestroyWindow(window);
@@ -50,24 +70,24 @@ void Renderer::Init()
 		ErrorPopup(SDL_GetError());
 	SDL_RenderSetIntegerScale(window_renderer, SDL_TRUE);
 	pFont = FC_CreateFont();
-	FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/FreeSans.ttf",20, FC_MakeColor(255, 255, 255, 255), 0);
+	FC_LoadFont(pFont, window_renderer, mFontPath.c_str(),mFontSize, FC_MakeColor(255, 255, 255, 255), 0);
 	mScreenScale = v2(1, 1);
 	running = true;
 }
 
-void Renderer::showSplash()
+void Renderer::showSplash(const char* path)
 {
 	window = SDL_CreateWindow("Action Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 400, 202, SDL_WINDOW_BORDERLESS);
 	window_renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_SetRenderDrawColor(window_renderer, 255, 255, 255, 255);
 	SDL_RenderSetIntegerScale(window_renderer, SDL_TRUE);
 	SDL_RenderClear(window_renderer);
-	loadImageFile("../../../Assets/gfx/splash.png");
 	SDL_Rect rect;
+	loadImageFile(path, rect.w, rect.h);
 	rect.x = 0;
 	rect.y = 0;
-	rect.w = 400;
-	rect.h = 202;
+	if (textures.size() < 1)
+		return;
 	SDL_RenderCopy(window_renderer, textures[0], &rect, &rect);
 	SDL_RenderPresent(window_renderer);
 	SDL_DestroyTexture(textures[0]);
@@ -179,7 +199,7 @@ void Renderer::handleInternalEvents(SDL_Event& e)
 			mWidth = e.window.data1;
 			mHeight = e.window.data2;
 			setScreenScale();
-			FC_LoadFont(pFont, window_renderer, "../../../Assets/fonts/FreeSans.ttf", 20*(mScreenScale.x>mScreenScale.y?mScreenScale.y:mScreenScale.x), FC_MakeColor(255, 255, 255, 255), 0);
+			FC_LoadFont(pFont, window_renderer, mFontPath.c_str(), mFontSize*(mScreenScale.x>mScreenScale.y?mScreenScale.y:mScreenScale.x), FC_MakeColor(255, 255, 255, 255), 0);
 			//FC_ResetFontFromRendererReset(pFont, window_renderer, e.window.type);
 			SDL_RenderPresent(window_renderer);
 			break;
@@ -219,8 +239,8 @@ void Renderer::handleInternalEvents(SDL_Event& e)
 
 void Renderer::setScreenScale()
 {
-	mScreenScale.x = mWidth / 640.0f;
-	mScreenScale.y = mHeight / 480.0f;
+	mScreenScale.x = mWidth / (float)mInitWidth;
+	mScreenScale.y = mHeight / (float)mInitHeight;
 }
 
 Renderer::Renderer(){}

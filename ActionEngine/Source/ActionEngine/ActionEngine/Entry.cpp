@@ -23,7 +23,7 @@ int WINAPI WinMain(
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
-	Renderer::Instance()->showSplash();
+	Renderer::Instance()->showSplash("../../../Assets/gfx/splash.png");
 	//ActionEngine::Instance()->loadSceneJson("../../../Assets/scenes/testScene_Physics.json"); // this will load scene info from json
 	ActionEngine::Instance()->loadSceneJson("../../../Assets/scenes/testScene.json"); // this will load scene info from json
 	Renderer::Instance()->generateSprite(0, 16 * 5, 16 * 8, 16, 16);
@@ -35,8 +35,8 @@ int WINAPI WinMain(
 	Renderer::Instance()->generateSprite(0, 0, 16 * 8, 400, 16);
 
 
-	Sleep(500); //give time to show splash
-	Renderer::Instance()->Init();
+	Sleep(1500); //give time to show splash
+	Renderer::Instance()->Init(640,480, "../../../Assets/fonts/FreeSans.ttf",20);
 	Renderer::Instance()->loadImageFile("../../../Assets/gfx/cave.png");
 
 	ActionEngine::Instance()->play();
