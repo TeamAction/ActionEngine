@@ -1,8 +1,10 @@
 #include "Audio.h"
 #include "Renderer.h"
 
-Mix_Chunk *wave = Mix_LoadWAV("505528__dbairsoft__beatbox1");
 
+Mix_Chunk *wave = NULL;
+bool isRunning = true;
+SDL_Event ev;
 //Mix_Music *music = Mix_LoadMUS();
 
 Audio::Audio()
@@ -17,7 +19,21 @@ Audio::Audio()
 	}
 
 	
+	/*if (ev.type == SDL_QUIT)
+		isRunning = false;
+	else*/ if (ev.type == SDL_KEYDOWN)
+	{
+		switch (ev.key.keysym.sym)
+		{
 
+		case SDLK_1:
+			if (Mix_PlayChannel(-1, wave, 0) == -1)
+			{
+				Renderer::Instance()->ErrorPopup("Error Audio did not load!");
+			}
+			break;
+		}
+	}
 	//if (Mix_PlayMusic(music, -1) == -1) {
 	//	Renderer::Instance()->ErrorPopup("Error Audio did not load!");
 	//}
@@ -25,29 +41,18 @@ Audio::Audio()
 	while (Mix_PlayingMusic());
 }
 
-bool isRunning = true;
-SDL_Event ev;
+
 
 
 void Audio::loadClip(std::string beatbox, std::string filePath)
 {
-	if (ev.type == SDL_QUIT)
-		isRunning = false;
-	else if (ev.type == SDL_KEYDOWN)
-	{
-		switch (ev.key.keysym.sym)
-		{
+	//Mix_Chunk *wave = Mix_LoadWAV("505528__dbairsoft__beatbox1");
 
-		case SDLK_1:
-			Mix_PlayChannel(-1, wave, 0);
-			break;
-		}
-	}
 
-	/*wave = Mix_LoadWAV(filePath, "../../../Assets/AudioClips/505528__dbairsoft__beatbox1");
+	Mix_Chunk *wave = Mix_LoadWAV("../../../Assets/AudioClips/505528__dbairsoft__beatbox1", filePath);
 	if (wave == NULL) {
 		Renderer::Instance()->ErrorPopup("Error! did not load!");
-	}*/
+	}
 
 	/*music = Mix_LoadMUS(MUS_PATH);
 	if (music == NULL) {
@@ -57,17 +62,28 @@ void Audio::loadClip(std::string beatbox, std::string filePath)
 
 Audio::~Audio()
 {
-	//clean up our resourses
+	
+	// clean up our resources
 	Mix_FreeChunk(wave);
-	Renderer::Instance()->ErrorPopup("Error! Audio file did not load!");
+	//Mix_FreeMusic(music);
 
 	wave = nullptr;
 
-	/*Mix_FreeMusic(music);
-	Renderer::Instance()->ErrorPopup("Error! Audio file did not load!");*/
-	//quit sdl mixer
-	Mix_Quit();
+	// quit SDL_mixer
 	Mix_CloseAudio();
+	
+	
+	////clean up our resourses
+	//Mix_FreeChunk(wave);
+	//Renderer::Instance()->ErrorPopup("Error! Audio file did not load!");
+
+	//wave = nullptr;
+
+	///*Mix_FreeMusic(music);
+	//Renderer::Instance()->ErrorPopup("Error! Audio file did not load!");*/
+	////quit sdl mixer
+	//Mix_Quit();
+	//Mix_CloseAudio();
 
 	
 }
