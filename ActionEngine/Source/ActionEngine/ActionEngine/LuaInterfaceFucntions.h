@@ -84,9 +84,9 @@ extern "C" int screenText(lua_State * L)
 	return 0;
 }
 
-extern "C" int keyUp(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyUp(*lua_tostring(L, 1))); return 1; }
-extern "C" int keyDown(lua_State * L){lua_pushboolean(L, InputManager::Instance()->getKeyDown(*lua_tostring(L, 1)));return 1;}
-extern "C" int keyHeld(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyHeld(*lua_tostring(L, 1))); return 1; }
+extern "C" int keyUp(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyUp(toupper(*lua_tostring(L, 1)))); return 1; }
+extern "C" int keyDown(lua_State * L){lua_pushboolean(L, InputManager::Instance()->getKeyDown(toupper(*lua_tostring(L, 1))));return 1;}
+extern "C" int keyHeld(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyHeld(toupper(*lua_tostring(L, 1)))); return 1; }
 
 extern "C" int mousePosition(lua_State * L)
 {

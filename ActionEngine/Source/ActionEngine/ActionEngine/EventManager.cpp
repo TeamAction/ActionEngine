@@ -30,7 +30,8 @@ int EventManager::fireEvent(lua_State* L)
 	removePendingEvents();
 
 	int numberOfArgs = lua_gettop(L);
-	std::string eventName = std::string(lua_tostring(L, 1));
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	std::string eventName = std::string(lua_tostring(L, 2));
 	std::unordered_map<Actor*, std::string>::iterator it = events[eventName].begin();
 	
 	while(it != events[eventName].end())
@@ -41,7 +42,7 @@ int EventManager::fireEvent(lua_State* L)
 
 		lua_getglobal(L, "fireFunction");
 		lua_pushstring(L, (char*)it->second.c_str());
-		for (int i = 2; i <= numberOfArgs; i++)
+		for (int i = 3; i <= numberOfArgs; i++)
 		{
 			int t = lua_type(L, i);
 			switch (t) {
@@ -56,9 +57,13 @@ int EventManager::fireEvent(lua_State* L)
 				break;
 			}
 		}
-		lua_pcall(L,numberOfArgs, 0, 0);
+		lua_pcall(L,numberOfArgs-1, 0, 0);
 		it++;
 	}
+	lua_pushlightuserdata(L, actor);
+	luaL_setmetatable(L, "Actor");
+	lua_setglobal(L, "this");
+
 	lua_settop(L, 0);
 	return 0;
 }
