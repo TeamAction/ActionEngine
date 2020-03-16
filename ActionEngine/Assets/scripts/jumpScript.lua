@@ -37,6 +37,10 @@ function onTick(dt)
 	if keyHeld('S') then
 		y = y+(50*dt)
 	end
+	if keyDown('V') then
+		platform2:destoryActor()
+		platform2 = nil
+	end
 	platform2:setGlobalTransform(x,y)
 
 

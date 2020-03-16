@@ -8,7 +8,7 @@
         "name": "spriteTest",
         "frames": [0,1,2,3],
 		"layer": 0,
-		"loopTime": 5.0
+		"loopTime": 1.0
       },
       {
         "type": "script",
@@ -31,7 +31,7 @@
         "name": "spriteTest",
         "frames": [4],
 		"layer": 0,
-		"loopTime": 5.0
+		"loopTime": 1.0
       },
       {
         "type": "script",

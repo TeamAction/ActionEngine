@@ -142,7 +142,6 @@ void Actor::createTransform(float dt)
 	}
 	transform = static_cast<DataInterface<v2>*>(getComponent("transform"));
 	nextFunction = &Actor::updateComponents;
-	//tickComponents(dt);
 }
 
 void Actor::addComponent(std::string name,ActorComponent * component)

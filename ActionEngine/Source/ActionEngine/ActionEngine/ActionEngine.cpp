@@ -77,7 +77,6 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("mouseButtons",&mouseButtons);
 	bindLuaFunction("loadScene",&loadScene);
 	bindLuaFunction("getActorByName",&getActorByName);
-	bindLuaFunction("destoryActor",&destroyActor);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -96,6 +95,8 @@ ActionEngine::ActionEngine()
 	lua_setfield(luaVM, -2, "getVelocity"); 
 	lua_pushcfunction(luaVM, isGrounded);
 	lua_setfield(luaVM, -2, "isGrounded"); 
+	lua_pushcfunction(luaVM, destroyActor);
+	lua_setfield(luaVM, -2, "destoryActor"); 
 
 	engineActive = true;
 }
@@ -149,7 +150,7 @@ void ActionEngine::loadScenePostTick()
 				{
 					animFrames.push_back(drawObject(jsonParse[i]["components"][q]["frames"][z].get<int>()));
 				}
-				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new DrawSprite(animFrames, jsonParse[i]["components"][q]["layer"].get<int>(), 1.5f));
+				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new DrawSprite(animFrames, jsonParse[i]["components"][q]["layer"].get<int>(), jsonParse[i]["components"][q]["loopTime"].get<float>()));
 			}
 			else if (compType == "script")
 			{
