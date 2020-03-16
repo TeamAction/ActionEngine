@@ -27,7 +27,7 @@ function onTick(dt)
 		this:addImpulse(-30,0)
 	end
 	if keyDown('P') then
-		loadScene("../../../Assets/scenes/testScene.json")
+		loadScene("testScene1")
 	end
 	
 	x,y = platform2:getGlobalTransform()

@@ -30,7 +30,7 @@ function onTick(dt)
 	this:setGlobalTransform(x,y)
 	
 	if keyDown('p') then
-		loadScene("../../../Assets/scenes/testScene_Physics.json")
+		loadScene("testScene2")
 	end
 
 	screenText(300,350,tostring(scriptNamespace[otherActor].oribtDistance),0)

@@ -11,8 +11,8 @@ using json = nlohmann::json;
 #include "Renderer.h" 
 #include "InputManager.h"
 #include "PhysicsSystem.h"
-
-
+#include "sceneManager.h"
+#include "EventManager.h"
 
 #include "Actor.h" // actor object 
 
@@ -130,14 +130,7 @@ void ActionEngine::loadScenePostTick()
 	sceneRoot = new Actor("sceneRoot", nullptr); // create new scene root
 	actorMap["sceneRoot"] = sceneRoot;
 
-	std::ifstream input(sceneFile); //load json file from provided path
-	json jsonParse;
-	if (!input) //thow error if file failed to load 
-	{
-		Renderer::Instance()->ErrorPopup("JSON file failed to load");
-		return;
-	}
-	input >> jsonParse; // uses an overloaded operator to parse file from iostream
+	json jsonParse = SceneManager::Instance()->getSceneData(sceneFile);
 
 	std::string name;
 	std::string compType;
