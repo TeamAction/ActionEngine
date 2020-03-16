@@ -33,9 +33,10 @@ public:
 	}
 
 	void loadImageFile(const char* path);
+	void loadImageFile(const char* path, int& w, int& h);
 	void ErrorPopup(const char* text);
-	void Init();
-	void showSplash();
+	void Init(int w, int h, const char* fontPath, int fontSize);
+	void showSplash(const char* path);
 	bool status();
 	void generateSprite(int index, int x, int y, int w, int h);
 	void addDrawItem(int layer, drawObject newObject);
@@ -65,8 +66,12 @@ private:
 	SDL_Window* window;
 	FC_Font* pFont;
 
-	int mWidth = 640;
-	int mHeight = 480;
+	int mWidth;
+	int mHeight;
+	int mInitWidth;
+	int mInitHeight;
+	std::string mFontPath;
+	int mFontSize;
 	v2 mScreenScale;
 
 	bool mMouseFocus = true;

@@ -13,5 +13,6 @@ function luaLoader(path)
 end
 
 function destroyScript()
+	unBindAll(this) 
 	scriptNamespace[this] = nil
 end

@@ -93,6 +93,11 @@ void Actor::addForce(v2 force)
 	rigidBody->AddForce(force);
 }
 
+v2 Actor::getVelocity()
+{
+	return rigidBody->currentVelocity;
+}
+
 bool Actor::isGrounded()
 {
 	if (!rigidBody)
@@ -137,7 +142,7 @@ void Actor::createTransform(float dt)
 	}
 	transform = static_cast<DataInterface<v2>*>(getComponent("transform"));
 	nextFunction = &Actor::updateComponents;
-	tickComponents(dt);
+	//tickComponents(dt);
 }
 
 void Actor::addComponent(std::string name,ActorComponent * component)
@@ -184,6 +189,7 @@ void Actor::removeFlaggedActors()
 		if (children[i]->flagStatus() == true)
 		{
 			delete children[i];
+			ActionEngine::Instance()->actorMap.erase(actorName);
 			children.erase(children.begin() + i);
 		}
 	}

@@ -170,6 +170,7 @@
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SDL_FontCache.c" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +188,7 @@
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScriptInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

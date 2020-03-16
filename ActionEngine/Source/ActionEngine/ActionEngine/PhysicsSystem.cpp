@@ -12,7 +12,6 @@ void PhysicsSystem::UpdatePhysics(float dt)
         return;
     CheckCollisions();
     ResolveCollisions(dt);
-    IsGrounded();
     rigidBodies.clear();
     collisions.clear();
 }
@@ -41,18 +40,15 @@ void PhysicsSystem::PositionalCorrection(CollisionPair c, CollisionInfo i)
 
 }
 
-void PhysicsSystem::IsGrounded()
+void PhysicsSystem::IsGrounded(RigidBody* r)
 {
-    for (int i = 0; i < rigidBodies.size();i++) {
-        rigidBodies[i]->grounded = false;
-        for (int q = 0; q < rigidBodies.size(); q++) {
-            if (i != q) {
-                if (rigidBodies[i]->aabb.bLeft.x < rigidBodies[q]->aabb.tRight.x
-                    && rigidBodies[i]->aabb.tRight.x > rigidBodies[q]->aabb.bLeft.x
-                    && abs(rigidBodies[q]->aabb.tRight.y - rigidBodies[i]->aabb.bLeft.y) <= 1.0f) {
-                    if (abs(rigidBodies[i]->currentVelocity.y) < 10.0f)
-                        rigidBodies[i]->grounded = true;
-                }
+    r->grounded = false;
+    for (int q = 0; q < rigidBodies.size(); q++) {
+        if (r != rigidBodies[q]) {
+            if (r->aabb.bLeft.x < rigidBodies[q]->aabb.tRight.x
+                && r->aabb.tRight.x > rigidBodies[q]->aabb.bLeft.x
+                && abs(rigidBodies[q]->aabb.tRight.y - r->aabb.bLeft.y) <= 1.0f) {
+                    r->grounded = true;
             }
         }
     }
@@ -63,11 +59,9 @@ void PhysicsSystem::IsGrounded()
 void PhysicsSystem::CheckCollisions()
 {
     for (int i = 0; i < rigidBodies.size()-1;i++) {
+        IsGrounded(rigidBodies[i]);
         for (int q = i+1; q < rigidBodies.size(); q++) {
             if (q != i) {
-                CollisionPair pair;
-                CollisionInfo colInfo;
-                pair.rigidBodyA = rigidBodies[i]; pair.rigidBodyB = rigidBodies[q];
 
                 v2 distance = rigidBodies[q]->getCenter() - rigidBodies[i]->getCenter();
 
@@ -78,7 +72,9 @@ void PhysicsSystem::CheckCollisions()
                 v2 gap =  v2(abs(distance.x), abs(distance.y)) - (halfSizeA + halfSizeB);
 
                 if (gap.x < 0 && gap.y < 0) {
-
+                    CollisionPair pair;
+                    CollisionInfo colInfo;
+                    pair.rigidBodyA = rigidBodies[i]; pair.rigidBodyB = rigidBodies[q];
                     if (gap.x > gap.y) {
                         if (distance.x > 0) {
                             colInfo.collisionNormal = v2(1, 0);
@@ -125,6 +121,8 @@ void PhysicsSystem::ResolveCollisions(float dt)
         else
             invMassB = 1 / collisions[i].first.rigidBodyB->mass;
 
+        if (invMassA + invMassB == 0)
+            continue;
         j /= invMassA + invMassB;
 
         v2 impulse = collisions[i].second.collisionNormal*j;

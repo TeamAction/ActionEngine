@@ -26,6 +26,8 @@ public:
 	void loadLuaScript(std::string path, Actor* name);
 	lua_State* getLuaState();
 	void bindLuaFunction(std::string name, lua_CFunction function);
+
+	std::unordered_map<std::string, Actor*> actorMap;
 private:
 	static ActionEngine* s_pInstance;
 

@@ -11,8 +11,8 @@ using json = nlohmann::json;
 #include "Renderer.h" 
 #include "InputManager.h"
 #include "PhysicsSystem.h"
-
-
+#include "sceneManager.h"
+#include "EventManager.h"
 
 #include "Actor.h" // actor object 
 
@@ -48,23 +48,19 @@ ActionEngine::ActionEngine()
 
 	luaVM = luaL_newstate();
 	luaL_openlibs(luaVM);
-	//luaL_loadfile(luaVM, "../../../Assets/scripts/loader.lua"); // loading from string directly to prevent user fuckery
-	luaL_loadstring(luaVM, "scriptNamespace = {}"
-		""
-		"function fireFunction(functionName, ...)"
-		"return (scriptNamespace[this][functionName](...))"
-		"end"
-		""
-		""
-		"		function luaLoader(path)"
-		"		scriptNamespace[this] = setmetatable({}, { __index = _G })"
-		"		local chunk = loadfile(path, nil, scriptNamespace[this])"
-		"		chunk()"
-		"		end"
-		""
-		"		function destroyScript()"
-		"		scriptNamespace[this] = nil"
-		"		end");
+	luaL_loadstring(luaVM, "scriptNamespace = {} "
+		"function fireFunction(functionName, ...) "
+		"return (scriptNamespace[this][functionName](...)) "
+		"end "
+		"function luaLoader(path) "
+		"scriptNamespace[this] = setmetatable({}, { __index = _G }) "
+		"local chunk = loadfile(path, nil, scriptNamespace[this]) "
+		"chunk() "
+		"end "
+		"function destroyScript() "
+		"unBindAll(this) "
+		"scriptNamespace[this] = nil "
+		"end");
 	if (lua_pcall(luaVM, 0, 0, 0))
 	{
 		Renderer::Instance()->ErrorPopup("lua priming call failed");
@@ -72,6 +68,7 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("bindEvent",&bindEvent);
 	bindLuaFunction("fireEvent",&fireEvent);
 	bindLuaFunction("unBindEvent",&unBindEvent);
+	bindLuaFunction("unBindAll",&unBindAll);
 	bindLuaFunction("screenText",&screenText);
 	bindLuaFunction("keyDown",&keyDown);
 	bindLuaFunction("keyUp",&keyUp);
@@ -79,6 +76,8 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("mousePosition",&mousePosition);
 	bindLuaFunction("mouseButtons",&mouseButtons);
 	bindLuaFunction("loadScene",&loadScene);
+	bindLuaFunction("getActorByName",&getActorByName);
+	bindLuaFunction("destoryActor",&destroyActor);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -93,8 +92,11 @@ ActionEngine::ActionEngine()
 	lua_setfield(luaVM, -2, "setLocalTransform"); 
 	lua_pushcfunction(luaVM, addImpulse);
 	lua_setfield(luaVM, -2, "addImpulse"); 
+	lua_pushcfunction(luaVM, getVelocity);
+	lua_setfield(luaVM, -2, "getVelocity"); 
 	lua_pushcfunction(luaVM, isGrounded);
 	lua_setfield(luaVM, -2, "isGrounded"); 
+
 	engineActive = true;
 }
 
@@ -117,24 +119,18 @@ bool ActionEngine::isGameActive()
 void ActionEngine::loadScenePostTick()
 {
 	loadScenePending = false;
-	std::unordered_map<std::string, Actor*> actorMap;
 	if (sceneRoot) // remove previous scene if it exists
 	{
 		sceneRoot->flagActorForRemoval();
 		sceneRoot->removeFlaggedActors();
 		delete sceneRoot; // the scene root cannot be removed by the remove flagged actors method
 	}
+	EventManager::Instance()->removePendingEvents();
+
 	sceneRoot = new Actor("sceneRoot", nullptr); // create new scene root
 	actorMap["sceneRoot"] = sceneRoot;
 
-	std::ifstream input(sceneFile); //load json file from provided path
-	json jsonParse;
-	if (!input) //thow error if file failed to load 
-	{
-		Renderer::Instance()->ErrorPopup("JSON file failed to load");
-		return;
-	}
-	input >> jsonParse; // uses an overloaded operator to parse file from iostream
+	json jsonParse = SceneManager::Instance()->getSceneData(sceneFile);
 
 	std::string name;
 	std::string compType;
@@ -185,7 +181,7 @@ void ActionEngine::play()
 		Renderer::Instance()->updateTime();
 		InputManager::Instance()->updateInputState();
 		sceneRoot->tick(Renderer::Instance()->getDeltaTime());
-		PhysicsSystem::Instance()->UpdatePhysics(Renderer::Instance()->getDeltaTime());
+		PhysicsSystem::Instance()->UpdatePhysics(0.016f);
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();
 	}

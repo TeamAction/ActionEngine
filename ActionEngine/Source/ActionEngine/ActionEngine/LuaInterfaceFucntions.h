@@ -14,6 +14,9 @@ extern "C"
 extern "C" int fireEvent(lua_State * L) { return EventManager::Instance()->fireEvent(L); }
 extern "C" int bindEvent(lua_State * L) { return EventManager::Instance()->bindEvent(L); }
 extern "C" int unBindEvent(lua_State * L) { return EventManager::Instance()->unBindEvent(L); }
+extern "C" int unBindAll(lua_State * L) {
+	return EventManager::Instance()->unBindAll(L); 
+}
 extern "C" int getGlobalTransform(lua_State * L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
@@ -51,9 +54,19 @@ extern "C" int addImpulse(lua_State * L)
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
 	float x = lua_tonumber(L, -2);
 	float y = lua_tonumber(L, -1);
-	actor->addForce(v2(x, y) / Renderer::Instance()->getDeltaTime());
+	actor->addForce(v2(x, y) /0.016f);
 	return 0;
 }
+
+extern "C" int getVelocity(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	v2 velocity = actor->getVelocity();
+	lua_pushnumber(L, velocity.x);
+	lua_pushnumber(L, velocity.y);
+	return 2;
+}
+
 extern "C" int isGrounded(lua_State * L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
@@ -71,9 +84,9 @@ extern "C" int screenText(lua_State * L)
 	return 0;
 }
 
-extern "C" int keyUp(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyUp(*lua_tostring(L, 1))); return 1; }
-extern "C" int keyDown(lua_State * L){lua_pushboolean(L, InputManager::Instance()->getKeyDown(*lua_tostring(L, 1)));return 1;}
-extern "C" int keyHeld(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyHeld(*lua_tostring(L, 1))); return 1; }
+extern "C" int keyUp(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyUp(toupper(*lua_tostring(L, 1)))); return 1; }
+extern "C" int keyDown(lua_State * L){lua_pushboolean(L, InputManager::Instance()->getKeyDown(toupper(*lua_tostring(L, 1))));return 1;}
+extern "C" int keyHeld(lua_State * L) { lua_pushboolean(L, InputManager::Instance()->getKeyHeld(toupper(*lua_tostring(L, 1)))); return 1; }
 
 extern "C" int mousePosition(lua_State * L)
 {
@@ -90,3 +103,27 @@ extern "C" int mouseButtons(lua_State * L)
 }
 
 extern "C" int loadScene(lua_State * L){ActionEngine::Instance()->loadSceneJson(lua_tostring(L, 1));return 0;}
+
+extern "C" int getActorByName(lua_State * L)
+{
+	const char* actorName = lua_tostring(L, 1);
+	Actor* test = ActionEngine::Instance()->actorMap["platform2"];
+	if(ActionEngine::Instance()->actorMap.count(actorName) == 1)
+		lua_pushlightuserdata(L,ActionEngine::Instance()->actorMap[actorName]);
+	else
+	{
+		lua_pushlightuserdata(L, ActionEngine::Instance()->actorMap["sceneRoot"]);
+		char output[256];
+		sprintf_s(output, "requested actor \"%s\" not found", actorName);
+		Renderer::Instance()->ErrorPopup(output);
+	}
+	return 1;
+}
+
+extern "C" int destroyActor(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	actor->flagActorForRemoval();
+	return 0;
+}
+

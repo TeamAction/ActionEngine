@@ -1,10 +1,13 @@
 
 timer = 0
+otherActor = nil
+
 
 function onStart()
 	screenText(200,300,"test script prints for 5 seconds on start",5)
 	bindEvent(this,"test","boundEvent")
 	bindEvent(this,"test2","otherBoundEvent")
+	otherActor = getActorByName("Actor2")
 end
 
 function onTick(dt)
@@ -12,10 +15,10 @@ function onTick(dt)
 	screenText(0,0,(string.format("%.4f", dt)),0)
 	screenText(50,150,"test script prints time since start using local varaiables "..string.format("%.3f",timer),0)
 	x,y = this:getGlobalTransform()
-	if keyHeld('W') then
+	if keyHeld('w') then
 		y = y+(-50*dt)
 	end
-	if keyHeld('A') then
+	if keyHeld('a') then
 		x = x+(-50*dt)
 	end
 	if keyHeld('S') then
@@ -26,13 +29,21 @@ function onTick(dt)
 	end
 	this:setGlobalTransform(x,y)
 	
-	if keyDown('P') then
-		loadScene("../../../Assets/scenes/testScene_Physics.json")
+	if keyDown('p') then
+		loadScene("testScene2")
 	end
 
+	screenText(300,350,tostring(scriptNamespace[otherActor].oribtDistance),0)
+	if keyHeld(' ') then
+		scriptNamespace[otherActor].oribtDistance = scriptNamespace[otherActor].oribtDistance+(50*dt)
+	end
 
+	
 	fireEvent(this,"test")
 	fireEvent(this,"test2","move ","with ","WASD")
+	
+	this:setGlobalTransform(x,y)
+
 end
 
 function boundEvent()

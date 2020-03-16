@@ -19,7 +19,6 @@ private:
 	std::unordered_map<std::string, std::unordered_map<Actor*,std::string>> events; //event name , owning actor <scope,function>
 	std::vector<std::pair<std::string, Actor*>> pendingRemoval; //eventName,owning actor
 	
-	void removePendingEvents();
 public:	
 	static EventManager* Instance()
 	{
@@ -29,10 +28,9 @@ public:
 		}
 		return s_pInstance;
 	}
-
 	int fireEvent(lua_State* L);
-
 	int bindEvent(lua_State* L);
-
 	int unBindEvent(lua_State* L);
+	int unBindAll(lua_State* L);
+	void removePendingEvents();
 };

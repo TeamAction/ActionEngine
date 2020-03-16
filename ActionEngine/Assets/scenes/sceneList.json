@@ -1,0 +1,10 @@
+[
+ {
+    "name": "testScene1",
+    "file": "../../../Assets/scenes/testScene.json"
+  },
+   {
+    "name": "testScene2",
+    "file": "../../../Assets/scenes/testScene_Physics.json"
+  }
+]
