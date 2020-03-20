@@ -2,6 +2,8 @@
 #include <unordered_map>
 #include <string>
 #include "json.hpp"
+class Actor;
+
 
 using json = nlohmann::json;
 
@@ -17,12 +19,17 @@ public:
 		return s_pInstance;
 	}
 	
-	json getSceneData(std::string sceneName);
+	void loadScene();
+	void prepareScene(std::string name);
+	bool isSceneReady();
 
 protected:
 	static SceneManager* s_pInstance;
 	SceneManager();
 	~SceneManager();
+
+	bool loadScenePending = false;
+	std::string sceneName;
 
 	std::unordered_map<std::string, json> parsedJson;
 };

@@ -9,6 +9,7 @@ extern "C"
 #include "Renderer.h"
 #include "InputManager.h"
 #include "EventManager.h"
+#include "sceneManager.h"
 #include "ActionEngine.h"
 
 extern "C" int fireEvent(lua_State * L) { return EventManager::Instance()->fireEvent(L); }
@@ -102,7 +103,7 @@ extern "C" int mouseButtons(lua_State * L)
 	return 2;
 }
 
-extern "C" int loadScene(lua_State * L){ActionEngine::Instance()->loadSceneJson(lua_tostring(L, 1));return 0;}
+extern "C" int loadScene(lua_State * L){SceneManager::Instance()->prepareScene(lua_tostring(L, 1));return 0;}
 
 extern "C" int getActorByName(lua_State * L)
 {
@@ -160,7 +161,7 @@ extern "C" int attachSprite(lua_State * L)
 	int numFrames = lua_gettop(L);
 
 	std::vector<drawObject> animFrames;
-	for (int i = 4; i < numFrames; i++)
+	for (int i = 3; i < numFrames; i++)
 	{
 		animFrames.push_back(drawObject(lua_tointeger(L, i)));
 	}
