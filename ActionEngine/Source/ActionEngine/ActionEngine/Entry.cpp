@@ -1,6 +1,7 @@
 #pragma once
 #include "ActionEngine.h"
 #include "Renderer.h"
+#include "SceneManager.h"
 #include "windows.h"
 
 /*
@@ -24,7 +25,7 @@ int WINAPI WinMain(
 	int nCmdShow)
 {
 	Renderer::Instance()->showSplash("../../../Assets/gfx/splash.png");
-	ActionEngine::Instance()->loadSceneJson("testScene1"); 
+	SceneManager::Instance()->prepareScene("testScene1"); 
 	Renderer::Instance()->generateSprite(0, 16 * 5, 16 * 8, 16, 16);
 	Renderer::Instance()->generateSprite(0, 16 * 6, 16 * 8, 16, 16);
 	Renderer::Instance()->generateSprite(0, 16 * 7, 16 * 8, 16, 16);

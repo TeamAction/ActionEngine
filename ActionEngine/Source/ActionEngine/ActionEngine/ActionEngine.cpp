@@ -77,7 +77,6 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("mouseButtons",&mouseButtons);
 	bindLuaFunction("loadScene",&loadScene);
 	bindLuaFunction("getActorByName",&getActorByName);
-	bindLuaFunction("destoryActor",&destroyActor);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -96,6 +95,16 @@ ActionEngine::ActionEngine()
 	lua_setfield(luaVM, -2, "getVelocity"); 
 	lua_pushcfunction(luaVM, isGrounded);
 	lua_setfield(luaVM, -2, "isGrounded"); 
+	lua_pushcfunction(luaVM, destroyActor);
+	lua_setfield(luaVM, -2, "destoryActor"); 
+	lua_pushcfunction(luaVM, createActor);
+	lua_setfield(luaVM, -2, "createActor"); 
+	lua_pushcfunction(luaVM, attachTransform);
+	lua_setfield(luaVM, -2, "attachTransform"); 
+	lua_pushcfunction(luaVM, attachScript);
+	lua_setfield(luaVM, -2, "attachScript"); 
+	lua_pushcfunction(luaVM, attachSprite);
+	lua_setfield(luaVM, -2, "attachSprite"); 
 
 	engineActive = true;
 }
@@ -116,68 +125,17 @@ bool ActionEngine::isGameActive()
 	return engineActive && Renderer::Instance()->status();
 }
 
-void ActionEngine::loadScenePostTick()
-{
-	loadScenePending = false;
-	if (sceneRoot) // remove previous scene if it exists
-	{
-		sceneRoot->flagActorForRemoval();
-		sceneRoot->removeFlaggedActors();
-		delete sceneRoot; // the scene root cannot be removed by the remove flagged actors method
-	}
-	EventManager::Instance()->removePendingEvents();
-
-	sceneRoot = new Actor("sceneRoot", nullptr); // create new scene root
-	actorMap["sceneRoot"] = sceneRoot;
-
-	json jsonParse = SceneManager::Instance()->getSceneData(sceneFile);
-
-	std::string name;
-	std::string compType;
-	for (int i = 0; i < jsonParse.size(); i++)
-	{
-		name = jsonParse[i]["name"].get<std::string>();
-		actorMap[name] = new Actor(name, actorMap[jsonParse[i]["parent"].get<std::string>()]);
-		for (int q = 0; q < jsonParse[i]["components"].size(); q++)
-		{
-			compType = jsonParse[i]["components"][q]["type"].get<std::string>();
-			if (compType == "sprite")
-			{
-				std::vector<drawObject> animFrames;
-				int numFrames = jsonParse[i]["components"][q]["frames"].size();
-				for (int z = 0; z < numFrames; z++)
-				{
-					animFrames.push_back(drawObject(jsonParse[i]["components"][q]["frames"][z].get<int>()));
-				}
-				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new DrawSprite(animFrames, jsonParse[i]["components"][q]["layer"].get<int>(), 1.5f));
-			}
-			else if (compType == "script")
-			{
-				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new ScriptInterface(jsonParse[i]["components"][q]["value"].get<std::string>()));
-			}
-			else if (compType == "data<v2>")
-			{
-				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new DataInterface<v2>(v2(jsonParse[i]["components"][q]["value"][0].get<int>(), jsonParse[i]["components"][q]["value"][1].get<int>())));
-			}
-			else if (compType == "rigidBody")
-			{
-				actorMap[name]->addComponent(jsonParse[i]["components"][q]["name"].get<std::string>(), new RigidBody(
-					v2(jsonParse[i]["components"][q]["value"][0].get<float>(), jsonParse[i]["components"][q]["value"][1].get<float>()),
-					jsonParse[i]["components"][q]["value"][2].get<float>(), jsonParse[i]["components"][q]["value"][3].get<float>(),
-					jsonParse[i]["components"][q]["value"][4].get<bool>(), v2(jsonParse[i]["components"][q]["value"][5].get<float>(), jsonParse[i]["components"][q]["value"][6].get<float>())));
-			}
-		}
-	}
-}
-
 void ActionEngine::play()
 {
 	bool test = Renderer::Instance()->status();
 	Renderer::Instance()->updateTime();
 	while (isGameActive())
 	{
-		if (loadScenePending)
-			loadScenePostTick();
+		if (SceneManager::Instance()->isSceneReady())
+		{
+			SceneManager::Instance()->loadScene();
+			sceneRoot = actorMap["sceneRoot"];
+		}
 		Renderer::Instance()->updateTime();
 		InputManager::Instance()->updateInputState();
 		sceneRoot->tick(Renderer::Instance()->getDeltaTime());
@@ -185,12 +143,6 @@ void ActionEngine::play()
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();
 	}
-}
-
-void ActionEngine::loadSceneJson(std::string path)
-{
-	sceneFile = path;
-	loadScenePending = true;
 }
 
 void ActionEngine::loadLuaScript(std::string path, Actor* name)

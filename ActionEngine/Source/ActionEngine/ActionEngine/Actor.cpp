@@ -142,7 +142,6 @@ void Actor::createTransform(float dt)
 	}
 	transform = static_cast<DataInterface<v2>*>(getComponent("transform"));
 	nextFunction = &Actor::updateComponents;
-	//tickComponents(dt);
 }
 
 void Actor::addComponent(std::string name,ActorComponent * component)
@@ -164,6 +163,15 @@ void Actor::addComponent(std::string name,ActorComponent * component)
 			Renderer::Instance()->ErrorPopup(output);
 		}
 		rigidBody = static_cast<RigidBody*>(component);
+	}if (component->objectType == TYPE::DATA && name == "transform")
+	{
+		if (transform)
+		{
+			char output[256];
+			sprintf_s(output, "%s already has a transform only one per actor", actorName.c_str());
+			Renderer::Instance()->ErrorPopup(output);
+		}
+		transform = static_cast<DataInterface<v2>*>(component);
 	}
 }
 

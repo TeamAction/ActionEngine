@@ -1,5 +1,6 @@
 
 platform2 = nil
+spawnTest = nil
 
 function onStart()
 	platform2 = getActorByName("platform2")
@@ -37,7 +38,25 @@ function onTick(dt)
 	if keyHeld('S') then
 		y = y+(50*dt)
 	end
+	if keyDown('V') then
+		platform2:destoryActor()
+		platform2 = nil
+	end
 	platform2:setGlobalTransform(x,y)
+	
+	if keyDown('T') then
+		--if spawnTest == nil then
+			x,y = this:getGlobalTransform()
+			spawnTest = root:createActor("spawningTest")
+			spawnTest:attachTransform()
+			spawnTest:setLocalTransform(x+50,y+50)
+			spawnTest:attachSprite(0,1,0,1,2,3)
+		--else
+		--	spawnTest:destoryActor()
+		--	spawnTest = nil
+		--end
+	end
+
 
 
 end

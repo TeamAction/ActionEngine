@@ -9,6 +9,7 @@ extern "C"
 #include "Renderer.h"
 #include "InputManager.h"
 #include "EventManager.h"
+#include "sceneManager.h"
 #include "ActionEngine.h"
 
 extern "C" int fireEvent(lua_State * L) { return EventManager::Instance()->fireEvent(L); }
@@ -102,7 +103,7 @@ extern "C" int mouseButtons(lua_State * L)
 	return 2;
 }
 
-extern "C" int loadScene(lua_State * L){ActionEngine::Instance()->loadSceneJson(lua_tostring(L, 1));return 0;}
+extern "C" int loadScene(lua_State * L){SceneManager::Instance()->prepareScene(lua_tostring(L, 1));return 0;}
 
 extern "C" int getActorByName(lua_State * L)
 {
@@ -124,6 +125,47 @@ extern "C" int destroyActor(lua_State * L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
 	actor->flagActorForRemoval();
+	return 0;
+}
+
+extern "C" int createActor(lua_State * L)
+{
+	Actor* parent = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	const char* name = lua_tostring(L, 2);
+	ActionEngine::Instance()->actorMap[name] = new Actor(name, parent);
+	lua_pushlightuserdata(L, ActionEngine::Instance()->actorMap[name]);
+	return 1;
+}
+
+extern "C" int attachScript(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	const char* name = lua_tostring(L, 2);
+	const char* path = lua_tostring(L, 3);
+	actor->addComponent(name, new ScriptInterface(path));
+	return 0;
+}
+
+extern "C" int attachTransform(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	actor->addComponent("transform", new DataInterface<v2>(v2(0, 0)));
+	return 0;
+}
+
+extern "C" int attachSprite(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	const int layer = lua_tointeger(L, 2);
+	const float loopTime = lua_tonumber(L, 3);
+	int numFrames = lua_gettop(L);
+
+	std::vector<drawObject> animFrames;
+	for (int i = 3; i < numFrames; i++)
+	{
+		animFrames.push_back(drawObject(lua_tointeger(L, i)));
+	}
+	actor->addComponent("sprite", new DrawSprite(animFrames, layer, loopTime));
 	return 0;
 }
 

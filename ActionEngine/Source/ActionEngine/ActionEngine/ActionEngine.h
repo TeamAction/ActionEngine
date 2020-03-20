@@ -22,7 +22,6 @@ public:
 	}
 
 	void play();
-	void loadSceneJson(std::string path);
 	void loadLuaScript(std::string path, Actor* name);
 	lua_State* getLuaState();
 	void bindLuaFunction(std::string name, lua_CFunction function);
@@ -35,10 +34,7 @@ private:
 	~ActionEngine();
 
 	bool isGameActive();
-	void loadScenePostTick();
 
-	bool loadScenePending = false;
-	std::string sceneFile;
 	Actor* sceneRoot;
 	bool engineActive = false;
 	HANDLE hHandle;
