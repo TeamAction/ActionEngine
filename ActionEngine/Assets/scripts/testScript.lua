@@ -4,10 +4,12 @@ otherActor = nil
 
 
 function onStart()
+
+	this:setPreserveInTransition(true)
 	screenText(200,300,"test script prints for 5 seconds on start",5)
 	bindEvent(this,"test","boundEvent")
 	bindEvent(this,"test2","otherBoundEvent")
-	otherActor = getActorByName("Actor2")
+	--otherActor = getActorByName("Actor2")
 end
 
 function onTick(dt)
@@ -33,10 +35,10 @@ function onTick(dt)
 		loadScene("testScene2")
 	end
 
-	screenText(300,350,tostring(scriptNamespace[otherActor].oribtDistance),0)
-	if keyHeld(' ') then
-		scriptNamespace[otherActor].oribtDistance = scriptNamespace[otherActor].oribtDistance+(50*dt)
-	end
+	--screenText(300,350,tostring(scriptNamespace[otherActor].oribtDistance),0)
+	--if keyHeld(' ') then
+	--	scriptNamespace[otherActor].oribtDistance = scriptNamespace[otherActor].oribtDistance+(50*dt)
+	--end
 
 	
 	fireEvent(this,"test")

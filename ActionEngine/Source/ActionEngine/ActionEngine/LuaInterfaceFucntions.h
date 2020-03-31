@@ -153,6 +153,20 @@ extern "C" int attachTransform(lua_State * L)
 	return 0;
 }
 
+extern "C" int setPreserveInTransition(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	if(actor->parent != ActionEngine::Instance()->actorMap["sceneRoot"])
+	{
+		char output[256];
+		sprintf_s(output, "requested actor \"%s\" not child of scene root \n only children of scene root may be preserved", actor->actorName.c_str());
+		Renderer::Instance()->ErrorPopup(output);
+	}
+
+	actor->preserveInTransition = lua_toboolean(L, 2);
+	return 0;
+}
+
 extern "C" int attachSprite(lua_State * L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));

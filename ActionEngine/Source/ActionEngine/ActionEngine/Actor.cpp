@@ -191,16 +191,28 @@ void Actor::flagActorForRemoval()
 
 void Actor::removeFlaggedActors()
 {
+	if (preserveInTransition)
+		return;
 	for (int i = 0; i < children.size(); i++)
 	{
 		children[i]->removeFlaggedActors();
-		if (children[i]->flagStatus() == true)
+		if (children[i]->flagStatus() && !children[i]->preserveInTransition)
 		{
 			delete children[i];
 			ActionEngine::Instance()->actorMap.erase(actorName);
 			children.erase(children.begin() + i);
 		}
 	}
+}
+
+void Actor::recoverPreservedActors(std::vector<Actor*>& actorList)
+{
+	for (int i = 0; i < children.size(); i++)
+	{
+		children[i]->recoverPreservedActors(actorList);
+	}
+	if (preserveInTransition)
+		actorList.push_back(this);
 }
 
 bool Actor::flagStatus()

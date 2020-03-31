@@ -17,9 +17,12 @@ void SceneManager::loadScene()
 {
 	loadScenePending = false;
 	Actor* sceneRoot = ActionEngine::Instance()->actorMap["sceneRoot"];
+	std::vector<Actor*> preservedActors;
+
 	if (sceneRoot) // remove previous scene if it exists
 	{
 		sceneRoot->flagActorForRemoval();
+		sceneRoot->recoverPreservedActors(preservedActors);
 		sceneRoot->removeFlaggedActors();
 		delete sceneRoot; // the scene root cannot be removed by the remove flagged actors method
 	}
@@ -31,6 +34,13 @@ void SceneManager::loadScene()
 	lua_pushlightuserdata(ActionEngine::Instance()->getLuaState(), sceneRoot);
 	luaL_setmetatable(ActionEngine::Instance()->getLuaState(), "Actor");
 	lua_setglobal(ActionEngine::Instance()->getLuaState(), "root");
+
+	for (int i = 0; i < preservedActors.size(); i++)
+	{
+		ActionEngine::Instance()->actorMap[preservedActors[i]->actorName] = preservedActors[i];
+		preservedActors[i]->parent = sceneRoot;
+		sceneRoot->children.push_back(preservedActors[i]);
+	}
 
 	json jsonParse = parsedJson[sceneName];
 

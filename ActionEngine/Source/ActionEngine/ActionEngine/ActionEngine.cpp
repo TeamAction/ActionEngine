@@ -105,6 +105,8 @@ ActionEngine::ActionEngine()
 	lua_setfield(luaVM, -2, "attachScript"); 
 	lua_pushcfunction(luaVM, attachSprite);
 	lua_setfield(luaVM, -2, "attachSprite"); 
+	lua_pushcfunction(luaVM, setPreserveInTransition);
+	lua_setfield(luaVM, -2, "setPreserveInTransition"); 
 
 	engineActive = true;
 }
@@ -163,4 +165,3 @@ void ActionEngine::bindLuaFunction(std::string name, lua_CFunction function)
 	lua_pushcfunction(luaVM, function);
 	lua_setglobal(luaVM, (char*)name.c_str());
 }
-

@@ -3,6 +3,7 @@ oribtDistance = 200
 timer = 0
 
 function onStart()
+	--this:setPreserveInTransition(true)
 	bindEvent(this,"test","boundEvent")
 end
 
