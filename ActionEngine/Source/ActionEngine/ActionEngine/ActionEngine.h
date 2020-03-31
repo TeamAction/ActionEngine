@@ -26,6 +26,8 @@ public:
 	lua_State* getLuaState();
 	void bindLuaFunction(std::string name, lua_CFunction function);
 
+	void onEventCollision(Actor* a1, Actor* a2);
+
 	std::unordered_map<std::string, Actor*> actorMap;
 private:
 	static ActionEngine* s_pInstance;

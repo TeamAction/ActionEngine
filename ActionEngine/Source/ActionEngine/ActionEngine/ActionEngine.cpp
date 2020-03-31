@@ -165,3 +165,26 @@ void ActionEngine::bindLuaFunction(std::string name, lua_CFunction function)
 	lua_pushcfunction(luaVM, function);
 	lua_setglobal(luaVM, (char*)name.c_str());
 }
+
+void ActionEngine::onEventCollision(Actor* a1, Actor* a2)
+{
+	lua_pushlightuserdata(luaVM, a1);
+	luaL_setmetatable(luaVM, "Actor");
+	lua_setglobal(luaVM, "this");
+
+	lua_getglobal(luaVM, "fireFunction");
+	lua_pushstring(luaVM, "onHit");
+	lua_pushlightuserdata(luaVM,a2);
+	lua_pcall(luaVM, 2, 0, 0);
+	lua_settop(luaVM, 0);
+
+	lua_pushlightuserdata(luaVM, a2);
+	luaL_setmetatable(luaVM, "Actor");
+	lua_setglobal(luaVM, "this");
+
+	lua_getglobal(luaVM, "fireFunction");
+	lua_pushstring(luaVM, "onHit");
+	lua_pushlightuserdata(luaVM, a1);
+	lua_pcall(luaVM, 2, 0, 0);
+	lua_settop(luaVM, 0);
+}

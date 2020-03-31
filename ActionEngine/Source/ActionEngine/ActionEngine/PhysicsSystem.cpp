@@ -2,7 +2,7 @@
 #include "PhysicsSystem.h"
 #include "RigidBody.h"
 #include "DataInterface.h"
-
+#include "ActionEngine.h"
 
 
 PhysicsSystem* PhysicsSystem::s_pInstance = 0;
@@ -94,9 +94,12 @@ void PhysicsSystem::CheckCollisions()
                         }
                         colInfo.penetration = gap.y;
                     }
-                    collisions.push_back({pair, colInfo});
+                    if (!pair.rigidBodyA->triggerOnly && !pair.rigidBodyB->triggerOnly)
+                    {
+                        collisions.push_back({ pair, colInfo });
+                    }
+                    ActionEngine::Instance()->onEventCollision(pair.rigidBodyA->owner, pair.rigidBodyB->owner);
                 }
-
             }
         }
     }

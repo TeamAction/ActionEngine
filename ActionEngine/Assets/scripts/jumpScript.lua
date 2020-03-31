@@ -61,4 +61,8 @@ function onTick(dt)
 
 end
 
+function onHit(other)
+	screenText(250,250,"HIT" ,0)
+end
+
 
