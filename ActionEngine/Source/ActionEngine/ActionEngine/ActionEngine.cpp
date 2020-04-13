@@ -77,6 +77,7 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("mouseButtons",&mouseButtons);
 	bindLuaFunction("loadScene",&loadScene);
 	bindLuaFunction("getActorByName",&getActorByName);
+	bindLuaFunction("setCameraOffset",&setLayerCameraOffset);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -107,6 +108,10 @@ ActionEngine::ActionEngine()
 	lua_setfield(luaVM, -2, "attachSprite"); 
 	lua_pushcfunction(luaVM, setPreserveInTransition);
 	lua_setfield(luaVM, -2, "setPreserveInTransition"); 
+	lua_pushcfunction(luaVM, checkForTag);
+	lua_setfield(luaVM, -2, "checkForTag"); 
+	lua_pushcfunction(luaVM, setAnimation);
+	lua_setfield(luaVM, -2, "setAnimation"); 
 
 	engineActive = true;
 }

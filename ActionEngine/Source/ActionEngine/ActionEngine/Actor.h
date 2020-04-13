@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <unordered_map>
+#include <set> 
 
 struct drawObject;
 class ActorComponent;
@@ -30,8 +31,10 @@ public:
 	v2 getVelocity();
 	bool isGrounded();
 	bool preserveInTransition = false;
+	ActorComponent* getSprite(std::string name);
 	Actor* parent;
 	std::vector<Actor*> children;
+	std::set<std::string> tags;
 private :
 	DataInterface<v2>* transform = nullptr; //this is used very often so i am including this to reduce time spent fetching it
 	RigidBody* rigidBody = nullptr;

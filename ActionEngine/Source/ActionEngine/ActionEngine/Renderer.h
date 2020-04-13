@@ -39,6 +39,8 @@ public:
 	void showSplash(const char* path);
 	bool status();
 	void generateSprite(int index, int x, int y, int w, int h);
+	void generateAnimation(std::string name,animation anim);
+	animation getAnimation(std::string name);
 	void addDrawItem(int layer, drawObject newObject);
 	void addScreenText(int x,int y,std::string text,float timer);
 	void draw();
@@ -47,6 +49,7 @@ public:
 	int getWidth();
 	int getHeight();
 	v2 getScreenScale();
+	std::map<int, v2> layerOffsets;
 private:
 	void handleInternalEvents(SDL_Event& e);
 	void setScreenScale();
@@ -57,6 +60,7 @@ private:
 	static Renderer* s_pInstance;
 	std::vector<SDL_Texture*> textures;
 	std::vector<Sprite> sprites;
+	std::map<std::string, animation> animations;
 	std::map<int, std::vector<drawObject>> renderQueue;
 	std::vector<screenText> renderText;
 	bool running = false;

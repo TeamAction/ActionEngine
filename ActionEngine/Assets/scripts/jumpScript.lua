@@ -39,8 +39,9 @@ function onTick(dt)
 		y = y+(50*dt)
 	end
 	if keyDown('V') then
-		platform2:destoryActor()
-		platform2 = nil
+		--platform2:destoryActor()
+		--platform2 = nil
+		this:setAnimation("spriteTest","water")
 	end
 	platform2:setGlobalTransform(x,y)
 	
@@ -50,19 +51,24 @@ function onTick(dt)
 			spawnTest = root:createActor("spawningTest")
 			spawnTest:attachTransform()
 			spawnTest:setLocalTransform(x+50,y+50)
-			spawnTest:attachSprite(0,1,0,1,2,3)
+			spawnTest:attachSprite(0,"water")
 		--else
 		--	spawnTest:destoryActor()
 		--	spawnTest = nil
 		--end
 	end
-
+	x,y =this:getGlobalTransform()
+	setCameraOffset(0,(-x+320),(-y+240))
 
 
 end
 
 function onHit(other)
-	screenText(250,250,"HIT" ,0)
+	if other:checkForTag("test") then
+		screenText(250,250,"HIT TEST TAG" ,1)
+	else
+	screenText(250,250,"HIT" ,1)
+	end
 end
 
 

@@ -169,17 +169,34 @@ extern "C" int setPreserveInTransition(lua_State * L)
 
 extern "C" int attachSprite(lua_State * L)
 {
-	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
-	const int layer = lua_tointeger(L, 2);
-	const float loopTime = lua_tonumber(L, 3);
-	int numFrames = lua_gettop(L);
+	static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"))->addComponent("sprite", new DrawSprite(Renderer::Instance()->getAnimation(lua_tostring(L, 3)), lua_tointeger(L, 2)));
+	return 0;
+}
 
-	std::vector<drawObject> animFrames;
-	for (int i = 3; i < numFrames; i++)
+extern "C" int setLayerCameraOffset(lua_State * L)
+{
+	int layer = lua_tointeger(L, -3);
+	float x = lua_tonumber(L, -2);
+	float y = lua_tonumber(L, -1);
+	Renderer::Instance()->layerOffsets[layer] = v2(x, y);
+	return 0;
+}
+
+extern "C" int checkForTag(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	lua_pushboolean(L, actor->tags.find(std::string(lua_tostring(L, 2))) != actor->tags.end());
+	return 1;
+}
+
+extern "C" int setAnimation(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	DrawSprite* comp = static_cast<DrawSprite*>(actor->getSprite(lua_tostring(L, 2)));
+	if (comp != nullptr)
 	{
-		animFrames.push_back(drawObject(lua_tointeger(L, i)));
+		comp->setAnimation(Renderer::Instance()->getAnimation(lua_tostring(L, 3)));
 	}
-	actor->addComponent("sprite", new DrawSprite(animFrames, layer, loopTime));
 	return 0;
 }
 

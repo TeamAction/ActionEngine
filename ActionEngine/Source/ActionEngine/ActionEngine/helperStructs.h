@@ -61,6 +61,13 @@ struct AABB
 	v2 bLeft;
 	v2 tRight;
 };
+
+struct animation
+{
+	inline animation(std::vector<int> _spriteIndex = {}, float _loopTime = 0.0f) : spriteIndex(_spriteIndex), loopTime(_loopTime) {}
+	std::vector<int> spriteIndex;
+	float loopTime;
+};
 /*
 struct mat3x3
 {

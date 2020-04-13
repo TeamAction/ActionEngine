@@ -34,6 +34,11 @@ int WINAPI WinMain(
 	Renderer::Instance()->generateSprite(0, 16 * 7, 16 * 9, 16, 16);
 	Renderer::Instance()->generateSprite(0, 0, 16 * 8, 400, 16);
 
+	Renderer::Instance()->generateAnimation("floor", animation({5}));
+	Renderer::Instance()->generateAnimation("water", animation({0,1,2,3},1.0f));
+	Renderer::Instance()->generateAnimation("rock", animation({4}));
+
+
 
 	Sleep(1500); //give time to show splash
 	Renderer::Instance()->Init(640,480, "../../../Assets/fonts/FreeSans.ttf",20);
