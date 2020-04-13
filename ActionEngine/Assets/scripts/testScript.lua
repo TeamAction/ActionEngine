@@ -4,6 +4,8 @@ otherActor = nil
 
 
 function onStart()
+
+	--this:setPreserveInTransition(true)
 	screenText(200,300,"test script prints for 5 seconds on start",5)
 	bindEvent(this,"test","boundEvent")
 	bindEvent(this,"test2","otherBoundEvent")

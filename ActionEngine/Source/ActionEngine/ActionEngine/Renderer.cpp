@@ -109,9 +109,20 @@ void Renderer::generateSprite(int index, int x,int y,int w ,int h)
 	sprites.push_back(Sprite(index, rect));
 }
 
+void Renderer::generateAnimation(std::string name, animation anim)
+{
+	animations[name] = anim;
+}
+
+animation Renderer::getAnimation(std::string name)
+{
+	return animations[name];
+}
+
 void Renderer::addDrawItem(int layer, drawObject newObject)
 {
 	renderQueue[layer].push_back(newObject);
+	int i = 0;
 }
 
 void Renderer::addScreenText(int x, int y, std::string text,float timer)
@@ -134,13 +145,15 @@ void Renderer::draw()
 	}
 	SDL_RenderClear(window_renderer);
 	SDL_Rect dest;
+	v2 layerOffset;
 	std::map<int, std::vector<drawObject>>::iterator it = renderQueue.begin();
 	while(it != renderQueue.end())
 	{
+		layerOffset = layerOffsets[it->first];
 		for (int i = 0; i < it->second.size(); i++)
 		{
-			dest.x = it->second[i].screenPosition.x;
-			dest.y = it->second[i].screenPosition.y;
+			dest.x = it->second[i].screenPosition.x + layerOffset.x;
+			dest.y = it->second[i].screenPosition.y + layerOffset.y;
 			dest.w = sprites[it->second[i].spriteIndex].bounds.w * (int)(it->second[i].screenScale.x *4.0f);
 			dest.h = sprites[it->second[i].spriteIndex].bounds.h * (int)(it->second[i].screenScale.y *4.0f);
 			SDL_RenderCopyEx(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest,0,NULL, SDL_FLIP_NONE);

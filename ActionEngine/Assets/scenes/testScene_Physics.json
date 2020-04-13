@@ -2,18 +2,18 @@
  {
     "name": "floor",
     "parent": "sceneRoot",
+	"tags" : [],
     "components": [
       {
         "type": "sprite",
         "name": "spriteTest",
-        "frames": [5],
-		"layer": 0,
-		"loopTime": 1.0
+		"animation": "floor",
+		"layer": 0
       },
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [1000,64,0,0.8,false,0,0]
+        "value": [1000,64,0,0.8,false,0,0,false]
       },
       {
         "type": "data<v2>",
@@ -25,18 +25,18 @@
    {
     "name": "platform1",
     "parent": "sceneRoot",
+	"tags" : [],
     "components": [
       {
         "type": "sprite",
         "name": "spriteTest",
-        "frames": [0,1,2,3],
-		"layer": 0,
-		"loopTime": 1.0
+		"animation": "water",
+		"layer": 0
       },
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [64,64,0,0.1,false,100,100]
+        "value": [64,64,0,0.1,false,100,100,false]
       },
       {
         "type": "data<v2>",
@@ -48,18 +48,18 @@
   {
     "name": "rock2",
     "parent": "sceneRoot",
+	"tags" : [],
     "components": [
       {
         "type": "sprite",
         "name": "spriteTest",
-        "frames": [4],
-		"layer": 0,
-		"loopTime": 1.0
+		"animation": "rock",
+		"layer": 0
       },
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [64,50,1,0.1,true,100,100]
+        "value": [64,50,1,0.1,true,100,100,false]
       },
 	  {
         "type": "script",
@@ -76,18 +76,18 @@
   {
     "name": "rock3",
     "parent": "sceneRoot",
+	"tags" : [],
     "components": [
       {
         "type": "sprite",
         "name": "spriteTest",
-        "frames": [4],
-		"layer": 0,
-		"loopTime": 1.0
+		"animation": "rock",
+		"layer": 0
       },
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [64,50,1,0.8,true,100,100]
+        "value": [64,50,1,0.8,true,100,100,false]
       },
       {
         "type": "data<v2>",
@@ -99,18 +99,18 @@
   {
     "name": "rock4",
     "parent": "sceneRoot",
+	"tags" : [],
     "components": [
       {
         "type": "sprite",
         "name": "spriteTest",
-        "frames": [4],
-		"layer": 0,
-		"loopTime": 1.0
+		"animation": "rock",
+		"layer": 0
       },
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [64,50,1,0.8,true,100,100]
+        "value": [64,50,1,0.8,true,100,100,false]
       },
       {
         "type": "data<v2>",
@@ -122,18 +122,18 @@
      {
     "name": "platform2",
     "parent": "sceneRoot",
+	"tags" : ["test"],
     "components": [
       {
         "type": "sprite",
         "name": "spriteTest",
-        "frames": [0,1,2,3],
-		"layer": 0,
-		"loopTime": 1.0
+		"animation": "water",
+		"layer": 0
       },
       {
         "type": "rigidBody",
         "name": "testRB",
-        "value": [64,64,0,0.1,false,100,100]
+        "value": [64,64,0,0.1,false,100,100,false]
       },
       {
         "type": "data<v2>",

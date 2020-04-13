@@ -77,6 +77,7 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("mouseButtons",&mouseButtons);
 	bindLuaFunction("loadScene",&loadScene);
 	bindLuaFunction("getActorByName",&getActorByName);
+	bindLuaFunction("setCameraOffset",&setLayerCameraOffset);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -105,6 +106,12 @@ ActionEngine::ActionEngine()
 	lua_setfield(luaVM, -2, "attachScript"); 
 	lua_pushcfunction(luaVM, attachSprite);
 	lua_setfield(luaVM, -2, "attachSprite"); 
+	lua_pushcfunction(luaVM, setPreserveInTransition);
+	lua_setfield(luaVM, -2, "setPreserveInTransition"); 
+	lua_pushcfunction(luaVM, checkForTag);
+	lua_setfield(luaVM, -2, "checkForTag"); 
+	lua_pushcfunction(luaVM, setAnimation);
+	lua_setfield(luaVM, -2, "setAnimation"); 
 
 	engineActive = true;
 }
@@ -164,3 +171,25 @@ void ActionEngine::bindLuaFunction(std::string name, lua_CFunction function)
 	lua_setglobal(luaVM, (char*)name.c_str());
 }
 
+void ActionEngine::onEventCollision(Actor* a1, Actor* a2)
+{
+	lua_pushlightuserdata(luaVM, a1);
+	luaL_setmetatable(luaVM, "Actor");
+	lua_setglobal(luaVM, "this");
+
+	lua_getglobal(luaVM, "fireFunction");
+	lua_pushstring(luaVM, "onHit");
+	lua_pushlightuserdata(luaVM,a2);
+	lua_pcall(luaVM, 2, 0, 0);
+	lua_settop(luaVM, 0);
+
+	lua_pushlightuserdata(luaVM, a2);
+	luaL_setmetatable(luaVM, "Actor");
+	lua_setglobal(luaVM, "this");
+
+	lua_getglobal(luaVM, "fireFunction");
+	lua_pushstring(luaVM, "onHit");
+	lua_pushlightuserdata(luaVM, a1);
+	lua_pcall(luaVM, 2, 0, 0);
+	lua_settop(luaVM, 0);
+}

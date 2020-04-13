@@ -110,6 +110,17 @@ bool Actor::isGrounded()
 	return rigidBody->grounded;
 }
 
+ActorComponent* Actor::getSprite(std::string name)
+{
+	ActorComponent* comp = getComponent(name);
+	if (static_cast<DrawInterface*>(comp) != nullptr)
+		return comp;
+	char output[256];
+	sprintf_s(output, "Error compent of name \"%s\" is not a sprite", name.c_str());
+	Renderer::Instance()->ErrorPopup(output);
+	return nullptr;
+}
+
 void Actor::updateComponents(float dt)
 {
 	std::unordered_map<std::string, ActorComponent*>::iterator it = components.begin();
@@ -191,16 +202,28 @@ void Actor::flagActorForRemoval()
 
 void Actor::removeFlaggedActors()
 {
+	if (preserveInTransition)
+		return;
 	for (int i = 0; i < children.size(); i++)
 	{
 		children[i]->removeFlaggedActors();
-		if (children[i]->flagStatus() == true)
+		if (children[i]->flagStatus() && !children[i]->preserveInTransition)
 		{
 			delete children[i];
 			ActionEngine::Instance()->actorMap.erase(actorName);
 			children.erase(children.begin() + i);
 		}
 	}
+}
+
+void Actor::recoverPreservedActors(std::vector<Actor*>& actorList)
+{
+	for (int i = 0; i < children.size(); i++)
+	{
+		children[i]->recoverPreservedActors(actorList);
+	}
+	if (preserveInTransition)
+		actorList.push_back(this);
 }
 
 bool Actor::flagStatus()
