@@ -17,20 +17,15 @@ public:
 
 	void Clean();
 
-	void PlayMusic();
+	void PlayMusic(std:: string id);
 	void LoadMusic(std::string id, std::string source);
 
-	void PlayEffect();
+	void PlayEffect(std:: string id);
 	void LoadEffect(std::string id, std::string source);
 
 	inline static Audio* Instance() { return s_Instance = (s_Instance != nullptr) ? s_Instance : new Audio(); }
 
-	//Audio();
-	/*std::unordered_map<std::string, Mix_Chunk*> clipList;
-	std::unordered_map<std::string, Mix_Music*> musicList;*/
-
-	//void loadClip(std::string beatbox, std::string filePath);
-	//~Audio();
+	
 
 private:
 	Audio();

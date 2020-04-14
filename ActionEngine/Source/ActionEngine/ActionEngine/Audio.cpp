@@ -8,15 +8,11 @@ bool isRunning = true;
 SDL_Event ev;
 
 
-
-
-//Mix_Music *music = Mix_LoadMUS();
-
 Audio* Audio::s_Instance = nullptr;
 
+// Init audio system
 Audio::Audio()
 {
-
 
 	if (SDL_Init(SDL_INIT_AUDIO) < 0) {
 		Renderer::Instance()->ErrorPopup("Error Audio did not initialize!");
@@ -26,55 +22,48 @@ Audio::Audio()
 	{
 		Renderer::Instance()->ErrorPopup("Error Audio did not load!");
 	}
-
-
-
 }
 
 // Music
 
-void Audio::PlayMusic() {
-	Mix_Music* bgm = Mix_LoadMUS("../../../Assets/AudioClips/gamemusic1.wav");
+void Audio::PlayMusic(std::string id) {
+	
+	if (Mix_PlayMusic(m_MusicMap[id], -1) == -1)
+		std::cerr << Mix_GetError() << ": " << id << std::endl;
 
 	if (!Mix_PlayingMusic()) {
 
-		Mix_PlayMusic(bgm, -1);
+		Mix_PlayMusic(m_MusicMap[id], -1);
 	}
 
 
 }
 
-//void Audio::LoadMusic(std::string id, std::string source) {
-//	Mix_Music* bgm = Mix_LoadMUS("../../../Assets/AudioClips/505528__dbairsoft__beatbox1");
-//	m_MusicMap[id] = bgm;
-//	//else
-//	//	Renderer::Instance()->ErrorPopup("Error Audio did not LOAD!");
-//}
+void Audio::LoadMusic(std::string id, std::string source) {
+	Mix_Music* bgm = Mix_LoadMUS(source.c_str());
+	if (bgm != nullptr)
+		m_MusicMap[id] = bgm;
+	else
+		std::cerr << Mix_GetError() << ": " << source << std::endl;
+}
 
 // Chunk
 
-void Audio::PlayEffect() {
-	Mix_Chunk* sfx1 = Mix_LoadWAV("../../../Assets/AudioClips/jump1.wav");
-
-				Mix_PlayChannel(-1, sfx1, 0);
-
+void Audio::PlayEffect(std::string id) {
+	
+	if (Mix_PlayChannel(-1, m_EffectMap[id], 0) == -1)
+		std::cerr << Mix_GetError() << ": " << id << std::endl;
 }
 		
-	
+void Audio::LoadEffect(std:: string id, std::string source) {
+	Mix_Chunk* effect = Mix_LoadWAV(source.c_str());
+	if (effect != nullptr)
+		m_EffectMap[id] = effect;
+	else
+		std::cerr << Mix_GetError() << ": " << source << std::endl;
+}
 
-//void Audio::PlayEffect(std::string id) {
-//	if(Mix_PlayChannel(-1, m_EffectMap[id], 0) == -1)
-//		Renderer::Instance()->ErrorPopup("Error Play Effect did not Play!");
-//}
-
-//void Audio::LoadEffect(std::string id, std::string source) {
-//	Mix_Chunk* effect = Mix_LoadWAV("../../../Assets/AudioClips/505528__dbairsoft__beatbox1");
-//	if (effect != nullptr)
-//		m_EffectMap[id] = effect;
-//	else
-//		Renderer::Instance()->ErrorPopup("Error did not Load Effect!");
-//}
-
+// Clean memory of used sound files
 void Audio::Clean() {
 
 	for (MusicMap::iterator it = m_MusicMap.begin(); it != m_MusicMap.end(); it++)
