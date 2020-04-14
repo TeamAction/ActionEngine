@@ -14,6 +14,9 @@ using json = nlohmann::json;
 #include "sceneManager.h"
 #include "EventManager.h"
 
+#include "SDL/SDL_mixer.h"
+#include "Audio.h"
+
 #include "Actor.h" // actor object 
 
 #include "DrawSprite.h" //actor components
@@ -30,6 +33,8 @@ extern "C" // lua interpreter
 #include "Lua/lua.h"
 #include "Lua/lualib.h"
 #include "Lua/lauxlib.h"
+
+
 }
 
 ActionEngine* ActionEngine::s_pInstance = 0;
@@ -132,6 +137,13 @@ bool ActionEngine::isGameActive()
 	return engineActive && Renderer::Instance()->status();
 }
 
+void testSound() {
+	if (InputManager::Instance()->getKeyDown('P'))
+	{
+		Audio::Instance()->PlayEffect();
+	}
+}
+
 void ActionEngine::play()
 {
 	bool test = Renderer::Instance()->status();
@@ -149,6 +161,8 @@ void ActionEngine::play()
 		PhysicsSystem::Instance()->UpdatePhysics(0.016f);
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();
+		Audio::Instance()->PlayMusic();
+		testSound();
 	}
 }
 

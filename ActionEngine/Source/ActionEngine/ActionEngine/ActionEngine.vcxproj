@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="ActionEngine.cpp" />
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="DrawSprite.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Initialize.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="ActionEngine.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorComponent.h" />
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="DataInterface.h" />
     <ClInclude Include="DrawInterface.h" />
     <ClInclude Include="helperStructs.h" />
