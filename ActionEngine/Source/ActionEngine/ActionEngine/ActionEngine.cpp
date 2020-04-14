@@ -13,10 +13,7 @@ using json = nlohmann::json;
 #include "PhysicsSystem.h"
 #include "sceneManager.h"
 #include "EventManager.h"
-
-#include "SDL/SDL_mixer.h"
 #include "Audio.h"
-
 
 #include "Actor.h" // actor object 
 
@@ -84,6 +81,9 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("loadScene",&loadScene);
 	bindLuaFunction("getActorByName",&getActorByName);
 	bindLuaFunction("setCameraOffset",&setLayerCameraOffset);
+	bindLuaFunction("playMusic",&playMusic);
+	bindLuaFunction("stopMusic",&stopMusic);
+	bindLuaFunction("playEffect",&playEffect);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);

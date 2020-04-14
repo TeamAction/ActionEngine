@@ -1,6 +1,5 @@
 #include "Audio.h"
 #include "Renderer.h"
-#include "InputManager.h"
 
 
 Mix_Chunk* wave = NULL;
@@ -28,15 +27,11 @@ Audio::Audio()
 
 void Audio::PlayMusic(std::string id) {
 	
-	if (Mix_PlayMusic(m_MusicMap[id], -1) == -1)
-		std::cerr << Mix_GetError() << ": " << id << std::endl;
-
 	if (!Mix_PlayingMusic()) {
 
-		Mix_PlayMusic(m_MusicMap[id], -1);
+		if (Mix_PlayMusic(m_MusicMap[id], -1) == -1)
+			Renderer::Instance()->ErrorPopup(Mix_GetError());
 	}
-
-
 }
 
 void Audio::LoadMusic(std::string id, std::string source) {
@@ -44,7 +39,15 @@ void Audio::LoadMusic(std::string id, std::string source) {
 	if (bgm != nullptr)
 		m_MusicMap[id] = bgm;
 	else
-		std::cerr << Mix_GetError() << ": " << source << std::endl;
+		Renderer::Instance()->ErrorPopup(Mix_GetError());
+}
+
+void Audio::stopMusic()
+{
+	if (Mix_PlayingMusic())
+	{
+		Mix_HaltMusic();
+	}
 }
 
 // Chunk
@@ -52,7 +55,7 @@ void Audio::LoadMusic(std::string id, std::string source) {
 void Audio::PlayEffect(std::string id) {
 	
 	if (Mix_PlayChannel(-1, m_EffectMap[id], 0) == -1)
-		std::cerr << Mix_GetError() << ": " << id << std::endl;
+		Renderer::Instance()->ErrorPopup(Mix_GetError());
 }
 		
 void Audio::LoadEffect(std:: string id, std::string source) {
@@ -60,11 +63,11 @@ void Audio::LoadEffect(std:: string id, std::string source) {
 	if (effect != nullptr)
 		m_EffectMap[id] = effect;
 	else
-		std::cerr << Mix_GetError() << ": " << source << std::endl;
+		Renderer::Instance()->ErrorPopup(Mix_GetError());
 }
 
 // Clean memory of used sound files
-void Audio::Clean() {
+Audio::~Audio() {
 
 	for (MusicMap::iterator it = m_MusicMap.begin(); it != m_MusicMap.end(); it++)
 		Mix_FreeMusic(it->second);
@@ -74,7 +77,8 @@ void Audio::Clean() {
 	m_MusicMap.clear();
 	m_EffectMap.clear();
 	std::cout << "Sound system cleaned!" << std::endl;
-
+	Mix_Quit();
+	Mix_CloseAudio();
 }
 
 

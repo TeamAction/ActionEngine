@@ -10,6 +10,7 @@ function onStart()
 	bindEvent(this,"test","boundEvent")
 	bindEvent(this,"test2","otherBoundEvent")
 	otherActor = getActorByName("Actor2")
+	playMusic("bgm1")
 end
 
 function onTick(dt)

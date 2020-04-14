@@ -2,6 +2,7 @@
 #include "ActionEngine.h"
 #include "Renderer.h"
 #include "SceneManager.h"
+#include "Audio.h"
 #include "windows.h"
 
 /*
@@ -39,10 +40,13 @@ int WINAPI WinMain(
 	Renderer::Instance()->generateAnimation("rock", animation({4}));
 
 
+	Audio::Instance()->LoadMusic("bgm1", "../../../Assets/AudioClips/gamemusic1.wav");
+	Audio::Instance()->LoadEffect("sfx1", "../../../Assets/AudioClips/jump1.wav");
 
-	Sleep(1500); //give time to show splash
+	//Sleep(1500); //give time to show splash
 	Renderer::Instance()->Init(640,480, "../../../Assets/fonts/FreeSans.ttf",20);
 	Renderer::Instance()->loadImageFile("../../../Assets/gfx/cave.png");
+
 
 	ActionEngine::Instance()->play();
 	return (0);
