@@ -20,6 +20,7 @@ function onTick(dt)
 	
 	if keyDown(' ') and this:isGrounded()then
 		this:addImpulse(0,-200)
+		playEffect("sfx1")
 	end
 	if keyHeld('D') then
 		this:addImpulse(30,0)

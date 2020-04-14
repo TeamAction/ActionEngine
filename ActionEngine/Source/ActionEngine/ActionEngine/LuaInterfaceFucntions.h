@@ -11,6 +11,7 @@ extern "C"
 #include "EventManager.h"
 #include "sceneManager.h"
 #include "ActionEngine.h"
+#include "Audio.h"
 
 extern "C" int fireEvent(lua_State * L) { return EventManager::Instance()->fireEvent(L); }
 extern "C" int bindEvent(lua_State * L) { return EventManager::Instance()->bindEvent(L); }
@@ -199,4 +200,23 @@ extern "C" int setAnimation(lua_State * L)
 	}
 	return 0;
 }
+
+extern "C" int playMusic(lua_State * L)
+{
+	Audio::Instance()->PlayMusic(lua_tostring(L, 1));
+	return 0;
+}
+
+extern "C" int stopMusic(lua_State * L)
+{
+	Audio::Instance()->stopMusic();
+	return 0;
+}
+
+extern "C" int playEffect(lua_State * L)
+{
+	Audio::Instance()->PlayEffect(lua_tostring(L, 1));
+	return 0;
+}
+
 

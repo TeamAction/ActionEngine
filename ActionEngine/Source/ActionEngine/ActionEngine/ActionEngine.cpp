@@ -13,6 +13,7 @@ using json = nlohmann::json;
 #include "PhysicsSystem.h"
 #include "sceneManager.h"
 #include "EventManager.h"
+#include "Audio.h"
 
 #include "Actor.h" // actor object 
 
@@ -30,6 +31,8 @@ extern "C" // lua interpreter
 #include "Lua/lua.h"
 #include "Lua/lualib.h"
 #include "Lua/lauxlib.h"
+
+
 }
 
 ActionEngine* ActionEngine::s_pInstance = 0;
@@ -78,6 +81,9 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("loadScene",&loadScene);
 	bindLuaFunction("getActorByName",&getActorByName);
 	bindLuaFunction("setCameraOffset",&setLayerCameraOffset);
+	bindLuaFunction("playMusic",&playMusic);
+	bindLuaFunction("stopMusic",&stopMusic);
+	bindLuaFunction("playEffect",&playEffect);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -125,12 +131,14 @@ ActionEngine::~ActionEngine()
 	delete sceneRoot;
 	lua_close(luaVM);
 	Initialize::Terminate(&hHandle);
+
 }
 
 bool ActionEngine::isGameActive()
 {
 	return engineActive && Renderer::Instance()->status();
 }
+
 
 void ActionEngine::play()
 {
@@ -149,6 +157,7 @@ void ActionEngine::play()
 		PhysicsSystem::Instance()->UpdatePhysics(0.016f);
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();
+		
 	}
 }
 
