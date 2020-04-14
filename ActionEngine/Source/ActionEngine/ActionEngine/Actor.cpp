@@ -21,7 +21,6 @@ Actor::~Actor()
 		it->second = nullptr;
 		it++;
 	}
-	int i = 0;
 }
 
 void Actor::tick(float dt)
@@ -207,12 +206,15 @@ void Actor::removeFlaggedActors()
 	for (int i = 0; i < children.size(); i++)
 	{
 		children[i]->removeFlaggedActors();
-		if (children[i]->flagStatus() && !children[i]->preserveInTransition)
+	}
+	if (flagStatus())
+	{
+		if (parent != nullptr)
 		{
-			delete children[i];
 			ActionEngine::Instance()->actorMap.erase(actorName);
-			children.erase(children.begin() + i);
+			parent->children.erase(std::remove(parent->children.begin(), parent->children.end(), this), parent->children.end());
 		}
+		delete this;
 	}
 }
 
