@@ -14,6 +14,7 @@ end
 
 function onTick(dt)
 	timer =  timer + dt
+	setCameraOffset(0,0,0)
 	screenText(0,0,(string.format("%.4f", dt)),0)
 	screenText(50,150,"test script prints time since start using local varaiables "..string.format("%.3f",timer),0)
 	x,y = this:getGlobalTransform()

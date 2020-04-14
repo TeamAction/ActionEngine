@@ -24,7 +24,6 @@ void SceneManager::loadScene()
 		sceneRoot->flagActorForRemoval();
 		sceneRoot->recoverPreservedActors(preservedActors);
 		sceneRoot->removeFlaggedActors();
-		delete sceneRoot; // the scene root cannot be removed by the remove flagged actors method
 	}
 	EventManager::Instance()->removePendingEvents();
 
