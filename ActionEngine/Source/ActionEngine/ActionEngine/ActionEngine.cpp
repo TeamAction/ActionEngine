@@ -14,6 +14,10 @@ using json = nlohmann::json;
 #include "sceneManager.h"
 #include "EventManager.h"
 
+#include "SDL/SDL_mixer.h"
+#include "Audio.h"
+
+
 #include "Actor.h" // actor object 
 
 #include "DrawSprite.h" //actor components
@@ -30,6 +34,8 @@ extern "C" // lua interpreter
 #include "Lua/lua.h"
 #include "Lua/lualib.h"
 #include "Lua/lauxlib.h"
+
+
 }
 
 ActionEngine* ActionEngine::s_pInstance = 0;
@@ -125,12 +131,14 @@ ActionEngine::~ActionEngine()
 	delete sceneRoot;
 	lua_close(luaVM);
 	Initialize::Terminate(&hHandle);
+
 }
 
 bool ActionEngine::isGameActive()
 {
 	return engineActive && Renderer::Instance()->status();
 }
+
 
 void ActionEngine::play()
 {
@@ -149,6 +157,7 @@ void ActionEngine::play()
 		PhysicsSystem::Instance()->UpdatePhysics(0.016f);
 		sceneRoot->removeFlaggedActors();
 		Renderer::Instance()->draw();
+		
 	}
 }
 

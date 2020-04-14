@@ -12,7 +12,7 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{2ac299b8-6f98-4b77-b6fe-4dc92d91cf88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components">
+    <Filter Include="Header Files\Components">
       <UniqueIdentifier>{39becf64-0959-4c79-99ce-f4072f0678eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -30,7 +30,7 @@
       <Filter>Interface</Filter>
     </ClCompile>
     <ClCompile Include="DrawSprite.cpp">
-      <Filter>Components</Filter>
+      <Filter>Header Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
@@ -45,12 +45,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RigidBody.cpp">
-      <Filter>Components</Filter>
+      <Filter>Header Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,7 +68,7 @@
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="DrawSprite.h">
-      <Filter>Components</Filter>
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="ActorComponent.h">
       <Filter>Interface</Filter>
@@ -89,7 +92,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RigidBody.h">
-      <Filter>Components</Filter>
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsSystem.h">
       <Filter>Header Files</Filter>
@@ -101,6 +104,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
