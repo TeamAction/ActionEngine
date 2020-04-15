@@ -44,7 +44,7 @@ void PhysicsSystem::IsGrounded(RigidBody* r)
 {
     r->grounded = false;
     for (int q = 0; q < rigidBodies.size(); q++) {
-        if (r != rigidBodies[q]) {
+        if (r != rigidBodies[q] && !rigidBodies[q]->triggerOnly) {
             if (r->aabb.bLeft.x < rigidBodies[q]->aabb.tRight.x
                 && r->aabb.tRight.x > rigidBodies[q]->aabb.bLeft.x
                 && abs(rigidBodies[q]->aabb.tRight.y - r->aabb.bLeft.y) <= 1.0f) {
@@ -58,7 +58,7 @@ void PhysicsSystem::IsGrounded(RigidBody* r)
 
 void PhysicsSystem::CheckCollisions()
 {
-    for (int i = 0; i < rigidBodies.size()-1;i++) {
+    for (int i = 0; i < rigidBodies.size();i++) {
         IsGrounded(rigidBodies[i]);
         for (int q = i+1; q < rigidBodies.size(); q++) {
             if (q != i) {

@@ -84,6 +84,7 @@ ActionEngine::ActionEngine()
 	bindLuaFunction("playMusic",&playMusic);
 	bindLuaFunction("stopMusic",&stopMusic);
 	bindLuaFunction("playEffect",&playEffect);
+	bindLuaFunction("isActorAlive",&isActorAlive);
 
 	luaL_newmetatable(luaVM, "Actor");
 	lua_pushvalue(luaVM, -1);
@@ -118,6 +119,8 @@ ActionEngine::ActionEngine()
 	lua_setfield(luaVM, -2, "checkForTag"); 
 	lua_pushcfunction(luaVM, setAnimation);
 	lua_setfield(luaVM, -2, "setAnimation"); 
+	lua_pushcfunction(luaVM, setFlip);
+	lua_setfield(luaVM, -2, "setFlip"); 
 
 	engineActive = true;
 }

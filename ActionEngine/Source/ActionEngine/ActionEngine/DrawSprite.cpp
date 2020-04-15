@@ -4,6 +4,8 @@ DrawSprite::DrawSprite(animation _anim, int _layer) :DrawInterface(_layer) , ani
 
 void DrawSprite::setAnimation(animation _anim)
 {
+	if (_anim.spriteIndex[0] == anim.spriteIndex[0])
+		return;
 	anim = _anim;
 	timer = 0;
 	loopTime = 0;
@@ -12,6 +14,13 @@ void DrawSprite::setAnimation(animation _anim)
 		timer = anim.loopTime;
 		loopTime = anim.loopTime / (anim.spriteIndex.size() - 1);
 	}
+}
+
+void DrawSprite::setMirror(bool _mirror)
+{
+	flip = 0x00000000;
+	if (_mirror)
+		flip = 0x00000001;
 }
 
 void DrawSprite::onStart(float dt)
@@ -36,5 +45,5 @@ void DrawSprite::onAddObject(float dt)
 	{
 		currentFrame = 0;
 	}
-	Renderer::Instance()->addDrawItem(layer, drawObject(anim.spriteIndex[currentFrame], owner->getGlobalTransform() * Renderer::Instance()->getScreenScale(), Renderer::Instance()->getScreenScale()));
+	Renderer::Instance()->addDrawItem(layer, drawObject(anim.spriteIndex[currentFrame], owner->getGlobalTransform() * Renderer::Instance()->getScreenScale(), Renderer::Instance()->getScreenScale()* owner->getScale(),flip));
 }

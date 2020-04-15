@@ -154,9 +154,9 @@ void Renderer::draw()
 		{
 			dest.x = it->second[i].screenPosition.x + layerOffset.x;
 			dest.y = it->second[i].screenPosition.y + layerOffset.y;
-			dest.w = sprites[it->second[i].spriteIndex].bounds.w * (int)(it->second[i].screenScale.x *4.0f);
-			dest.h = sprites[it->second[i].spriteIndex].bounds.h * (int)(it->second[i].screenScale.y *4.0f);
-			SDL_RenderCopyEx(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest,0,NULL, SDL_FLIP_NONE);
+			dest.w = sprites[it->second[i].spriteIndex].bounds.w * (int)(it->second[i].screenScale.x);
+			dest.h = sprites[it->second[i].spriteIndex].bounds.h * (int)(it->second[i].screenScale.y);
+			SDL_RenderCopyEx(window_renderer, textures[sprites[it->second[i].spriteIndex].index], &sprites[it->second[i].spriteIndex].bounds, &dest,0,NULL, static_cast<SDL_RendererFlip>(it->second[i].flip));
 		}
 		it->second.clear();
 		it++;
