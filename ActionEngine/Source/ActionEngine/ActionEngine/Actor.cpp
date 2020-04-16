@@ -75,6 +75,16 @@ v2 Actor::getLocalTransform()
 	return transform->getData();
 }
 
+v2 Actor::getScale()
+{
+	return scale->getData();
+}
+
+void Actor::setScale(v2 newScale)
+{
+	transform->setData(newScale);
+}
+
 void Actor::setLocalTransform(v2 newTransform)
 {
 	transform->setData(newTransform);
@@ -151,6 +161,11 @@ void Actor::createTransform(float dt)
 		addComponent("transform", new DataInterface<v2>(v2(0,0)));
 	}
 	transform = static_cast<DataInterface<v2>*>(getComponent("transform"));
+	if (!components.count("scale"))
+	{
+		addComponent("scale", new DataInterface<v2>(v2(1,1)));
+	}
+	scale = static_cast<DataInterface<v2>*>(getComponent("scale"));
 	nextFunction = &Actor::updateComponents;
 }
 

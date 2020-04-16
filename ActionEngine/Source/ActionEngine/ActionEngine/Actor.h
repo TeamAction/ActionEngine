@@ -26,6 +26,8 @@ public:
 	v2 getGlobalTransform();
 	void setGlobalTransform(v2 newTransform);
 	v2 getLocalTransform();
+	v2 getScale();
+	void setScale(v2 newScale);
 	void setLocalTransform(v2 newTransform);
 	void addForce(v2 force);
 	v2 getVelocity();
@@ -37,6 +39,7 @@ public:
 	std::set<std::string> tags;
 private :
 	DataInterface<v2>* transform = nullptr; //this is used very often so i am including this to reduce time spent fetching it
+	DataInterface<v2>* scale = nullptr; //this is used very often so i am including this to reduce time spent fetching it
 	RigidBody* rigidBody = nullptr;
 	inline void tickComponents(float dt) { (this->*nextFunction)(dt); }
 	void(Actor::* nextFunction)(float dt) = &Actor::createTransform;

@@ -1,0 +1,6 @@
+[
+   {
+    "name": "","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "script", "name": "script","value": "../../../Assets/scripts/levelStats.lua"}]
+  }
+]

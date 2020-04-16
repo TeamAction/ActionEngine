@@ -49,6 +49,8 @@ void SceneManager::loadScene()
 	for (int i = 0; i < jsonParse.size(); i++)
 	{
 		name = jsonParse[i]["name"].get<std::string>();
+		if ((ActionEngine::Instance()->actorMap.count(name) == 1) && name!="")
+			continue;
 		actor = new Actor(name, ActionEngine::Instance()->actorMap[jsonParse[i]["parent"].get<std::string>()]);
 		ActionEngine::Instance()->actorMap[name] = actor;
 		for (int q = 0; q < jsonParse[i]["tags"].size(); q++)

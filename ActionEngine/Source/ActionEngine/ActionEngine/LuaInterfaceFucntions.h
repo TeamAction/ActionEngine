@@ -122,6 +122,13 @@ extern "C" int getActorByName(lua_State * L)
 	return 1;
 }
 
+extern "C" int isActorAlive(lua_State * L)
+{
+	lua_pushboolean(L,(ActionEngine::Instance()->actorMap.count(lua_tostring(L, 1)) == 1));
+	return 1;
+}
+
+
 extern "C" int destroyActor(lua_State * L)
 {
 	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
@@ -197,6 +204,17 @@ extern "C" int setAnimation(lua_State * L)
 	if (comp != nullptr)
 	{
 		comp->setAnimation(Renderer::Instance()->getAnimation(lua_tostring(L, 3)));
+	}
+	return 0;
+}
+
+extern "C" int setFlip(lua_State * L)
+{
+	Actor* actor = static_cast<Actor*>(luaL_checkudata(L, 1, "Actor"));
+	DrawSprite* comp = static_cast<DrawSprite*>(actor->getSprite(lua_tostring(L, 2)));
+	if (comp != nullptr)
+	{
+		comp->setMirror(lua_toboolean(L, 3));
 	}
 	return 0;
 }

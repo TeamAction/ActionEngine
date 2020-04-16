@@ -1,0 +1,79 @@
+[
+ {
+    "name": "BG","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "BG","layer": 0},{"type": "data<v2>","name": "transform","value": [0,-100]},{"type": "data<v2>","name": "scale","value": [40,40]},
+		{"type": "script", "name": "script","value": "../../../Assets/scripts/deathCounter.lua"}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundU","layer": 1},{"type": "data<v2>","name": "transform","value": [0,352]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [192,128,0,0.1,false,100,100,false]}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [400,300]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,false]},{"type": "script", "name": "script","value": "../../../Assets/scripts/platform2.lua"}]
+  },
+ {
+    "name": "platform1","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [620,250]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,false]},{"type": "script", "name": "script","value": "../../../Assets/scripts/platform1.lua"}]
+  },
+ {
+    "name": "","parent": "platform1","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "spikeD","layer": 1},{"type": "data<v2>","name": "transform","value": [0,64]},{"type": "data<v2>","name": "scale","value": [4,4]}]
+  },
+ {
+    "name": "","parent": "platform1","tags" : ["enemy"],
+    "components": [{"type": "data<v2>","name": "transform","value": [0,32]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [64,32,0,0.1,false,100,100,false]}]
+  },
+ {
+    "name": "goalPlatform","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [770,164]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,false]}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : ["goal"],
+    "components": [{"type": "sprite", "name": "","animation": "riceBall","layer": 1},{"type": "data<v2>","name": "transform","value": [770,100]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,true]}]
+  },
+  {
+    "name": "","parent": "goalPlatform","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "spikeD","layer": 1},{"type": "data<v2>","name": "transform","value": [0,64]},{"type": "data<v2>","name": "scale","value": [4,4]}]
+  },
+ {
+    "name": "","parent": "goalPlatform","tags" : ["enemy"],
+    "components": [{"type": "data<v2>","name": "transform","value": [0,32]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [64,32,0,0.1,false,100,100,false]}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundInner","layer": 1},{"type": "data<v2>","name": "transform","value": [0,416]},{"type": "data<v2>","name": "scale","value": [4,4]}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundU","layer": 1},{"type": "data<v2>","name": "transform","value": [64,352]},{"type": "data<v2>","name": "scale","value": [4,4]}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundInner","layer": 1},{"type": "data<v2>","name": "transform","value": [64,416]},{"type": "data<v2>","name": "scale","value": [4,4]}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundRTCO","layer": 1},{"type": "data<v2>","name": "transform","value": [128,352]},{"type": "data<v2>","name": "scale","value": [4,4]}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundR","layer": 1},{"type": "data<v2>","name": "transform","value": [128,416]},{"type": "data<v2>","name": "scale","value": [4,4]}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : ["player"],
+    "components": [{"type": "sprite", "name": "","animation": "playerIdle","layer": 2},{"type": "data<v2>","name": "transform","value": [0,200]},{"type": "data<v2>","name": "scale","value": [4,4]},	   
+		{"type": "rigidBody","name": "rigidBody","value": [64,64,1,0.1,true,100,100,false]},{"type": "script", "name": "script","value": "../../../Assets/scripts/jumpScript.lua"}]
+  },
+ {
+    "name": "","parent": "sceneRoot","tags" : ["enemy"],
+    "components": [{"type": "data<v2>","name": "transform","value": [-500,480]},{"type": "rigidBody","name": "rigidBody","value": [1500,64,0,0,false,0,0,true]}]
+  }
+]

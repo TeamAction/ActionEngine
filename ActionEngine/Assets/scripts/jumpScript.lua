@@ -1,19 +1,30 @@
 
-platform2 = nil
-spawnTest = nil
 
 function onStart()
-	platform2 = getActorByName("platform2")
+	--playMusic("bgm1")
 end
 
 function onTick(dt)
-	screenText(50,150,"Grounded: "..tostring(this:isGrounded()),0)
-	xVel, yVel = this:getVelocity()
-	screenText(50,250,string.format("%.1f", xVel) .. "," .. string.format("%.1f", yVel) ,0)
 
+	xVel, yVel = this:getVelocity()
+
+	if(xVel > 0) then
+		this:setFlip("",false)
+	elseif (xVel < 0) then
+		this:setFlip("",true)
+	end
+	
+	if(math.abs(xVel) > 10 and this:isGrounded()) then
+		this:setAnimation("","playerRun")
+	else
+		this:setAnimation("","playerIdle")
+	end
+	
+	
 	if yVel > 10 and not this:isGrounded()  then
 		this:addImpulse(0,10)
 	elseif not keyHeld(' ') and yVel < 0 then
+		this:setAnimation("","playerJump")
 		this:addImpulse(0,7)
 	end
 
@@ -28,47 +39,27 @@ function onTick(dt)
 	if keyHeld('A') then
 		this:addImpulse(-30,0)
 	end
-	if keyDown('P') then
-		loadScene("testScene1")
-	end
-	
-	x,y = platform2:getGlobalTransform()
-	if keyHeld('W') then
-		y = y+(-50*dt)
-	end
-	if keyHeld('S') then
-		y = y+(50*dt)
-	end
-	if keyDown('V') then
-		--platform2:destoryActor()
-		--platform2 = nil
-		this:setAnimation("spriteTest","water")
-	end
-	platform2:setGlobalTransform(x,y)
-	
-	if keyDown('T') then
-		--if spawnTest == nil then
-			x,y = this:getGlobalTransform()
-			spawnTest = root:createActor("spawningTest")
-			spawnTest:attachTransform()
-			spawnTest:setLocalTransform(x+50,y+50)
-			spawnTest:attachSprite(0,"water")
-		--else
-		--	spawnTest:destoryActor()
-		--	spawnTest = nil
-		--end
-	end
 	x,y =this:getGlobalTransform()
-	setCameraOffset(0,(-x+320),(-y+240))
 
 
+	if x < 320 then
+	 x = 320
+	end
+	if y > 240 then
+	 y = 240
+	end
+	setCameraOffset(1,(-x+320),(-y+240))
+	setCameraOffset(2,(-x+320),(-y+240))
+	
 end
 
 function onHit(other)
-	if other:checkForTag("test") then
-		screenText(250,250,"HIT TEST TAG" ,1)
-	else
-	screenText(250,250,"HIT" ,1)
+	if other:checkForTag("enemy") then
+		screenText(250,250,"DEATH" ,1)
+		fireEvent(this,"death")
+		fireEvent(this,"load")
+	elseif other:checkForTag("goal") then
+		fireEvent(this,"nextLevel")
 	end
 end
 
