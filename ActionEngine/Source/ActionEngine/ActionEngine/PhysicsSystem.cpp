@@ -133,7 +133,7 @@ void PhysicsSystem::ResolveCollisions(float dt)
         collisions[i].first.rigidBodyA->AddForce((impulse * -1) / dt);
         collisions[i].first.rigidBodyB->AddForce(impulse/ dt);
 
-        if (abs(collisions[i].second.penetration) > 0.01) {
+        if (abs(collisions[i].second.penetration) > 0.1) {
             PositionalCorrection(collisions[i].first, collisions[i].second);
         }
     }

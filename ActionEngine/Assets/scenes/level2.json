@@ -11,37 +11,41 @@
   },
  {
     "name": "","parent": "sceneRoot","tags" : [],
-    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [320,300]},{"type": "data<v2>","name": "scale","value": [4,4]},
-		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,false]}]
+    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [400,300]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,false]},{"type": "script", "name": "script","value": "../../../Assets/scripts/platform2.lua"}]
   },
  {
-    "name": "","parent": "sceneRoot","tags" : [],
-    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [420,50]},{"type": "data<v2>","name": "scale","value": [4,4]},
-		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,false]}]
+    "name": "platform1","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [620,250]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,false]},{"type": "script", "name": "script","value": "../../../Assets/scripts/platform1.lua"}]
   },
  {
-    "name": "","parent": "sceneRoot","tags" : [],
-    "components": [{"type": "sprite", "name": "","animation": "spikeD","layer": 1},{"type": "data<v2>","name": "transform","value": [420,114]},{"type": "data<v2>","name": "scale","value": [4,4]}]
+    "name": "","parent": "platform1","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "spikeD","layer": 1},{"type": "data<v2>","name": "transform","value": [0,64]},{"type": "data<v2>","name": "scale","value": [4,4]}]
   },
  {
-    "name": "","parent": "sceneRoot","tags" : ["enemy"],
-    "components": [{"type": "data<v2>","name": "transform","value": [420,82]},{"type": "data<v2>","name": "scale","value": [4,4]},
+    "name": "","parent": "platform1","tags" : ["enemy"],
+    "components": [{"type": "data<v2>","name": "transform","value": [0,32]},{"type": "data<v2>","name": "scale","value": [4,4]},
 		      {"type": "rigidBody","name": "rigidBody","value": [64,32,0,0.1,false,100,100,false]}]
   },
  {
-    "name": "","parent": "sceneRoot","tags" : [],
-    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [670,150]},{"type": "data<v2>","name": "scale","value": [4,4]},
+    "name": "goalPlatform","parent": "sceneRoot","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [770,164]},{"type": "data<v2>","name": "scale","value": [4,4]},
 		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,false]}]
   },
  {
     "name": "","parent": "sceneRoot","tags" : ["goal"],
-    "components": [{"type": "sprite", "name": "","animation": "riceBall","layer": 1},{"type": "data<v2>","name": "transform","value": [420,-14]},{"type": "data<v2>","name": "scale","value": [4,4]},
+    "components": [{"type": "sprite", "name": "","animation": "riceBall","layer": 1},{"type": "data<v2>","name": "transform","value": [770,100]},{"type": "data<v2>","name": "scale","value": [4,4]},
 		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,true]}]
   },
   {
-    "name": "","parent": "sceneRoot","tags" : [],
-    "components": [{"type": "sprite", "name": "","animation": "groundF","layer": 1},{"type": "data<v2>","name": "transform","value": [520,250]},{"type": "data<v2>","name": "scale","value": [4,4]},
-		      {"type": "rigidBody","name": "rigidBody","value": [64,64,0,0.1,false,100,100,false]}]
+    "name": "","parent": "goalPlatform","tags" : [],
+    "components": [{"type": "sprite", "name": "","animation": "spikeD","layer": 1},{"type": "data<v2>","name": "transform","value": [0,64]},{"type": "data<v2>","name": "scale","value": [4,4]}]
+  },
+ {
+    "name": "","parent": "goalPlatform","tags" : ["enemy"],
+    "components": [{"type": "data<v2>","name": "transform","value": [0,32]},{"type": "data<v2>","name": "scale","value": [4,4]},
+		      {"type": "rigidBody","name": "rigidBody","value": [64,32,0,0.1,false,100,100,false]}]
   },
  {
     "name": "","parent": "sceneRoot","tags" : [],
