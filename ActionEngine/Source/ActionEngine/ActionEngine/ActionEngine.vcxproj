@@ -79,7 +79,7 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(PlatformName)$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)..\..\Game\$(PlatformName)\</OutDir>
+    <OutDir>$(SolutionDir)..\..\Game\GameBuilds\$(PlatformName)\</OutDir>
     <IntDir>$(SolutionDir)..\..\Temp\$(PlatformName)$(Configuration)\</IntDir>
     <ReferencePath>$(SolutionDir)..\..\Lib\x64;$(ReferencePath)</ReferencePath>
   </PropertyGroup>

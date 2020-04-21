@@ -7,7 +7,7 @@ end
 function onTick(dt)
 
 	xVel, yVel = this:getVelocity()
-
+	
 	if(xVel > 0) then
 		this:setFlip("",false)
 	elseif (xVel < 0) then
@@ -22,6 +22,7 @@ function onTick(dt)
 	
 	
 	if yVel > 10 and not this:isGrounded()  then
+		this:setAnimation("","playerJump")
 		this:addImpulse(0,10)
 	elseif not keyHeld(' ') and yVel < 0 then
 		this:setAnimation("","playerJump")

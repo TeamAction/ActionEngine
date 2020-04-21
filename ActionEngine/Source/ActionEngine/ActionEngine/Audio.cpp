@@ -21,6 +21,7 @@ Audio::Audio()
 	{
 		Renderer::Instance()->ErrorPopup("Error Audio did not load!");
 	}
+	Mix_AllocateChannels(256);
 }
 
 // Music
@@ -54,7 +55,7 @@ void Audio::stopMusic()
 
 void Audio::PlayEffect(std::string id) {
 	
-	if (Mix_PlayChannel(-1, m_EffectMap[id], 0) == -1)
+	if (Mix_PlayChannel(-1, m_EffectMap[id], 0) == -1) 
 		Renderer::Instance()->ErrorPopup(Mix_GetError());
 }
 		
