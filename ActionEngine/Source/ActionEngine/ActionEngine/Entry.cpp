@@ -62,7 +62,7 @@ int WINAPI WinMain(
 	Renderer::Instance()->generateAnimation("groundLTCI", animation({ 2 }));
 	Renderer::Instance()->generateAnimation("groundRTCI", animation({ 3 }));
 	Renderer::Instance()->generateAnimation("groundLBCI", animation({ 8 }));
-	Renderer::Instance()->generateAnimation("groundRBCI", animation({ 9}));
+	Renderer::Instance()->generateAnimation("groundRBCI", animation({ 9 }));
 
 
 	Renderer::Instance()->generateAnimation("groundL", animation({ 10 }));
@@ -88,7 +88,6 @@ int WINAPI WinMain(
 	Audio::Instance()->LoadMusic("bgm1", "../../../Assets/AudioClips/gamemusic1.wav");
 	Audio::Instance()->LoadEffect("sfx1", "../../../Assets/AudioClips/jump1.wav");
 
-	//Sleep(1500); //give time to show splash
 	Renderer::Instance()->Init(640,480, "../../../Assets/fonts/8bit.ttf",20);
 	Renderer::Instance()->loadImageFile("../../../Assets/gfx/tiles.png");
 	Renderer::Instance()->loadImageFile("../../../Assets/gfx/Ninja/run1.png");
