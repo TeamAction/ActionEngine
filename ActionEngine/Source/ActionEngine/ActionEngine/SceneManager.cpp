@@ -25,6 +25,7 @@ void SceneManager::loadScene()
 		sceneRoot->recoverPreservedActors(preservedActors);
 		sceneRoot->removeFlaggedActors();
 	}
+	ActionEngine::Instance()->actorMap.clear();
 	EventManager::Instance()->removePendingEvents();
 
 	sceneRoot = new Actor("sceneRoot", nullptr); // create new scene root
@@ -49,7 +50,7 @@ void SceneManager::loadScene()
 	for (int i = 0; i < jsonParse.size(); i++)
 	{
 		name = jsonParse[i]["name"].get<std::string>();
-		if ((ActionEngine::Instance()->actorMap.count(name) == 1) && name!="")
+		if ((ActionEngine::Instance()->actorMap.count(name) >0) && name!="")
 			continue;
 		actor = new Actor(name, ActionEngine::Instance()->actorMap[jsonParse[i]["parent"].get<std::string>()]);
 		ActionEngine::Instance()->actorMap[name] = actor;
